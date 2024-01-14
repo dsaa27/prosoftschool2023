@@ -1,4 +1,10 @@
 build-devicemonitoringserver*
 devicemonitoringserver/*.user
 devicemonitoringserver/build_debug
-devicemonitoringserver/.vscode
+CMakeFiles
+devicemonitoringserver/cmake_install.cmake
+devicemonitoringserver/CMakeCache.txt
+devicemonitoringserver/devicemonitoringserver
+devicemonitoringserver/Makefile
+.vscode
+.gitignore
