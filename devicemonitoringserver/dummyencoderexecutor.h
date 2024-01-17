@@ -8,7 +8,7 @@ class DummyEncoderExecutor : public BaseEncoderExecutor
 public:
     std::string encode(const std::string& message) override { return message; }
     std::string decode(const std::string& message) override { return message; }
-    std::string name() override { return "Dummy"; }
+    std::string name() const override { return "Dummy"; }
 };
 
 #endif // DUMMYENCODEREXECUTOR_H

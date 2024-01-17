@@ -355,7 +355,7 @@ void messageEncoderAddTest()
             test_message(message) {}
         std::string encode(const std::string&) override { return test_message; }
         std::string decode(const std::string&) override { return test_message; }
-        std::string name() override { return "Test"; }
+        std::string name() const override { return "Test"; }
 
     private:
         std::string test_message;
@@ -377,7 +377,7 @@ void messageEncoderDoubleAddTest()
             test_message(message) {}
         std::string encode(const std::string&) override { return test_message; }
         std::string decode(const std::string&) override { return test_message; }
-        std::string name() override { return "Test"; }
+        std::string name() const override { return "Test"; }
 
     private:
         std::string test_message;

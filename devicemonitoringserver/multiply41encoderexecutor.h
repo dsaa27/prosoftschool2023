@@ -8,7 +8,7 @@ class Multiply41EncoderExecutor : public BaseEncoderExecutor
 public:
     std::string encode(const std::string& message) override;
     std::string decode(const std::string& message) override;
-    std::string name() override { return "Multiply41"; }
+    std::string name() const override { return "Multiply41"; }
 };
 
 #endif // MULTIPLY41ENCODEREXECUTOR_H

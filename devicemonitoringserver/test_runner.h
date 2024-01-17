@@ -179,7 +179,7 @@ private:
 #define ASSERT_WITH_THRESHOLD(x, y, threshold)                                                      \
     {                                                                                               \
         std::ostringstream UNIQUE;                                                                  \
-        UNIQUE << #x << " != " << #y << " +- " << threshold << ", " << __FILE__ << ":" << __LINE__; \
+        UNIQUE << #x << " != " << #y << " +- " << #threshold << ", " << __FILE__ << ":" << __LINE__; \
         AssertWithThreshold(x, y, threshold, UNIQUE.str());                                         \
     }
 
