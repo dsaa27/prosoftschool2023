@@ -1,7 +1,9 @@
+
 #include "devicemock.h"
-#include <handlers/abstractaction.h>
-#include <handlers/abstractmessagehandler.h>
-#include <server/abstractclientconnection.h>
+#include "common.h"
+#include "handlers/abstractaction.h"
+#include "handlers/abstractmessagehandler.h"
+#include "server/abstractclientconnection.h"
 
 DeviceMock::DeviceMock(AbstractClientConnection* clientConnection) :
     m_clientConnection(clientConnection)
@@ -73,10 +75,25 @@ void DeviceMock::sendMessage(const std::string& message) const
     m_clientConnection->sendMessage(message);
 }
 
-void DeviceMock::onMessageReceived(const std::string& /*message*/)
+void DeviceMock::onMessageReceived(const std::string& message)
 {
     // TODO: Разобрать std::string, прочитать команду,
     // записать ее в список полученных комманд
+    /*
+
+    мюсли жокера
+    1. проверяем на эмпти
+    2. кастуем первый символ к енуму типов сообщений
+        2.1 по результатам создаём нужный инстанс сообщения и заполняем
+        2.2 видимо аппендим этот инстанс в контейнер полученных сообщение 
+            (тут хз это же долбануто огромный лог, хотя может по меркам десктопа норм)
+        
+    */
+    MsgType type = MsgType::ERROR;
+    std::string decoded = {};
+    if (message.empty()) return;
+//    decode = deCode(message);
+//    type = 
     sendNextMeterage(); // Отправляем следующее измерение
 }
 
@@ -108,4 +125,12 @@ void DeviceMock::sendNextMeterage()
     (void)meterage;
     ++m_timeStamp;
     // TODO: Сформировать std::string и передать в sendMessage
+    /*
+    Мюсли Жокера
+    так как это отправка метрики то создаём нужный инстанс сообщения
+    вписываем свежие значения
+    кидаем в сериализатор
+    кидаем в шифратор
+    отправляем
+    */
 }

@@ -32,6 +32,10 @@ DeviceMonitoringServer::~DeviceMonitoringServer()
 void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
 {
     // TODO
+    /*
+    Мюсли жокера - ведь тут достатчно мапу создавать 
+    только пока не понял, как мы в этой функции полуаем айди девайса
+    */
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -49,6 +53,15 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
 void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
 {
     // TODO
+    /*
+    Мюсли Жокера
+    1. парсим сообщение (десериализуем в нужный инстанс)
+    2. реагируем
+        2.1  по айди достаём расписание и проверяем значения
+        2.2 формируем ответ
+        
+
+    */
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
