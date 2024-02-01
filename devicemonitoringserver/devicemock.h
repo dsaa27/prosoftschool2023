@@ -73,4 +73,6 @@ private:
     uint64_t m_timeStamp = 0;
 };
 
+
+
 #endif // DEVICE_H

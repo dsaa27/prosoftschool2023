@@ -18,10 +18,10 @@ void monitoringServerTest1()
     ASSERT(device.bind(deviceId));
     ASSERT(server.listen(serverId));
     ASSERT(device.connectToServer(serverId));
-    // device.setMeterages(  );
+	// device.setMeterages(  );
     // device.startMeterageSending();
     while (taskQueue.processTask())
         ;
 
-    // ASSERT_EQUAL(device.responces(), expected);
+	// ASSERT_EQUAL(device.responces(), expected);
 }

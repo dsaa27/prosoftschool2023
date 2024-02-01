@@ -73,7 +73,7 @@ void DeviceMock::sendMessage(const std::string& message) const
     m_clientConnection->sendMessage(message);
 }
 
-void DeviceMock::onMessageReceived(const std::string& /*message*/)
+void DeviceMock::onMessageReceived(const std::string& message)
 {
     // TODO: Разобрать std::string, прочитать команду,
     // записать ее в список полученных комманд
@@ -82,12 +82,10 @@ void DeviceMock::onMessageReceived(const std::string& /*message*/)
 
 void DeviceMock::onConnected()
 {
-    // TODO, если нужно
 }
 
 void DeviceMock::onDisconnected()
 {
-    // TODO, если нужно
 }
 
 void DeviceMock::setMeterages(std::vector<uint8_t> meterages)
@@ -100,12 +98,16 @@ void DeviceMock::startMeterageSending()
     sendNextMeterage();
 }
 
+
+
 void DeviceMock::sendNextMeterage()
 {
     if (m_timeStamp >= m_meterages.size())
         return;
     const auto meterage = m_meterages.at(m_timeStamp);
-    (void)meterage;
+
     ++m_timeStamp;
+
     // TODO: Сформировать std::string и передать в sendMessage
 }
+
