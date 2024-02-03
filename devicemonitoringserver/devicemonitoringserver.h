@@ -3,8 +3,9 @@
 
 #include "common.h"
 #include "messages.h"
-#include "crypterBase.h"
-#include "serializer.h"
+#include "crypter/crypterBase.h"
+#include "serialiZer/serializer.h"
+#include "commandCenter/commandCenter.h"
 
 #include <cstdint>
 #include <string>
@@ -68,7 +69,8 @@ private:
     AbstractConnectionServer* m_connectionServer = nullptr;
 
     DeSerializer m_DeSerial;
-    Crypter m_crypter;
+    Encoder m_crypter;
+    CommandCenter m_commander;
     
 };
 

@@ -7,9 +7,8 @@
 
 class DeSerializer {
 public:
-    MessageBase *ToMessage(const std::string& messageStr);
+    MessageBase ToMessage(const std::string& messageStr);
     std::string ToBytesArray(const MessageBase& message);
 };
-//проверка
-//вторая проверка
+
 #endif

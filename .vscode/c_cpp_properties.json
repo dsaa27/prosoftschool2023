@@ -12,13 +12,37 @@
             "cppStandard": "c++17"
         },
         {
-            "name": "xxx",
+            "name": "WIN",
+            "includePath": [
+                "s:/Virtualki/prosoftschool2023/**"
+            ],
+            "defines": [],
+            "compilerPath": "S:/Virtualki/bin/g++.exe",
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerPathInCppPropertiesJson": "S:\\Virtualki\\bin\\g++.exe",
+            "mergeConfigurations": false,
+            "browse": {
+                "path": [
+                    "s:/Virtualki/prosoftschool2023/**",
+                    "s:/Virtualki/prosoftschool2023"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        },
+        {
+            "name": "32",
             "includePath": [
                 "${workspaceFolder}/**"
             ],
-            "defines": [],
-            "compilerPath": "/usr/bin/clang",
-            "intelliSenseMode": "linux-clang-arm64"
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4

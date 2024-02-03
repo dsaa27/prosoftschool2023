@@ -36,10 +36,11 @@ void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
 {
     // TODO
     /*
-    Мюсли жокера - ведь тут достатчно мапу создавать 
-    только пока не понял, как мы в этой функции полуаем айди девайса
+    Мюсли жокера - ведь тут достатчно мапу  ?принять? 
+    только пока не понял, как мы в этой функции полуаем айди девайса - ОУКЕЕЙ, получаем из расписания.
+    а если нету расписания, то ну и что
     */
-    
+    //вс
 
 }
 
@@ -55,7 +56,7 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& message)
+void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::string& message)
 {
     // TODO
     /*
@@ -70,14 +71,13 @@ void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std:
         
 
     */
-   MessageMetric *newMessage = static_cast<MessageMetric *>m_DeSerial.ToMessage(m_crypter.decode(message, "placeHolder"));
-    /*
-    Дальше нам вызвать мапу по айди устройства, достать из неё ожидаемое ззначение сообщение и сравнить с пришедшим
-    записать в лог сообщений
-    сформировать реакцию
-    сериализовать 
-    ответить (мб сложить в каую-то очередь ибо устройств может и много быть)
-    */
+    MessageBase messageStruct = m_DeSerial.ToMessage(m_crypter.decode(message));
+    MessageBase messageStruct2 = m_commander.acceptMessage(deviceId, messageStruct);
+    
+    //Here should be CommandCenter operation
+    
+    sendMessage(deviceId, m_crypter.encode(m_DeSerial.ToBytesArray(messageStruct2)););
+
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
