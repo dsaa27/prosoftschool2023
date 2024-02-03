@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <sstream>
 
-std::string Multiply41EncoderExecutor::encode(const std::string& message)
+std::string Multiply41EncoderExecutor::encode(const std::string& message) const
 {
     std::ostringstream ostream(std::ios_base::binary);
     for (auto ch : message)
@@ -15,7 +15,7 @@ std::string Multiply41EncoderExecutor::encode(const std::string& message)
     return ostream.str();
 }
 
-std::string Multiply41EncoderExecutor::decode(const std::string& message)
+std::string Multiply41EncoderExecutor::decode(const std::string& message) const
 {
     std::istringstream istream(message, std::ios_base::binary);
     std::string decoded;

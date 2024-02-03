@@ -4,6 +4,7 @@
 #include "message.h"
 
 #include <cstdint>
+#include <optional>
 
 /*!
  * \brief Класс сообщения с измерением физического параметра
@@ -26,15 +27,25 @@ public:
      * \brief Величина измерения
      */
     uint8_t meterage() const { return m_meterage; }
+
+    /*!
+     * \brief Сериализовать сообщение в поток \a os
+     */
+    virtual void serialize(std::ostream& os) const override;
+    /*!
+     * \brief Десериализовать сообщение из потока \a is
+     */
+    static std::optional<MessageMeterage> deserialize(std::istream& is);
+
     bool operator==(const Message& other) const
     {
         const MessageMeterage* o = dynamic_cast<const MessageMeterage*>(&other);
         return o && timeStamp() == o->timeStamp() && meterage() == o->meterage();
     }
 
-    std::ostream& print(std::ostream& os) const override
+    void print(std::ostream& os) const override
     {
-        return os << "MessageMeterage (timeStamp=" << timeStamp() << ", meterage=" << static_cast<int>(meterage()) << ")";
+        os << "MessageMeterage (timeStamp=" << timeStamp() << ", meterage=" << static_cast<int>(meterage()) << ")";
     }
 
 private:

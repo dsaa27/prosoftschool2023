@@ -3,11 +3,10 @@
 
 #include "baseencoderexecutor.h"
 
-class DummyEncoderExecutor : public BaseEncoderExecutor
+class DummyEncoderExecutor final : public BaseEncoderExecutor
 {
-public:
-    std::string encode(const std::string& message) override { return message; }
-    std::string decode(const std::string& message) override { return message; }
+    std::string encode(const std::string& message) const override { return message; }
+    std::string decode(const std::string& message) const override { return message; }
     std::string name() const override { return "Dummy"; }
 };
 

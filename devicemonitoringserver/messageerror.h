@@ -3,6 +3,9 @@
 
 #include "message.h"
 
+#include <istream>
+#include <optional>
+
 /*!
  * \brief Класс сообщения об ошибке
  */
@@ -29,6 +32,14 @@ public:
      * \brief Тип ошибки
      */
     ErrorType errorType() const { return m_errorType; }
+    /*!
+     * \brief Сериализовать сообщение в поток \a os
+     */
+    virtual void serialize(std::ostream& os) const override;
+    /*!
+     * \brief Десериализовать сообщение из потока \a is
+     */
+    static std::optional<MessageError> deserialize(std::istream& is);
 
     bool operator==(const Message& other) const override
     {
@@ -36,7 +47,7 @@ public:
         return o && errorType() == o->errorType();
     }
 
-    std::ostream& print(std::ostream& os) const override;
+    void print(std::ostream& os) const override;
 
 private:
     const ErrorType m_errorType;
@@ -62,9 +73,9 @@ inline std::ostream& operator<<(std::ostream& os, MessageError::ErrorType t)
     return os;
 }
 
-inline std::ostream& MessageError::print(std::ostream& os) const
+inline void MessageError::print(std::ostream& os) const
 {
-    return os << "MessageError (errorType=" << errorType() << ")";
+    os << "MessageError (errorType=" << errorType() << ")";
 }
 
 #endif // MESSAGEERROR_H

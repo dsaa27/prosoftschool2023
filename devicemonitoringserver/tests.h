@@ -32,5 +32,6 @@ void commandCenterDeviationNewScheduleTest();
 void commandCenterNewScheduleTest();
 void commandCenterUnsortedScheduleTest();
 void commandCenterDublicateScheduleTest();
+void commandCenterForgetTest();
 
 #endif // TESTS_H

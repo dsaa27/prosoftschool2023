@@ -7,96 +7,67 @@
 
 #include <sstream>
 
-std::string MessageSerializer::serialize(const Message& message)
+std::string MessageSerializer::serialize(const Message& message) const
 {
-    std::ostringstream ostream(std::ios_base::binary);
+    std::ostringstream os(std::ios_base::binary);
     do
     {
         const MessageError* messageError = dynamic_cast<const MessageError*>(&message);
         if (messageError)
         {
-            bool success = false;
-            ostream.put('e');
-            switch (messageError->errorType())
-            {
-            case MessageError::ErrorType::NoSchedule:
-                ostream.put('s');
-                success = true;
-                break;
-            case MessageError::ErrorType::NoTimestamp:
-                ostream.put('t');
-                success = true;
-                break;
-            case MessageError::ErrorType::Obsolete:
-                ostream.put('o');
-                success = true;
-                break;
-            }
-            if (success)
-                break;
+            os.put('e');
+            messageError->serialize(os);
+            break;
         }
         const MessageCommand* messageCommand = dynamic_cast<const MessageCommand*>(&message);
         if (messageCommand)
         {
-            ostream.put('c');
-            toBigEndian(ostream, messageCommand->command());
+            os.put('c');
+            messageCommand->serialize(os);
             break;
         }
         const MessageMeterage* messageMeterage = dynamic_cast<const MessageMeterage*>(&message);
         if (messageMeterage)
         {
-            ostream.put('m');
-            toBigEndian(ostream, messageMeterage->timeStamp());
-            toBigEndian(ostream, messageMeterage->meterage());
+            os.put('m');
+            messageMeterage->serialize(os);
             break;
         }
         return std::string();
     } while (false);
-    return ostream.str();
+    return os.str();
 }
 
-bool MessageSerializer::deserialize(const std::string& string, std::function<void(const Message&)> callback)
+bool MessageSerializer::deserialize(const std::string& string, std::function<void(const Message&)> callback) const
 {
-    std::istringstream istream(string, std::ios_base::binary);
-    char ch = istream.get();
-    if (istream.fail())
+    std::istringstream is(string, std::ios_base::binary);
+    char ch = is.get();
+    if (is.fail())
         return false;
 
     switch (ch)
     {
     case 'e':
-        ch = istream.get();
-        if (istream.fail())
-            return false;
-        switch (ch)
+        if (auto message = MessageError::deserialize(is))
         {
-        case 's':
-            callback(MessageError(MessageError::ErrorType::NoSchedule));
-            return true;
-        case 't':
-            callback(MessageError(MessageError::ErrorType::NoTimestamp));
-            return true;
-        case 'o':
-            callback(MessageError(MessageError::ErrorType::Obsolete));
+            callback(*message);
             return true;
         }
         break;
     case 'c':
-        int command;
-        command = fromBigEndian<int8_t>(istream);
-        if (istream.fail())
-            break;
-        callback(MessageCommand(command));
-        return true;
+        if (auto message = MessageCommand::deserialize(is))
+        {
+            callback(*message);
+            return true;
+        }
+        break;
     case 'm':
-        uint64_t timeStamp;
-        uint8_t meterage;
-        timeStamp = fromBigEndian<uint64_t>(istream);
-        meterage = fromBigEndian<uint8_t>(istream);
-        if (istream.fail())
-            break;
-        callback(MessageMeterage(timeStamp, meterage));
-        return true;
+        if (auto message = MessageMeterage::deserialize(is))
+        {
+            callback(*message);
+            return true;
+        }
+        break;
     }
     return false;
 }

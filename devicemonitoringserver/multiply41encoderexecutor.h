@@ -3,11 +3,10 @@
 
 #include "baseencoderexecutor.h"
 
-class Multiply41EncoderExecutor : public BaseEncoderExecutor
+class Multiply41EncoderExecutor final : public BaseEncoderExecutor
 {
-public:
-    std::string encode(const std::string& message) override;
-    std::string decode(const std::string& message) override;
+    std::string encode(const std::string& message) const override;
+    std::string decode(const std::string& message) const override;
     std::string name() const override { return "Multiply41"; }
 };
 

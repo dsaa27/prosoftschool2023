@@ -13,11 +13,11 @@ public:
     /*!
      * \brief Зашифровать сообщение \a message
      */
-    virtual std::string encode(const std::string& message) = 0;
+    virtual std::string encode(const std::string& message) const = 0;
     /*!
      * \brief Расшифровать сообщение \a message
      */
-    virtual std::string decode(const std::string& message) = 0;
+    virtual std::string decode(const std::string& message) const = 0;
     /*!
      * \brief Название алгоритма
      */

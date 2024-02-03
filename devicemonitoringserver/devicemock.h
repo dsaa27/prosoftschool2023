@@ -51,7 +51,7 @@ public:
     /*!
      * \brief Список полученных сообщений.
      */
-    const std::vector<std::shared_ptr<Message>>& messages() const;
+    const std::vector<std::unique_ptr<Message>>& messages() const;
     /*!
      * \brief Ссылка на объект MessageEncoder для управления параметрами шифрования.
      */
@@ -84,7 +84,7 @@ private:
     AbstractClientConnection* m_clientConnection = nullptr;
     std::vector<uint8_t> m_meterages;
     uint64_t m_timeStamp = 0;
-    std::vector<std::shared_ptr<Message>> m_messages;
+    std::vector<std::unique_ptr<Message>> m_messages;
     MessageSerializer m_serializer;
     MessageEncoder m_encoder;
 };

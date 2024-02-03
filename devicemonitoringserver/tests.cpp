@@ -17,13 +17,13 @@
 
 #include <limits>
 
-#define compareVectorsOfSharedPtrs(a, b)  \
-    ASSERT_EQUAL(a.size(), b.size());     \
-    for (size_t i = 0; i < a.size(); ++i) \
-    {                                     \
-        ASSERT(a[i].get());               \
-        ASSERT(b[i].get());               \
-        ASSERT_EQUAL(*a[i], *b[i]);       \
+#define COMPARE_VECTORS_OF_SMART_PTRS(a, b) \
+    ASSERT_EQUAL(a.size(), b.size());       \
+    for (size_t i = 0; i < a.size(); ++i)   \
+    {                                       \
+        ASSERT(a[i].get());                 \
+        ASSERT(b[i].get());                 \
+        ASSERT_EQUAL(*a[i], *b[i]);         \
     }
 
 struct MonitoringServerTest
@@ -75,7 +75,7 @@ void monitoringServerTestNoSchedule()
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::NoSchedule)),
     };
     auto& messages = test.devices[deviceId]->messages();
-    compareVectorsOfSharedPtrs(expected, messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, messages);
 }
 
 void monitoringServerTestNoTimeStamp()
@@ -95,7 +95,7 @@ void monitoringServerTestNoTimeStamp()
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::NoTimestamp)),
     };
     auto& messages = test.devices[deviceId]->messages();
-    compareVectorsOfSharedPtrs(expected, messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, messages);
 }
 
 void monitoringServerTestObsolete()
@@ -119,7 +119,7 @@ void monitoringServerTestObsolete()
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::Obsolete)),
     };
     auto& messages = test.devices[deviceId]->messages();
-    compareVectorsOfSharedPtrs(expected, messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, messages);
 }
 
 void monitoringServerTestCommand()
@@ -145,7 +145,7 @@ void monitoringServerTestCommand()
         std::shared_ptr<Message>(new MessageCommand(100)),
     };
     auto& messages = test.devices[deviceId]->messages();
-    compareVectorsOfSharedPtrs(expected, messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, messages);
 }
 
 void monitoringServerTestTwoDevices()
@@ -177,7 +177,7 @@ void monitoringServerTestTwoDevices()
         std::shared_ptr<Message>(new MessageCommand(1)),
     };
     auto& messages1 = test.devices[deviceId1]->messages();
-    compareVectorsOfSharedPtrs(expected1, messages1);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected1, messages1);
     std::vector<std::shared_ptr<Message>> expected2 = {
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::NoTimestamp)),
         std::shared_ptr<Message>(new MessageCommand(100)),
@@ -185,7 +185,7 @@ void monitoringServerTestTwoDevices()
         std::shared_ptr<Message>(new MessageCommand(-100)),
     };
     auto& messages2 = test.devices[deviceId2]->messages();
-    compareVectorsOfSharedPtrs(expected2, messages2);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected2, messages2);
 }
 
 void monitoringServerCryptoPositiveTest()
@@ -213,7 +213,7 @@ void monitoringServerCryptoPositiveTest()
         std::shared_ptr<Message>(new MessageCommand(1)),
     };
     auto& messages = test.devices[deviceId]->messages();
-    compareVectorsOfSharedPtrs(expected, messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, messages);
 }
 
 void monitoringServerCryptoNegativeTest()
@@ -301,7 +301,7 @@ void messageSerializationTest()
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::NoTimestamp)),
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::Obsolete)),
     };
-    compareVectorsOfSharedPtrs(expected, messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, messages);
 }
 
 void messageEncoderEmptyTest()
@@ -353,8 +353,8 @@ void messageEncoderAddTest()
     public:
         TestEncoderExecutor(const std::string& message) :
             test_message(message) {}
-        std::string encode(const std::string&) override { return test_message; }
-        std::string decode(const std::string&) override { return test_message; }
+        std::string encode(const std::string&) const override { return test_message; }
+        std::string decode(const std::string&) const override { return test_message; }
         std::string name() const override { return "Test"; }
 
     private:
@@ -375,8 +375,8 @@ void messageEncoderDoubleAddTest()
     public:
         TestEncoderExecutor(const std::string& message) :
             test_message(message) {}
-        std::string encode(const std::string&) override { return test_message; }
-        std::string decode(const std::string&) override { return test_message; }
+        std::string encode(const std::string&) const override { return test_message; }
+        std::string decode(const std::string&) const override { return test_message; }
         std::string name() const override { return "Test"; }
 
     private:
@@ -570,7 +570,7 @@ void commandCenterNoScheduleTest()
     std::vector<std::shared_ptr<Message>> expected = {
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::NoSchedule)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterNoTimestampTest()
@@ -584,7 +584,7 @@ void commandCenterNoTimestampTest()
     std::vector<std::shared_ptr<Message>> expected = {
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::NoTimestamp)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterCommandZeroTest()
@@ -598,7 +598,7 @@ void commandCenterCommandZeroTest()
     std::vector<std::shared_ptr<Message>> expected = {
         std::shared_ptr<Message>(new MessageCommand(0)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterCommandUpTest()
@@ -612,7 +612,7 @@ void commandCenterCommandUpTest()
     std::vector<std::shared_ptr<Message>> expected = {
         std::shared_ptr<Message>(new MessageCommand(51)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterCommandDownTest()
@@ -626,7 +626,7 @@ void commandCenterCommandDownTest()
     std::vector<std::shared_ptr<Message>> expected = {
         std::shared_ptr<Message>(new MessageCommand(-51)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterObsoleteTest()
@@ -649,7 +649,7 @@ void commandCenterObsoleteTest()
         std::shared_ptr<Message>(new MessageCommand(-50)),
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::Obsolete)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterTwoDevicesTest()
@@ -668,12 +668,12 @@ void commandCenterTwoDevicesTest()
         std::shared_ptr<Message>(new MessageCommand(-90)),
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::Obsolete)),
     };
-    compareVectorsOfSharedPtrs(expected1, callback1.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected1, callback1.messages);
 
     std::vector<std::shared_ptr<Message>> expected2 = {
         std::shared_ptr<Message>(new MessageCommand(-50)),
     };
-    compareVectorsOfSharedPtrs(expected2, callback2.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected2, callback2.messages);
 }
 
 void commandCenterUnsortedScheduleTest()
@@ -694,7 +694,7 @@ void commandCenterUnsortedScheduleTest()
         std::shared_ptr<Message>(new MessageCommand(-70)),
         std::shared_ptr<Message>(new MessageCommand(-70)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterDublicateScheduleTest()
@@ -711,7 +711,7 @@ void commandCenterDublicateScheduleTest()
         std::shared_ptr<Message>(new MessageCommand(-90)),
         std::shared_ptr<Message>(new MessageCommand(-90)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterNewScheduleTest()
@@ -744,7 +744,7 @@ void commandCenterNewScheduleTest()
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::NoSchedule)),
         std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::Obsolete)),
     };
-    compareVectorsOfSharedPtrs(expected, callback.messages);
+    COMPARE_VECTORS_OF_SMART_PTRS(expected, callback.messages);
 }
 
 void commandCenterDeviationTest()
@@ -804,4 +804,40 @@ void commandCenterDeviationNewScheduleTest()
         ASSERT_EQUAL(expected[i].phase.timeStamp, deviations[i].phase.timeStamp);
         ASSERT_EQUAL(expected[i].phase.value, deviations[i].phase.value);
     }
+}
+
+void commandCenterForgetTest()
+{
+    CommandCenter center;
+    uint64_t deviceId = 123u;
+    CommandCenterCallback callback(deviceId);
+    MessageMeterage meterage = MessageMeterage(0u, 0u);
+    center.setSchedule({ deviceId, { { 0u, 1u } } });
+    center.processMeterage(deviceId, meterage, std::ref(callback));
+    center.processMeterage(deviceId, meterage, std::ref(callback));
+
+    std::vector<std::shared_ptr<Message>> expectedMsg = {
+        std::shared_ptr<Message>(new MessageCommand(1)),
+        std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::Obsolete)),
+    };
+    COMPARE_VECTORS_OF_SMART_PTRS(expectedMsg, callback.messages);
+
+    auto deviations = center.deviationStats(deviceId);
+    std::vector<DeviationStats> expectedDev = { { { 0u, 1u }, 0u, 1.0 } };
+    ASSERT_EQUAL(expectedDev.size(), deviations.size());
+    for (size_t i = 0; i < expectedDev.size(); ++i)
+    {
+        ASSERT_WITH_THRESHOLD(expectedDev[i].deviation, deviations[i].deviation, 1.0);
+        ASSERT_EQUAL(expectedDev[i].phase.timeStamp, deviations[i].phase.timeStamp);
+        ASSERT_EQUAL(expectedDev[i].phase.value, deviations[i].phase.value);
+    }
+
+    center.forgetDevice(deviceId);
+    center.processMeterage(deviceId, meterage, std::ref(callback));
+
+    expectedMsg.push_back(std::shared_ptr<Message>(new MessageError(MessageError::ErrorType::NoSchedule)));
+    COMPARE_VECTORS_OF_SMART_PTRS(expectedMsg, callback.messages);
+
+    deviations = center.deviationStats(deviceId);
+    ASSERT_EQUAL(0u, deviations.size());
 }

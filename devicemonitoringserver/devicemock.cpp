@@ -85,13 +85,13 @@ void DeviceMock::onMessageReceived(const std::string& message)
             const MessageCommand* messageCommand = dynamic_cast<const MessageCommand*>(&message);
             if (messageCommand)
             {
-                m_messages.push_back(std::shared_ptr<Message>(new MessageCommand(*messageCommand)));
+                m_messages.push_back(std::unique_ptr<Message>(new MessageCommand(*messageCommand)));
                 break;
             }
             const MessageError* messageError = dynamic_cast<const MessageError*>(&message);
             if (messageError)
             {
-                m_messages.push_back(std::shared_ptr<Message>(new MessageError(*messageError)));
+                m_messages.push_back(std::unique_ptr<Message>(new MessageError(*messageError)));
                 break;
             }
             throw std::logic_error("Wrong message type!");
@@ -120,7 +120,7 @@ void DeviceMock::startMeterageSending()
     sendNextMeterage();
 }
 
-const std::vector<std::shared_ptr<Message>>& DeviceMock::messages() const
+const std::vector<std::unique_ptr<Message>>& DeviceMock::messages() const
 {
     return m_messages;
 }

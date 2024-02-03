@@ -12,9 +12,14 @@ public:
     virtual ~Message() = default;
 
     /*!
+     * \brief Сериализовать сообщение в поток \a os
+     */
+    virtual void serialize(std::ostream& os) const = 0;
+
+    /*!
     * \brief Вывод сообщения в виде строки для отладки
     */
-    virtual std::ostream& print(std::ostream& os) const = 0;
+    virtual void print(std::ostream& os) const = 0;
     virtual bool operator==(const Message& other) const = 0;
     bool operator!=(const Message& other) const
     {
@@ -24,7 +29,8 @@ public:
 
 inline std::ostream& operator<<(std::ostream& os, const Message& message)
 {
-    return message.print(os);
+    message.print(os);
+    return os;
 }
 
 #endif // MESSAGE_H

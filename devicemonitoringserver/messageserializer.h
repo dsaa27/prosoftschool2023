@@ -15,14 +15,14 @@ public:
     /*!
      * \brief Сериализовать сообщение \a message
      */
-    std::string serialize(const Message& message);
+    std::string serialize(const Message& message) const;
     /*!
      * \brief Десериализовать сообщение
      * \param string - строка с сообщением
      * \param callback - коллбэк для обработки десериализованного сообщения
      * \return false в случае ошибки
      */
-    bool deserialize(const std::string& string, std::function<void(const Message&)> callback);
+    bool deserialize(const std::string& string, std::function<void(const Message&)> callback) const;
 };
 
 #endif // MESSAGESERIALIZER_H

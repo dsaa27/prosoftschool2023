@@ -33,6 +33,7 @@ int main()
     RUN_TEST(tr, commandCenterNewScheduleTest);
     RUN_TEST(tr, commandCenterDeviationTest);
     RUN_TEST(tr, commandCenterDeviationNewScheduleTest);
+    RUN_TEST(tr, commandCenterForgetTest);
 
     RUN_TEST(tr, monitoringServerTestNoSchedule);
     RUN_TEST(tr, monitoringServerTestObsolete);

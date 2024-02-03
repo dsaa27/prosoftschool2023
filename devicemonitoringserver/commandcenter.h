@@ -17,15 +17,15 @@ class Message;
  */
 struct DeviationStats
 {
-    Phase phase;             ///< Этап плана
-    uint64_t firstTimestamp; ///< Временная метка первого измерения для данного этапа плана
-    double deviation;        ///< СКО физического параметра от плана
+    Phase phase;                 ///< Этап плана
+    uint64_t firstTimestamp = 0; ///< Временная метка первого измерения для данного этапа плана
+    double deviation = 0;        ///< СКО физического параметра от плана
 };
 
 /*!
  * \brief Класс командного центра для управления и ведения статистики по физическим параметрам
  */
-class CommandCenter
+class CommandCenter final
 {
 public:
     /*!
@@ -42,13 +42,17 @@ public:
     /*!
      * \brief Статистика СКО физических параметров от плана для устройства с идентификатором \a deviceId
      */
-    std::vector<DeviationStats> deviationStats(uint64_t deviceId);
+    std::vector<DeviationStats> deviationStats(uint64_t deviceId) const;
+    /*!
+     * \brief Удалить всю известную информацию об устройстве с идентификатором \a deviceId
+     */
+    void forgetDevice(uint64_t deviceId);
 
 private:
     struct ScheduleInfo
     {
         std::vector<Phase> phases;
-        size_t currentPhaseIndex;
+        size_t currentPhaseIndex = 0;
     };
     struct StatsInfo
     {

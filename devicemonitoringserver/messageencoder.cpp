@@ -19,14 +19,14 @@ MessageEncoder::~MessageEncoder()
     }
 }
 
-std::string MessageEncoder::encode(const std::string& message)
+std::string MessageEncoder::encode(const std::string& message) const
 {
     if (!m_currentExecutor)
         return std::string();
     return m_currentExecutor->encode(message);
 }
 
-std::string MessageEncoder::decode(const std::string& message)
+std::string MessageEncoder::decode(const std::string& message) const
 {
     if (!m_currentExecutor)
         return std::string();

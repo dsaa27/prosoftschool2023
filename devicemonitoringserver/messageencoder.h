@@ -17,11 +17,11 @@ public:
     /*!
      * \brief Зашифровать сообщение \a message
      */
-    std::string encode(const std::string& message);
+    std::string encode(const std::string& message) const;
     /*!
      * \brief Расшифровать сообщение \a message
      */
-    std::string decode(const std::string& message);
+    std::string decode(const std::string& message) const;
     /*!
      * \brief Выбрать для шифрования алгоритм с названием \a name
      * \return false в случае ошибки

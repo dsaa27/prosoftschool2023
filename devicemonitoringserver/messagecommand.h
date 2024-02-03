@@ -4,6 +4,7 @@
 #include "message.h"
 
 #include <cstdint>
+#include <optional>
 
 /*!
  * \brief Класс сообщения с командой для корректировки физического параметра
@@ -23,15 +24,27 @@ public:
      */
     int8_t command() const { return m_command; }
 
+    /*!
+     * \brief Сериализовать сообщение в поток \a os
+     */
+    virtual void serialize(std::ostream& os) const override;
+    /*!
+     * \brief Десериализовать сообщение из потока \a is
+     */
+    static std::optional<MessageCommand> deserialize(std::istream& is);
+
+    /*!
+    * \brief Вывод сообщения в виде строки для отладки
+    */
     bool operator==(const Message& other) const
     {
         const MessageCommand* o = dynamic_cast<const MessageCommand*>(&other);
         return o && command() == o->command();
     }
 
-    std::ostream& print(std::ostream& os) const override
+    void print(std::ostream& os) const override
     {
-        return os << "MessageCommand (command=" << command() << ")";
+        os << "MessageCommand (command=" << command() << ")";
     }
 
 private:

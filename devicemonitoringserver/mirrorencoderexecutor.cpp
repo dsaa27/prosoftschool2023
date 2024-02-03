@@ -28,7 +28,7 @@ static uint16_t mirror(uint16_t value, int digits)
     return result;
 }
 
-std::string MirrorEncoderExecutor::encode(const std::string& message)
+std::string MirrorEncoderExecutor::encode(const std::string& message) const
 {
     std::ostringstream ostream(std::ios_base::binary);
     for (auto ch : message)
@@ -41,7 +41,7 @@ std::string MirrorEncoderExecutor::encode(const std::string& message)
     return ostream.str();
 }
 
-std::string MirrorEncoderExecutor::decode(const std::string& message)
+std::string MirrorEncoderExecutor::decode(const std::string& message) const
 {
     std::istringstream istream(message, std::ios_base::binary);
     std::string decoded;

@@ -10,8 +10,8 @@
 
 void CommandCenter::setSchedule(const DeviceWorkSchedule& schedule)
 {
-    m_scheduleInfo[schedule.deviceId] = {};
     auto& scheduleInfo = m_scheduleInfo[schedule.deviceId];
+    scheduleInfo = {};
     scheduleInfo.phases = schedule.schedule;
     std::sort(scheduleInfo.phases.begin(),
               scheduleInfo.phases.end(),
@@ -71,7 +71,18 @@ void CommandCenter::processMeterage(uint64_t deviceId, MessageMeterage meterage,
     callback(deviceId, MessageCommand(command));
 }
 
-std::vector<DeviationStats> CommandCenter::deviationStats(uint64_t deviceId)
+std::vector<DeviationStats> CommandCenter::deviationStats(uint64_t deviceId) const
 {
-    return m_statsInfo[deviceId].deviationStats;
+    auto statsInfoIt = m_statsInfo.find(deviceId);
+    if (statsInfoIt != m_statsInfo.cend())
+        return statsInfoIt->second.deviationStats;
+    else
+        return {};
+}
+
+void CommandCenter::forgetDevice(uint64_t deviceId)
+{
+    m_scheduleInfo.erase(deviceId);
+    m_statsInfo.erase(deviceId);
+    m_lastTimeStamp.erase(deviceId);
 }

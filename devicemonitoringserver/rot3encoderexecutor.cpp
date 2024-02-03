@@ -5,36 +5,36 @@
 static constexpr int start = std::numeric_limits<char>::min();
 static constexpr int end = std::numeric_limits<char>::max() + 1;
 
-std::string Rot3EncoderExecutor::encode(const std::string& message)
+std::string Rot3EncoderExecutor::encode(const std::string& message) const
 {
-    std::string encoded(message);
-    for (auto& ch : encoded)
+    std::string encoded;
+    encoded.reserve(message.size());
+    for (int c : message)
     {
-        int c = ch;
         if (c >= start && c < end)
         {
             c += 3;
             if (c >= end)
                 c -= end - start;
-            ch = c;
+            encoded += c;
         }
     }
     return encoded;
 }
 
-std::string Rot3EncoderExecutor::decode(const std::string& message)
+std::string Rot3EncoderExecutor::decode(const std::string& message) const
 {
-    std::string decoded(message);
-    for (auto& ch : decoded)
+    std::string decoded;
+    decoded.reserve(message.size());
+    for (int c : message)
     {
-        int c = ch;
         if (c >= start && c < end)
         {
             c -= 3;
             if (c < start)
                 c += end - start;
-            ch = c;
         }
+        decoded += c;
     }
     return decoded;
 }
