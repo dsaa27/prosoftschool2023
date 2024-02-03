@@ -11,4 +11,5 @@ public:
     std::string ToBytesArray(const MessageBase& message);
 };
 //проверка
+//вторая проверка
 #endif
