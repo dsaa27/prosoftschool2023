@@ -7,7 +7,6 @@
 
 #define UNUSED(x) (void)(x)
 
-enum class MsgType{METRIC, COMMAND, ERROR};
-enum class ErrType{NoSchedule, NoTimeStamp, Obsolete};
+
 
 #endif // COMMON_H

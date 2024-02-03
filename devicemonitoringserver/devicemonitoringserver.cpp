@@ -4,6 +4,9 @@
 #include <handlers/abstractnewconnectionhandler.h>
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
+#include "pseudoCrypt.h"
+#include "messages.h"
+#include "serializer.h"
 
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
     m_connectionServer(connectionServer)
@@ -36,6 +39,8 @@ void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
     Мюсли жокера - ведь тут достатчно мапу создавать 
     только пока не понял, как мы в этой функции полуаем айди девайса
     */
+    
+
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -50,17 +55,28 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
+void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& message)
 {
     // TODO
     /*
-    Мюсли Жокера
-    1. парсим сообщение (десериализуем в нужный инстанс)
+    Мюсли Жокера 
+    должны ли мы вызвать соответсвующий обработчик сообщения сами?
+
+    1. парсим сообщение (десериализуем в метрику - мы же только метрику можем получить от устройства)
+    
     2. реагируем
         2.1  по айди достаём расписание и проверяем значения
         2.2 формируем ответ
         
 
+    */
+   MessageMetric *newMessage = static_cast<MessageMetric *>m_DeSerial.ToMessage(m_crypter.decode(message, "placeHolder"));
+    /*
+    Дальше нам вызвать мапу по айди устройства, достать из неё ожидаемое ззначение сообщение и сравнить с пришедшим
+    записать в лог сообщений
+    сформировать реакцию
+    сериализовать 
+    ответить (мб сложить в каую-то очередь ибо устройств может и много быть)
     */
 }
 

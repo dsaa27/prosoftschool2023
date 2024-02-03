@@ -2,6 +2,9 @@
 #define DEVICEMONITORINGSERVER_H
 
 #include "common.h"
+#include "messages.h"
+#include "crypterBase.h"
+#include "serializer.h"
 
 #include <cstdint>
 #include <string>
@@ -63,6 +66,10 @@ private:
 
 private:
     AbstractConnectionServer* m_connectionServer = nullptr;
+
+    DeSerializer m_DeSerial;
+    Crypter m_crypter;
+    
 };
 
 #endif // DEVICEMONITORINGSERVER_H
