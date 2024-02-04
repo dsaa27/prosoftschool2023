@@ -1,5 +1,4 @@
 #include "messageserializer.h"
-#include "bigendian.h"
 #include "message.h"
 #include "messagecommand.h"
 #include "messageerror.h"

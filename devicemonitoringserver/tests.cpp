@@ -269,6 +269,11 @@ void messageSerializationTest()
 
     ASSERT_EQUAL(serializer.deserialize("", callback), false);
     ASSERT_EQUAL(serializer.deserialize("12345", callback), false);
+    ASSERT_EQUAL(serializer.deserialize("e", callback), false);
+    ASSERT_EQUAL(serializer.deserialize("eA", callback), false);
+    ASSERT_EQUAL(serializer.deserialize("m", callback), false);
+    ASSERT_EQUAL(serializer.deserialize("mA", callback), false);
+    ASSERT_EQUAL(serializer.deserialize("c", callback), false);
 
     ASSERT_EQUAL(serializer.deserialize(serializer.serialize(MessageCommand(0)), callback), true);
     ASSERT_EQUAL(serializer.deserialize(serializer.serialize(MessageCommand(1)), callback), true);
