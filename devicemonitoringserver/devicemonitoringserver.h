@@ -1,7 +1,10 @@
 #ifndef DEVICEMONITORINGSERVER_H
 #define DEVICEMONITORINGSERVER_H
 
+#include "commandcenter.h"
 #include "common.h"
+#include "messageencoder.h"
+#include "messageserializer.h"
 
 #include <cstdint>
 #include <string>
@@ -32,6 +35,14 @@ public:
      * \brief Начать прием подключений по идентификатору \a serverId
      */
     bool listen(uint64_t serverId);
+    /*!
+     * \brief Статистика СКО физических параметров от плана для устройства с идентификатором \a deviceId
+     */
+    std::vector<DeviationStats> deviationStats(uint64_t deviceId);
+    /*!
+     * \brief Ссылка на объект MessageEncoder для управления параметрами шифрования.
+     */
+    MessageEncoder& messageEncoder();
 
 private:
     /*!
@@ -60,9 +71,13 @@ private:
 private:
     void addMessageHandler(AbstractConnection* conn);
     void addDisconnectedHandler(AbstractConnection* conn);
+    void sendMessage(uint64_t deviceId, const Message& message);
 
 private:
     AbstractConnectionServer* m_connectionServer = nullptr;
+    CommandCenter m_commandcenter;
+    MessageSerializer m_serializer;
+    MessageEncoder m_encoder;
 };
 
 #endif // DEVICEMONITORINGSERVER_H

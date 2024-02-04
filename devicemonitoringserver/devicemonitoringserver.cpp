@@ -1,4 +1,7 @@
 #include "devicemonitoringserver.h"
+#include "messagecommand.h"
+#include "messageerror.h"
+#include "messagemeterage.h"
 #include <handlers/abstractaction.h>
 #include <handlers/abstractmessagehandler.h>
 #include <handlers/abstractnewconnectionhandler.h>
@@ -29,14 +32,24 @@ DeviceMonitoringServer::~DeviceMonitoringServer()
     delete m_connectionServer;
 }
 
-void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
+void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule& schedule)
 {
-    // TODO
+    m_commandcenter.setSchedule(schedule);
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
 {
     return m_connectionServer->listen(serverId);
+}
+
+std::vector<DeviationStats> DeviceMonitoringServer::deviationStats(uint64_t deviceId)
+{
+    return m_commandcenter.deviationStats(deviceId);
+}
+
+MessageEncoder& DeviceMonitoringServer::messageEncoder()
+{
+    return m_encoder;
 }
 
 void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& message)
@@ -46,14 +59,18 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
+void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::string& message)
 {
-    // TODO
+    m_serializer.deserialize(m_encoder.decode(message), [this, deviceId](const Message& message) {
+        const MessageMeterage* messageMeterage = dynamic_cast<const MessageMeterage*>(&message);
+        if (messageMeterage)
+            m_commandcenter.processMeterage(deviceId, *messageMeterage,
+                                            [this](uint64_t deviceId, const Message& message) { sendMessage(deviceId, message); });
+    });
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
 {
-    // TODO, если нужен
 }
 
 void DeviceMonitoringServer::onNewIncomingConnection(AbstractConnection* conn)
@@ -102,4 +119,9 @@ void DeviceMonitoringServer::addDisconnectedHandler(AbstractConnection* conn)
     };
     const auto clientId = conn->peerId();
     conn->setDisconnectedHandler(new DisconnectedHandler(this, clientId));
+}
+
+void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const Message& message)
+{
+    sendMessage(deviceId, m_encoder.encode(m_serializer.serialize(message)));
 }
