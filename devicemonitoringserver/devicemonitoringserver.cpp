@@ -41,7 +41,6 @@ void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
     а если нету расписания, то ну и что
     */
     //вс
-
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -71,6 +70,8 @@ void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::str
         
 
     */
+   //probably should split actions to perform some checks
+   
     MessageBase messageStruct = m_DeSerial.ToMessage(m_crypter.decode(message));
     MessageBase messageStruct2 = m_commander.acceptMessage(deviceId, messageStruct);
     
