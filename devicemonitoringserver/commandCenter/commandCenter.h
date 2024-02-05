@@ -9,11 +9,12 @@
 
 struct DeviceInfo {
     
-    DeviceWorkSchedule devSchedule;
+    DeviceWorkSchedule *devWorkSched = nullptr;
     vector<Phase> Phase_Log;
-    vector<uint16_t> RMSD_log;
+    vector<double> RMSD_log;
     uint64_t lastValidTime = 0;
     uint64_t lastValidIndex = 0;
+    
 };
 
 class CommandCenter {
@@ -28,7 +29,7 @@ public:
     bool removeDevice(uint64_t deviceId);
 
 private:
-    std::map<uint64_t, DeviceInfo> mapOfDevices;
+    std::map<uint64_t, DeviceInfo*> mapOfDevices;
 };
 
 #endif

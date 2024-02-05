@@ -3,14 +3,16 @@
 #include "../deviceworkschedule.h"
 
 #include <find>
+#include <math>
+#include <cstdint>
 
 MessageBase CommandCenter::acceptMessage(uint64_t deviceId, 
                                          const MessageBase& messageStruct) {
     
     if (mapOfDevices.find(deviceId) == mapOfDevices.end()) {
-        DeviceWorkSchedule emptySchedule;
+        // DeviceWorkSchedule emptySchedule;
         addDevice(deviceId);
-        changeSchedule(emptySchedule);
+        
         mapOfDevices[deviceId].lastValidTime = messageStruct.data.timeStamp;
         //so answer here is obviously Error - NoSchedule. 
         MessageBase messageOut = {MsgType::Error, 
@@ -59,4 +61,44 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
         //                     device.devSchedule.schedule.end(),
         //                     messageStruct.data.timeStamp)
     }
+}
+
+bool CommandCenter::addDevice(uint64_t deviceId) {
+    if (!mapOfDevices.find(deviceId) == mapOfDevices.end()) return false;
+    mapOfDevices.insert(deviceId, new DeviceInfo);
+    // changeSchedule(emptySchedule);
+    return true;
+}
+
+bool CommandCenter::removeDevice(uint64_t deviceId) {
+    if (mapOfDevices.find(deviceId) == mapOfDevices.end()) return false;
+    if (mapOfDevices[deviceId].devWorkSched != nullptr) 
+        delete mapOfDevices[deviceId].devWorkSched;
+    delete mapOfDevices[deviceId];
+    mapOfDevices.erase(deviceId);
+}
+
+bool CommandCenter::changeSchedule(DeviceWorkSchedule& newDevSchedule) {
+    if (mapOfDevices.find(newDevSchedule.deviceId) == mapOfDevices.end()) return false;
+    mapOfDevices.find(newDevSchedule.deviceId)->devWorkSched = newDevSchedule;
+    return true;
+}
+
+double CommandCenter::getRMSD(uint64_t deviceId, uint8_t newValue) {
+    uint64_t currentSumValue = 0;
+    DeviceInfo device = mapOfDevices[deviceId];
+    double quadDiffSum = 0
+    for (int i = 0; i < device.Phase_Log.size(); ++i) {
+        currentSumValue += device.Phase_Log[i].value;
+    }
+
+    double meanValue = static_cast<double>(currentSumValue) / device.Phase_Log.size();
+
+    for (int i = 0; i < device.Phase_Log.size(); ++i) {
+        quadDiffSum += std::pow(2, meanValue - newValue);
+    }
+    
+    
+    double RSMD = std::sqrt(quadDiffSum/meanValue);
+
 }
