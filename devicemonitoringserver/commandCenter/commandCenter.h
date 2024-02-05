@@ -7,14 +7,14 @@
 #include "../messages.h"
 #include "../deviceworkschedule.h"
 
+
+
 struct DeviceInfo {
-    
-    DeviceWorkSchedule *devWorkSched = nullptr;
-    vector<Phase> Phase_Log;
-    vector<double> RMSD_log;
+    DeviceWorkSchedule devWorkSched;
+    std::vector<Phase>  Phase_Log; //log needed to compute rmsd 
+    std::map<uint64_t, double> RMSD_log;  //time stamped log of rsmd's 
     uint64_t lastValidTime = 0;
     uint64_t lastValidIndex = 0;
-    
 };
 
 class CommandCenter {
@@ -23,13 +23,13 @@ public:
     CommandCenter() = default;
 
     MessageBase acceptMessage(uint64_t deviceId, const MessageBase& messageStruct);
-    uint16_t getRMSD(uint64_t deviceId, uint8_t newValue);
-    bool addDevice(uint64_t deviceId);
+    bool addDevice(DeviceWorkSchedule& newDevSchedule);
     bool changeSchedule(const DeviceWorkSchedule& newDevSchedule);
     bool removeDevice(uint64_t deviceId);
 
 private:
     std::map<uint64_t, DeviceInfo*> mapOfDevices;
+    uint16_t getRMSD(uint64_t deviceId, uint8_t newValue);
 };
 
 #endif

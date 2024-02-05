@@ -2,6 +2,7 @@
 #define MESSAGES_H
 
 #include "deviceworkschedule.h"
+#include <cstdint>
 
 enum class MsgType{Meterage, Command, Error, None};
 enum class ErrType{NoSchedule, NoTimestamp, Obsolete, NoErr};

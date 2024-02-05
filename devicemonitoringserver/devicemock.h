@@ -2,6 +2,9 @@
 #define DEVICE_H
 
 #include "common.h"
+#include "messages.h"
+#include "crypter/crypterBase.h"
+#include "serialiZer/serializer.h"
 
 #include <string>
 #include <vector>
@@ -9,7 +12,7 @@
 class AbstractClientConnection;
 
 /*!
- * \brief Класс, эмитирующий устройство.
+ * \brief Класс, имитирующий устройство.
  */
 class DeviceMock
 {
@@ -71,6 +74,10 @@ private:
     AbstractClientConnection* m_clientConnection = nullptr;
     std::vector<uint8_t> m_meterages;
     uint64_t m_timeStamp = 0;
+    std::vector<MsgType> m_commandLog;
+    DeSerializer m_DeSerial;
+    Encoder m_crypter;
+
 };
 
 #endif // DEVICE_H
