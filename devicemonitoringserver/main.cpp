@@ -4,7 +4,7 @@
 
 int main()
 {
-    /*Just initial commit*/
+    /*Just initial commit   */
 
 
     TestRunner tr;
