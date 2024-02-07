@@ -1,5 +1,5 @@
-#ifndef STUBCRYPTER_H
-#define STUBCRYPTER_H
+#ifndef MIRROCRYPTER_H
+#define MIRROCRYPTER_H
 
 #include <string>
 #include "crypter/absractCrypter.h"
@@ -7,11 +7,11 @@
 /*!
  * \brief заглушка шифродешифровщика, не делает ничего, нужна для дебага и amacriminal нешифрованного общения.
  */
-class StubCrypter : public BaseEncoderExecutor
+class MirrorCrypter : public BaseEncoderExecutor 
 {
 public:
-    Stub() = default;
-    ~Stub() = default;
+    MirrorCrypter() = default;
+    ~MirrorCrypter() = default;
     /*!
      * \brief Метод как бы шифровки.
      * \param input -  строка
@@ -26,6 +26,9 @@ public:
      * \brief Получение имени.
      */
     std::string name() const final;
+
+private: 
+    std::string reflect(const std::string& input) const;
 };
 
-#endif // STUBCRYPTER_H
+#endif // MIRROCRYPTER_H

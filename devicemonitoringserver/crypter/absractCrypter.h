@@ -7,10 +7,10 @@
 /*!
  * \brief Базовый класс шифродешифровщика.
  */
-class AbstractCrypter
+class BaseEncoderExecutor
 {
 public:
-    virtual ~AbstractCrypter() = default;
+    virtual ~BaseEncoderExecutor() = default;
     /*!
      * \brief Метод шифровки.
      * \param input - незашифрованная строка
@@ -29,4 +29,4 @@ public:
     virtual std::string name() = 0;
 };
 
-#endif // ABSTRACTMESSAGEHANDLER_H
+#endif // ABSTRACTCRYPTER_H

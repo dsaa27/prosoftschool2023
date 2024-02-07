@@ -36,7 +36,7 @@ bool Encoder::setCurrentCrypter (const std::string& name)
     return true;
 }
 
-bool Encoder::addCrypter (AbstractCrypter *newCrypter)
+bool Encoder::addCrypter (BaseEncoderExecutor *newCrypter)
 {
     if (crypterExist(newCrypter->name)) return true; //consider already existing crypter a success for now
     m_crypterMap.insert({newCrypter->name, newCrypter});

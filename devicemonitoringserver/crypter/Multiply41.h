@@ -1,5 +1,5 @@
-#ifndef STUBCRYPTER_H
-#define STUBCRYPTER_H
+#ifndef MULTI41CRYPTER_H
+#define MULTI41CRYPTER_H
 
 #include <string>
 #include "crypter/absractCrypter.h"
@@ -7,11 +7,11 @@
 /*!
  * \brief заглушка шифродешифровщика, не делает ничего, нужна для дебага и amacriminal нешифрованного общения.
  */
-class StubCrypter : public BaseEncoderExecutor
+class Multiply41Crypter : public BaseEncoderExecutor
 {
 public:
-    Stub() = default;
-    ~Stub() = default;
+    Multiply41() = default;
+    ~Multiply41() = default;
     /*!
      * \brief Метод как бы шифровки.
      * \param input -  строка
@@ -28,4 +28,4 @@ public:
     std::string name() const final;
 };
 
-#endif // STUBCRYPTER_H
+#endif // MULTI41CRYPTER_H
