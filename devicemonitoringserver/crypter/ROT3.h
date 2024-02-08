@@ -1,5 +1,5 @@
-#ifndef MULTI41CRYPTER_H
-#define MULTI41CRYPTER_H
+#ifndef ROT3CRYPTER_H
+#define ROT3CRYPTER_H
 
 #include <string>
 #include "crypter/absractCrypter.h"
@@ -7,11 +7,11 @@
 /*!
  * \brief заглушка шифродешифровщика, не делает ничего, нужна для дебага и amacriminal нешифрованного общения.
  */
-class Multiply41Crypter : public BaseEncoderExecutor
+class ROT3Crypter : public BaseEncoderExecutor
 {
 public:
-    Multiply41Crypter() = default;
-    ~Multiply41Crypter() = default;
+    ROT3Crypter() = default;
+    ~ROT3Crypter() = default;
     /*!
      * \brief Метод как бы шифровки.
      * \param input -  строка
@@ -28,4 +28,4 @@ public:
     std::string name() const final;
 };
 
-#endif // MULTI41CRYPTER_H
+#endif // ROT3CRYPTER_H
