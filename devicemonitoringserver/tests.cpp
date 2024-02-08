@@ -8,6 +8,7 @@
 
 void monitoringServerTest1()
 {
+    
     // TODO: дописать тест
     TaskQueue taskQueue;
     DeviceMock device(new ClientConnectionMock(taskQueue));
@@ -24,4 +25,6 @@ void monitoringServerTest1()
         ;
 
     // ASSERT_EQUAL(device.responces(), expected);
+
+
 }

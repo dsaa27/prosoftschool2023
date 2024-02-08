@@ -1,4 +1,3 @@
-/*test_runner.h*/
 #ifndef TEST_RUNNER
 #define TEST_RUNNER
 

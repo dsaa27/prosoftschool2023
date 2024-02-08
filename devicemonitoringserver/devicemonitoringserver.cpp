@@ -5,6 +5,9 @@
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
 
+//My idea to include the lib
+#include <iostream>
+
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
     m_connectionServer(connectionServer)
 {
@@ -46,9 +49,11 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
+void DeviceMonitoringServer::onMessageReceived(uint64_t id/*deviceId*/, const std::string& msg/*message*/)
 {
     // TODO
+    std::cout << "onMessageReceived (in server): " << msg << std::endl;
+    sendMessage(id, "Hello from Server!!!");
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)

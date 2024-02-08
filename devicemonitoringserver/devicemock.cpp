@@ -3,6 +3,9 @@
 #include <handlers/abstractmessagehandler.h>
 #include <server/abstractclientconnection.h>
 
+//My idea to include the lib
+#include <iostream>
+
 DeviceMock::DeviceMock(AbstractClientConnection* clientConnection) :
     m_clientConnection(clientConnection)
 {
@@ -73,8 +76,9 @@ void DeviceMock::sendMessage(const std::string& message) const
     m_clientConnection->sendMessage(message);
 }
 
-void DeviceMock::onMessageReceived(const std::string& /*message*/)
+void DeviceMock::onMessageReceived(const std::string& msg /*message*/)
 {
+    std::cout << "onMessageReceived (in device): " << msg << std::endl;
     // TODO: Разобрать std::string, прочитать команду,
     // записать ее в список полученных комманд
     sendNextMeterage(); // Отправляем следующее измерение
@@ -108,4 +112,6 @@ void DeviceMock::sendNextMeterage()
     (void)meterage;
     ++m_timeStamp;
     // TODO: Сформировать std::string и передать в sendMessage
+    sendMessage(std::to_string(meterage));
+    std::cout << "msg send from device: " << std::to_string(meterage) << std::endl;
 }
