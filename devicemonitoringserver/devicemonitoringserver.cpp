@@ -29,9 +29,14 @@ DeviceMonitoringServer::~DeviceMonitoringServer()
     delete m_connectionServer;
 }
 
-void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
+void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule& schedule, uint64_t deviceID)
 {
-    // TODO
+    CommandCenter::setDeviceWorkSchedule(deviceID, schedule);
+}
+
+void DeviceMonitoringServer::setEncodingModule(EncodingModule* encoder)
+{
+    m_encoder = encoder;
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -46,9 +51,13 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
+void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::string& message)
 {
-    // TODO
+    if (!m_encoder)
+    {
+        throw std::exception("Encoder not setted!");
+    }
+    sendMessage(deviceId, CommandCenter::processMessage(message, *m_encoder, deviceId));
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)

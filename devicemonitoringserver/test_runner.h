@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "messageprocessors/messageserializator.h"
 
 template <class T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& s)

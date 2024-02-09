@@ -2,6 +2,7 @@
 #include <handlers/abstractaction.h>
 #include <handlers/abstractmessagehandler.h>
 #include <server/abstractclientconnection.h>
+#include <algorithm>
 
 DeviceMock::DeviceMock(AbstractClientConnection* clientConnection) :
     m_clientConnection(clientConnection)
@@ -63,6 +64,11 @@ bool DeviceMock::bind(uint64_t deviceId)
     return m_clientConnection->bind(deviceId);
 }
 
+void DeviceMock::setEncodingModule(EncodingModule* encoder)
+{
+    m_encoder = encoder;
+}
+
 bool DeviceMock::connectToServer(uint64_t serverId)
 {
     return m_clientConnection->connectToHost(serverId);
@@ -73,11 +79,10 @@ void DeviceMock::sendMessage(const std::string& message) const
     m_clientConnection->sendMessage(message);
 }
 
-void DeviceMock::onMessageReceived(const std::string& /*message*/)
+void DeviceMock::onMessageReceived(const std::string& message)
 {
-    // TODO: Разобрать std::string, прочитать команду,
-    // записать ее в список полученных комманд
-    sendNextMeterage(); // Отправляем следующее измерение
+    m_commands.emplace_back(m_encoder->decode(message));
+    sendNextMeterage(); 
 }
 
 void DeviceMock::onConnected()
@@ -92,7 +97,16 @@ void DeviceMock::onDisconnected()
 
 void DeviceMock::setMeterages(std::vector<uint8_t> meterages)
 {
+    for (auto& meterage:meterages)
+    {
+        meterage = std::clamp(meterage, (uint8_t)0, (uint8_t)100);
+    }
     m_meterages = std::move(meterages);
+}
+
+const std::vector<std::string>& DeviceMock::getReceivedCommands()
+{
+    return m_commands;
 }
 
 void DeviceMock::startMeterageSending()
@@ -107,5 +121,9 @@ void DeviceMock::sendNextMeterage()
     const auto meterage = m_meterages.at(m_timeStamp);
     (void)meterage;
     ++m_timeStamp;
-    // TODO: Сформировать std::string и передать в sendMessage
+    if (!m_encoder)
+    {
+        throw std::exception("Encoder not setted!");
+    }
+    sendMessage(m_encoder->encode(MessageSerializator::serializeMessage(MeterageMessage(m_timeStamp, meterage))));
 }
