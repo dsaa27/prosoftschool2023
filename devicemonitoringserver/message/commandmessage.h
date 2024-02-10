@@ -10,7 +10,7 @@ public:
     friend std::ostream& operator<<(std::ostream& out, const CommandMessage& other);
     friend bool operator==(const CommandMessage& command1, const CommandMessage& command2);
     friend bool operator!=(const CommandMessage& command1, const CommandMessage& command2);
-    char getAdjustment();
+    char getAdjustment() const;
 
 private:
     char m_adjustment;

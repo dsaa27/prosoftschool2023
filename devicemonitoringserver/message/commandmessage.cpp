@@ -13,7 +13,7 @@ std::string CommandMessage::messageToString() const
     return stream.str();
 }
 
-char CommandMessage::getAdjustment()
+char CommandMessage::getAdjustment() const
 {
     return m_adjustment;
 }

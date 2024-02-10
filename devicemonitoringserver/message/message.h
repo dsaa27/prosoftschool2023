@@ -13,7 +13,7 @@ public:
         Error
     };
 
-    MessageType getMessageType() { return m_type; };
+    MessageType getMessageType() const { return m_type; };
     bool operator==(const Message& other) { return m_type == other.m_type; }
     bool operator!=(const Message& other) { return m_type != other.m_type; }
     virtual std::string messageToString() const = 0;

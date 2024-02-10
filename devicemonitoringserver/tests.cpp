@@ -145,13 +145,13 @@ void messageEncoderMultyEncodingTest()
 
 void messageEncoderCustomAlgorithmTest()
 {
-    class Xor15_20_25 :public BaseEncoderExecutor
+    class Xor15_20_25 final : public BaseEncoderExecutor 
     {
     public:
         Xor15_20_25() :
             BaseEncoderExecutor("Xor15_20_25") {}
 
-        std::string encode(const std::string& str) override
+        std::string encode(const std::string& str) const override
         {
             std::string answer(str);
             for (auto& sim : answer)
@@ -161,7 +161,7 @@ void messageEncoderCustomAlgorithmTest()
             return answer;
         }
 
-        std::string decode(const std::string& str) override
+        std::string decode(const std::string& str) const override
         {
             std::string answer(str);
             for (auto& sim : answer)

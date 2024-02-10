@@ -13,7 +13,7 @@ std::string MeterageMessage::messageToString() const
     return stream.str();
 }
 
-std::pair<uint64_t, char> MeterageMessage::getMeterage()
+std::pair<uint64_t, char> MeterageMessage::getMeterage() const
 {
     return m_meterage;
 }

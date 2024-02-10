@@ -20,28 +20,28 @@ public:
     std::string decode(const std::string&, BaseEncoderExecutor*) const;
 
 private:
-    class ROT3 :public BaseEncoderExecutor
+    class ROT3 final  : public BaseEncoderExecutor
     {
     public:
         ROT3();
-        std::string encode(const std::string&) override;
-        std::string decode(const std::string&) override;
+        std::string encode(const std::string&) const override;
+        std::string decode(const std::string&) const override;
     };
 
-    class Mirror : public BaseEncoderExecutor
+    class Mirror final : public BaseEncoderExecutor
     {
     public:
         Mirror();
-        std::string encode(const std::string&) override;
-        std::string decode(const std::string&) override;
+        std::string encode(const std::string&) const override;
+        std::string decode(const std::string&) const override;
     };
 
-    class Multiply41 : public BaseEncoderExecutor
+    class Multiply41 final : public BaseEncoderExecutor
     {
     public:
         Multiply41();
-        std::string encode(const std::string&) override;
-        std::string decode(const std::string&) override;
+        std::string encode(const std::string&) const override;
+        std::string decode(const std::string&) const override;
     };
     std::map<std::string, BaseEncoderExecutor*> m_algorithmLibrary;
 };

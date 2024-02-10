@@ -95,7 +95,7 @@ void MessageEncoder::registerAlgorithm(BaseEncoderExecutor* alg)
 MessageEncoder::ROT3::ROT3() :
     BaseEncoderExecutor("ROT3") {};
 
-std::string MessageEncoder::ROT3::encode(const std::string& str)
+std::string MessageEncoder::ROT3::encode(const std::string& str) const
 {
     std::string answer(str);
     for (auto& sim : answer)
@@ -105,7 +105,7 @@ std::string MessageEncoder::ROT3::encode(const std::string& str)
     return answer;
 }
 
-std::string MessageEncoder::ROT3::decode(const std::string& str)
+std::string MessageEncoder::ROT3::decode(const std::string& str) const
 {
     std::string answer(str);
     for (auto& sim : answer)
@@ -118,7 +118,7 @@ std::string MessageEncoder::ROT3::decode(const std::string& str)
 MessageEncoder::Mirror::Mirror() :
     BaseEncoderExecutor("Mirror") {};
 
-std::string MessageEncoder::Mirror::encode(const std::string& str)
+std::string MessageEncoder::Mirror::encode(const std::string& str) const
 {
     std::stringstream answer;
     for (uint8_t sim : str)
@@ -133,7 +133,7 @@ std::string MessageEncoder::Mirror::encode(const std::string& str)
     return answer.str();
 }
 
-std::string MessageEncoder::Mirror::decode(const std::string& str)
+std::string MessageEncoder::Mirror::decode(const std::string& str) const
 {
     std::stringstream answer;
     char simNumber = 0;
@@ -165,19 +165,19 @@ std::string MessageEncoder::Mirror::decode(const std::string& str)
 MessageEncoder::Multiply41::Multiply41() :
     BaseEncoderExecutor("Multiply41") {};
 
-std::string MessageEncoder::Multiply41::encode(const std::string& str)
+std::string MessageEncoder::Multiply41::encode(const std::string& str) const
 {
     std::stringstream answer;
     for (uint8_t sim : str)
     {
-        uint64_t newPart = decimalAssembleNumber(decimalDisassembleNumber(sim * 41));
+        uint64_t newPart = decimalAssembleNumber(decimalDisassembleNumber((uint64_t)sim * 41));
         answer << (char)((newPart & 0xFF00) >> 8);
         answer << (char)(newPart & 0x00FF);
     }
     return answer.str();
 }
 
-std::string MessageEncoder::Multiply41::decode(const std::string& str)
+std::string MessageEncoder::Multiply41::decode(const std::string& str) const
 {
     std::stringstream answer;
     uint64_t number = 0;
