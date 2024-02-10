@@ -17,84 +17,87 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
         newDevSchedule.deviceId = deviceId;
         addDevice(newDevSchedule); // so - add new device with empty schedule
         
-        mapOfDevices[deviceId].lastValidTime = messageStruct.data.timeStamp;
+        mapOfDevices[deviceId]->lastValidTime = messageStruct.data.timeStamp;
         //so answer here is obviously Error - NoSchedule. 
         messageOut.MessageType = MsgType::Error;
         messageOut.error = ErrType::NoSchedule;
         return messageOut;
     }
 
-    DeviceInfo device = mapOfDevices[deviceId];
-    if (device.devWorkSched.schedule.empty()) {
+    DeviceInfo *device = mapOfDevices[deviceId];
+    if (device->devWorkSched.schedule.empty()) {
         messageOut.MessageType = MsgType::Error;
         messageOut.error = ErrType::NoSchedule;
-        device.lastValidTime = messageStruct.data.timeStamp;                            
+        device->lastValidTime = messageStruct.data.timeStamp;                            
         return messageOut;
     }
 
-    if (device.lastValidTime > messageStruct.data.timeStamp) {
+    if (device->lastValidTime > messageStruct.data.timeStamp) {
         messageOut.MessageType = MsgType::Error;
         messageOut.error = ErrType::Obsolete;
         return messageOut;
     }
 
-    for (long i = device.lastValidIndex; i < device.devWorkSched.schedule.size(); ++i) { //for known schedule can check up from last index
-        if (device.devWorkSched.schedule[i].timeStamp == 
+    for (long i = device->lastValidIndex; i < device->devWorkSched.schedule.size(); ++i) { //for known schedule can check up from last index
+        if (device->devWorkSched.schedule[i].timeStamp == 
             messageStruct.data.timeStamp) {
                 //got matching line in schedule - responsing correction;
-                device.lastValidIndex = i;
-                device.lastValidTime = messageStruct.data.timeStamp; 
-                messageOut.correction = device.devWorkSched.schedule[i].value - messageStruct.data.value;
+                device->lastValidIndex = i;
+                device->lastValidTime = messageStruct.data.timeStamp; 
+                messageOut.correction = device->devWorkSched.schedule[i].value - messageStruct.data.value;
                 messageOut.MessageType = MsgType::Command;
                 messageOut.error = ErrType::NoErr;
-                device.RMSD_log.insert(std::make_pair(messageStruct.data.timeStamp, getRMSD(deviceId, messageStruct.data.value)));
+                device->RMSD_log.insert({messageStruct.data.timeStamp, getRMSD(deviceId, messageStruct.data.value)});
                 return messageOut;
             }
     }
-    device.lastValidTime = messageStruct.data.timeStamp;
+    device->lastValidTime = messageStruct.data.timeStamp;
     messageOut.MessageType = MsgType::Error;
     messageOut.error = ErrType::NoTimestamp;
     return messageOut;
 }
 
-bool CommandCenter::addDevice(const DeviceWorkSchedule& newDevSchedule) {
+bool CommandCenter::addDevice(DeviceWorkSchedule& newDevSchedule) {
     if (mapOfDevices.find(newDevSchedule.deviceId) != mapOfDevices.end()) return false; //do not changing existing device
-
-    mapOfDevices.insert(std::make_pair(newDevSchedule.deviceId, newDevSchedule));
+    DeviceInfo *newDevice = new DeviceInfo();
+    newDevice->devWorkSched = newDevSchedule;
+    newDevice->lastValidIndex = 0;
+    newDevice->lastValidTime = 0;
+    mapOfDevices.insert({newDevSchedule.deviceId, newDevice});
     return true;
 }
 
 bool CommandCenter::removeDevice(uint64_t deviceId) {
     if (mapOfDevices.find(deviceId) == mapOfDevices.end()) return false; //nothing to remove
 
-    if (mapOfDevices[deviceId].devWorkSched != nullptr) 
-        delete mapOfDevices[deviceId].devWorkSched;
-    delete mapOfDevices[deviceId];
+    if ((mapOfDevices.at(deviceId)) != nullptr) 
+        //delete (mapOfDevices.at(deviceId)->devWorkSched);
+        delete (mapOfDevices.at(deviceId));
     mapOfDevices.erase(deviceId);
     return true;
 }
 
-bool CommandCenter::changeSchedule(const DeviceWorkSchedule& newDevSchedule) { //in case it is somehow needed
+bool CommandCenter::changeSchedule(DeviceWorkSchedule& newDevSchedule) { //in case it is somehow needed
     if (mapOfDevices.find(newDevSchedule.deviceId) == mapOfDevices.end()) return false; //no such device
-    mapOfDevices.find(newDevSchedule.deviceId)->devWorkSched = newDevSchedule; //should we delete previous schedule explicitly
+    mapOfDevices.at(newDevSchedule.deviceId)->devWorkSched = newDevSchedule; //should we delete previous schedule explicitly
     return true;
 }
 
 double CommandCenter::getRMSD(uint64_t deviceId, uint8_t newValue) {
     uint64_t currentSumValue = 0;
-    DeviceInfo device = mapOfDevices[deviceId];
-    double quadDiffSum = 0
-    for (int i = 0; i < device.Phase_Log.size(); ++i) {
-        currentSumValue += device.Phase_Log[i].value;
+    DeviceInfo *device = mapOfDevices[deviceId];
+    double quadDiffSum = 0;
+    for (u_long i = 0; i < device->Phase_Log.size(); ++i) {
+        currentSumValue += device->Phase_Log[i].value;
     }
 
-    double meanValue = ((currentSumValue) / device.Phase_Log.size());
+    double meanValue = ((currentSumValue) / device->Phase_Log.size());
 
-    for (int i = 0; i < device.Phase_Log.size(); ++i) {
+    for (u_long i = 0; i < device->Phase_Log.size(); ++i) {
         quadDiffSum += std::pow(meanValue - newValue, 2);
     }
     
     
     double RSMD = std::sqrt(quadDiffSum/meanValue);
-
+    return RSMD;
 }

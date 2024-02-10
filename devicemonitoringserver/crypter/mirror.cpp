@@ -14,10 +14,10 @@ std::string MirrorCrypter::name() const {
 }
 
 std::string MirrorCrypter::reflect(const std::string& input) const {
-    if (input.empty());
-    std::string output;
+    std::string output; 
+    if (input.empty()) return output;
     output.resize(input.length());
-    for (int i = 0; i < input.length(); ++i) {
+    for (u_int i = 0; i < input.length(); ++i) {
         char lobmys = 0;
         char symbol = input[i];
         

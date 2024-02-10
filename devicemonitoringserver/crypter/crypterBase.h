@@ -22,7 +22,7 @@ public:
     bool setCurrentCrypter(const std::string& name);
     bool addCrypter(BaseEncoderExecutor *);
 private:
-    std::vector<std::string> m_cryptersList;
+    std::vector<std::string> m_cryptersList = {"NONE","Mirrow","Multiply41","ROT3"};
     std::map<std::string, BaseEncoderExecutor*> m_crypterMap = {{"NONE", new StubCrypter()}, 
                                                                 {"Mirrow", new MirrorCrypter()}, 
                                                                 {"Multiply41", new Multiply41Crypter()}, 

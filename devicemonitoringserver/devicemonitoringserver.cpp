@@ -4,9 +4,7 @@
 #include <handlers/abstractnewconnectionhandler.h>
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
-#include "crypter/crypterBase.h"
-#include "messages.h"
-#include "serialiZer/serializer.h"
+
 
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
     m_connectionServer(connectionServer)

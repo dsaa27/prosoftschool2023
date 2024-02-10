@@ -5,15 +5,14 @@
 #include <utility>
 
 Encoder::Encoder() {
-    m_cryptersList.push_back("NONE");
-    m_curr_Crypter = m_crypterMap[m_cryptersList(0)];
+    
 }
 
 Encoder::~Encoder(){
-    while (!m_cryptersList.empty()) {
-        delete m_crypterMap[m_cryptersList[0]];
-        m_crypterMap.erase(m_cryptersList[0]);
-        m_cryptersList.erase(0);
+    std::map<std::string, BaseEncoderExecutor*>::iterator iter = m_crypterMap.begin();
+    while (iter != m_crypterMap.end())
+    {
+        delete iter->second;
     }
 }
 
@@ -40,8 +39,9 @@ bool Encoder::setCurrentCrypter (const std::string& name)
 
 bool Encoder::addCrypter (BaseEncoderExecutor *newCrypter)
 {
+    if (newCrypter== nullptr) return false;
     if (crypterExist(newCrypter->name())) return true; //consider already existing crypter a success for now
-    m_crypterMap.insert(std::make_pair(newCrypter->name(), newCrypter));
+    m_crypterMap.insert({newCrypter->name(), newCrypter});
     return true;
 }
 

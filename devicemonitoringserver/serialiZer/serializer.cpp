@@ -1,5 +1,6 @@
 #include <iostream>
-#include <string>
+#include <sstream>
+#include <string> 
 #include <cstdint>
 #include "serialiZer/serializer.h"
 #include "../messages.h"
@@ -14,21 +15,18 @@ MessageBase DeSerializer::ToMessage(const std::string& messageStr) {
     switch (type)
     {
     case MsgType::Meterage:
-
         stringy >> stage;
-        messageStruct.data.timeStamp(std::stol(stage));
+        messageStruct.data.timeStamp = (std::stol(stage));
         stringy >> stage;
-        messageStruct.data.timeStamp(std::stoi(stage));
+        messageStruct.data.timeStamp = (std::stoi(stage));
         break;
     case MsgType::Command:
-        MessageBase messageStruct{MsgType::Command, {0,0}, ErrType::NoErr, 0}; 
         stringy >> stage;
-        messageStruct.correction(std::stol(stage));
+        messageStruct.correction = (std::stol(stage));
         break;
-     case MsgType::Error:
-        MessageBase messageStruct{MsgType::Error, {0,0}, ErrType::NoErr, 0}; 
+    case MsgType::Error:
         stringy >> stage;
-        messageStruct.data.timeStamp(static_cast<ErrType>(std::stoi(stage)));
+        messageStruct.error = (static_cast<ErrType>(std::stoi(stage)));
         break;           
     default:
         break;
@@ -60,5 +58,5 @@ std::string DeSerializer::ToBytesArray(const MessageBase& message){
     default:
         break;
     };
-    return stringy.str()
+    return stringy.str();
 }

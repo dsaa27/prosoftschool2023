@@ -21,8 +21,6 @@ struct DeviceInfo {
 class CommandCenter {
 
 public:
-    CommandCenter() = default;
-    ~CommandCenter();
     /*!
      * \brief Приём нового сообщения для обработки.
      * \param deviceId - идентификатор устройства
@@ -36,14 +34,14 @@ public:
      * \param newDevSchedule - расписание работы устройства, содержаще его номер
      * \retval результат попытки (неудача если такое устр-во уже есть)
      */
-    bool addDevice(const DeviceWorkSchedule& newDevSchedule);
+    bool addDevice(DeviceWorkSchedule& newDevSchedule);
 
     /*!
      * \brief Смена расписания работы устройсвта.
      * \param newDevSchedule - расписание работы устройства, содержаще его номер
      * \retval результат попытки 
      */
-    bool changeSchedule(const DeviceWorkSchedule& newDevSchedule);
+    bool changeSchedule(DeviceWorkSchedule& newDevSchedule);
 
     /*!
      * \brief Удаление устройства.
@@ -53,8 +51,8 @@ public:
     bool removeDevice(uint64_t deviceId);
 
 private:
-    std::map<uint64_t, DeviceInfo> mapOfDevices; 
-    uint16_t getRMSD(uint64_t deviceId, uint8_t newValue);
+    std::map<uint64_t, DeviceInfo*> mapOfDevices; 
+    double getRMSD(uint64_t deviceId, uint8_t newValue);
 };
 
 #endif
