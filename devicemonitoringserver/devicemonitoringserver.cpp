@@ -6,7 +6,7 @@
 #include <servermock/connectionservermock.h>
 #include "crypter/crypterBase.h"
 #include "messages.h"
-#include "serializer.h"
+#include "serialiZer/serializer.h"
 
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
     m_connectionServer(connectionServer)
@@ -77,7 +77,7 @@ void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::str
     
     //Here should be CommandCenter operation
     
-    sendMessage(deviceId, m_crypter.encode(m_DeSerial.ToBytesArray(messageStruct2)););
+    sendMessage(deviceId, m_crypter.encode(m_DeSerial.ToBytesArray(messageStruct2)));
 
 }
 

@@ -1,13 +1,15 @@
 #ifndef CRYPT_H
 #define CRYPT_H
-#include <string>
-#include <vector>
-#include <map>
+
 #include "absractCrypter.h"
 #include "mirror.h"
 #include "ROT3.h"
 #include "Multiply41.h"
 #include "stub.h"
+
+#include <string>
+#include <vector>
+#include <map>
 
 
 class Encoder {

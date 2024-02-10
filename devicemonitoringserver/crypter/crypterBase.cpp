@@ -5,7 +5,7 @@
 #include <utility>
 
 Encoder::Encoder() {
-    m_cryptersList.pushBack("NONE");
+    m_cryptersList.push_back("NONE");
     m_curr_Crypter = m_crypterMap[m_cryptersList(0)];
 }
 

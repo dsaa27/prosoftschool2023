@@ -5,7 +5,7 @@
 // #include <find>
 #include <cmath>
 #include <cstdint>
-#include <utiliy>
+#include <utility>
 
 
 MessageBase CommandCenter::acceptMessage(uint64_t deviceId, 
@@ -58,7 +58,7 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
 }
 
 bool CommandCenter::addDevice(const DeviceWorkSchedule& newDevSchedule) {
-    if (!mapOfDevices.find(newDevSchedule.deviceId) == mapOfDevices.end()) return false; //do not changing existing device
+    if (mapOfDevices.find(newDevSchedule.deviceId) != mapOfDevices.end()) return false; //do not changing existing device
 
     mapOfDevices.insert(std::make_pair(newDevSchedule.deviceId, newDevSchedule));
     return true;
