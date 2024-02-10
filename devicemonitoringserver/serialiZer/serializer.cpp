@@ -6,24 +6,28 @@
 
 MessageBase DeSerializer::ToMessage(const std::string& messageStr) {
     std::istringstream stringy(messageStr); //  turn our \r separated string to stream
-    std::string stage << stringy; // presumably got msgType
-    switch (static_cast<MsgType>(std::stoi(stage)))
+    std::string stage; // presumably got msgType
+    stringy >> stage;
+    MessageBase messageStruct{MsgType::Meterage, {0,0}, ErrType::NoErr, 0}; 
+    MsgType type = static_cast<MsgType>(std::stoi(stage));
+    messageStruct.MessageType = type;
+    switch (type)
     {
     case MsgType::Meterage:
-        MessageBase messageStruct{MsgType::Meterage, {0,0}, ErrType::NoErr, 0}; 
-        stage << stringy;
+
+        stringy >> stage;
         messageStruct.data.timeStamp(std::stol(stage));
-        stage << stringy;
+        stringy >> stage;
         messageStruct.data.timeStamp(std::stoi(stage));
         break;
     case MsgType::Command:
         MessageBase messageStruct{MsgType::Command, {0,0}, ErrType::NoErr, 0}; 
-        stage << stringy;
+        stringy >> stage;
         messageStruct.correction(std::stol(stage));
         break;
      case MsgType::Error:
         MessageBase messageStruct{MsgType::Error, {0,0}, ErrType::NoErr, 0}; 
-        stage << stringy;
+        stringy >> stage;
         messageStruct.data.timeStamp(static_cast<ErrType>(std::stoi(stage)));
         break;           
     default:
