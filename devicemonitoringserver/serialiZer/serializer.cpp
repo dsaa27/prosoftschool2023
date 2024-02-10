@@ -35,7 +35,7 @@ MessageBase DeSerializer::ToMessage(const std::string& messageStr) {
 
 std::string DeSerializer::ToBytesArray(const MessageBase& message){
     std::ostringstream stringy;
-    switch (message->MessageType)
+    switch (message.MessageType)
     {
     case MsgType::Meterage:
         /* code */

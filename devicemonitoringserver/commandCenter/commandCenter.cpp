@@ -2,9 +2,11 @@
 #include "commandCenter.h"
 #include "../deviceworkschedule.h"
 
-#include <find>
+// #include <find>
 #include <cmath>
 #include <cstdint>
+#include <utiliy>
+
 
 MessageBase CommandCenter::acceptMessage(uint64_t deviceId, 
                                          const MessageBase& messageStruct) {
@@ -23,7 +25,7 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
     }
 
     DeviceInfo device = mapOfDevices[deviceId];
-    if (device.devSchedule.schedule.empty()) {
+    if (device.devWorkSched.schedule.empty()) {
         messageOut.MessageType = MsgType::Error;
         messageOut.error = ErrType::NoSchedule;
         device.lastValidTime = messageStruct.data.timeStamp;                            
@@ -36,16 +38,16 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
         return messageOut;
     }
 
-    for (long i = device.lastValidIndex; i < device.devSchedule.schedule.size(); ++i) { //for known schedule can check up from last index
-        if (device.devSchedule.schedule[i].timeStamp == 
+    for (long i = device.lastValidIndex; i < device.devWorkSched.schedule.size(); ++i) { //for known schedule can check up from last index
+        if (device.devWorkSched.schedule[i].timeStamp == 
             messageStruct.data.timeStamp) {
                 //got matching line in schedule - responsing correction;
                 device.lastValidIndex = i;
                 device.lastValidTime = messageStruct.data.timeStamp; 
-                messageOut.correction = device.devSchedule.schedule[i].value - messageStruct.data.value;
+                messageOut.correction = device.devWorkSched.schedule[i].value - messageStruct.data.value;
                 messageOut.MessageType = MsgType::Command;
                 messageOut.error = ErrType::NoErr;
-                device.RMSD_log.insert(messageStruct.data.timeStamp, getRMSD(deviceId, messageStruct.data.value));
+                device.RMSD_log.insert(std::make_pair(messageStruct.data.timeStamp, getRMSD(deviceId, messageStruct.data.value)));
                 return messageOut;
             }
     }
@@ -58,7 +60,7 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
 bool CommandCenter::addDevice(const DeviceWorkSchedule& newDevSchedule) {
     if (!mapOfDevices.find(newDevSchedule.deviceId) == mapOfDevices.end()) return false; //do not changing existing device
 
-    mapOfDevices.insert(newDevSchedule.deviceId, newDevSchedule);
+    mapOfDevices.insert(std::make_pair(newDevSchedule.deviceId, newDevSchedule));
     return true;
 }
 
@@ -86,7 +88,7 @@ double CommandCenter::getRMSD(uint64_t deviceId, uint8_t newValue) {
         currentSumValue += device.Phase_Log[i].value;
     }
 
-    double meanValue = static_cast<double>(currentSumValue) / device.Phase_Log.size();
+    double meanValue = ((currentSumValue) / device.Phase_Log.size());
 
     for (int i = 0; i < device.Phase_Log.size(); ++i) {
         quadDiffSum += std::pow(meanValue - newValue, 2);
