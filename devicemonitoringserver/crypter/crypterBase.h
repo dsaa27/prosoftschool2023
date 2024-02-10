@@ -2,6 +2,7 @@
 #define CRYPT_H
 #include <string>
 #include <vector>
+#include <map>
 #include "absractCrypter.h"
 #include "mirror.h"
 #include "ROT3.h"

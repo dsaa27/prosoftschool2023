@@ -1,5 +1,6 @@
 #include "crypterBase.h"
 #include <string>
+#include <vector>
 #include <map>
 #include <utility>
 
@@ -39,8 +40,8 @@ bool Encoder::setCurrentCrypter (const std::string& name)
 
 bool Encoder::addCrypter (BaseEncoderExecutor *newCrypter)
 {
-    if (crypterExist(newCrypter->name)) return true; //consider already existing crypter a success for now
-    m_crypterMap.insert(std::make_pair(newCrypter->name, newCrypter));
+    if (crypterExist(newCrypter->name())) return true; //consider already existing crypter a success for now
+    m_crypterMap.insert(std::make_pair(newCrypter->name(), newCrypter));
     return true;
 }
 
