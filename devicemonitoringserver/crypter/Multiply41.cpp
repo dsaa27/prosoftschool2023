@@ -16,7 +16,8 @@ std::string Multiply41Crypter::decode(const std::string& input) const {
     std::string output;
     uint16_t result = 0;
     for (u_int i = 0; i < input.length(); ++i) { //assuming that input.length is always even with this crypter
-        result = (((input[i] << 8) + input[++i])/41);
+        result = (((input[i] << 8) + input[i+1])/41);
+        i++;
         output.push_back(static_cast<char>(result));
     }
     return output;

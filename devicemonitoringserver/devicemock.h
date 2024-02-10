@@ -77,7 +77,6 @@ private:
     std::vector<MsgType> m_commandLog;
     DeSerializer m_DeSerial;
     Encoder m_crypter;
-
 };
 
 #endif // DEVICE_H

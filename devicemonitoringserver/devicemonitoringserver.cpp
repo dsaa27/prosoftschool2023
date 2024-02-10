@@ -30,15 +30,9 @@ DeviceMonitoringServer::~DeviceMonitoringServer()
     delete m_connectionServer;
 }
 
-void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
+void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule& devShed)
 {
-    // TODO
-    /*
-    Мюсли жокера - ведь тут достатчно мапу  ?принять? 
-    только пока не понял, как мы в этой функции полуаем айди девайса - ОУКЕЕЙ, получаем из расписания.
-    а если нету расписания, то ну и что
-    */
-    //вс
+    m_commander.addDevice(devShed);
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -56,24 +50,8 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
 void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::string& message)
 {
     // TODO
-    /*
-    Мюсли Жокера 
-    должны ли мы вызвать соответсвующий обработчик сообщения сами?
-
-    1. парсим сообщение (десериализуем в метрику - мы же только метрику можем получить от устройства)
-    
-    2. реагируем
-        2.1  по айди достаём расписание и проверяем значения
-        2.2 формируем ответ
-        
-
-    */
-   //probably should split actions to perform some checks
-   
     MessageBase messageStruct = m_DeSerial.ToMessage(m_crypter.decode(message));
     MessageBase messageStruct2 = m_commander.acceptMessage(deviceId, messageStruct);
-    
-    //Here should be CommandCenter operation
     
     sendMessage(deviceId, m_crypter.encode(m_DeSerial.ToBytesArray(messageStruct2)));
 

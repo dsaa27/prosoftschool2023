@@ -5,7 +5,7 @@
 #include "crypter/absractCrypter.h"
 
 /*!
- * \brief заглушка шифродешифровщика, не делает ничего, нужна для дебага и amacriminal нешифрованного общения.
+ * \brief Р·Р°РіР»СѓС€РєР° С€РёС„СЂРѕРґРµС€РёС„СЂРѕРІС‰РёРєР°, РЅРµ РґРµР»Р°РµС‚ РЅРёС‡РµРіРѕ, РЅСѓР¶РЅР° РґР»СЏ РґРµР±Р°РіР° Рё amacriminal РЅРµС€РёС„СЂРѕРІР°РЅРЅРѕРіРѕ РѕР±С‰РµРЅРёСЏ.
  */
 class MirrorCrypter : public BaseEncoderExecutor 
 {
@@ -13,21 +13,26 @@ public:
     MirrorCrypter() = default;
     ~MirrorCrypter() = default;
     /*!
-     * \brief Метод как бы шифровки.
-     * \param input -  строка
+     * \brief РњРµС‚РѕРґ РєР°Рє Р±С‹ С€РёС„СЂРѕРІРєРё.
+     * \param input -  СЃС‚СЂРѕРєР°
      */
     std::string encode(const std::string& input) const final;
     /*!
-     * \brief Метод как бы дешифровки.
-     * \param input -  строка
+     * \brief РњРµС‚РѕРґ РєР°Рє Р±С‹ РґРµС€РёС„СЂРѕРІРєРё.
+     * \param input -  СЃС‚СЂРѕРєР°
      */
     std::string decode(const std::string& input) const final;
     /*!
-     * \brief Получение имени.
+     * \brief РџРѕР»СѓС‡РµРЅРёРµ РёРјРµРЅРё.
      */
     std::string name() const final;
 
 private: 
+    /*!
+     * \brief РїРѕР±РёС‚РѕРІРѕРµ РѕС‚Р·РµСЂРєР°Р»РёРІР°РЅРёРµ РєР°Р¶РґРѕРіРѕ Р±Р°Р№С‚Р° РІ СЃС‚СЂРѕРєРµ
+     * \param input -РІС…РѕРґСЏС‰Р°СЏ СЃС‚СЂРѕРєР°
+     * \retval "РћС‚Р·РµСЂРєР°Р»РµРЅРЅР°СЏ" СЃС‚СЂРѕРєР°
+     */
     std::string reflect(const std::string& input) const;
 };
 

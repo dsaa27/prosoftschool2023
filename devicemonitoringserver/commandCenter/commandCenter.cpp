@@ -56,7 +56,7 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
     return messageOut;
 }
 
-bool CommandCenter::addDevice(DeviceWorkSchedule& newDevSchedule) {
+bool CommandCenter::addDevice(const DeviceWorkSchedule& newDevSchedule) {
     if (mapOfDevices.find(newDevSchedule.deviceId) != mapOfDevices.end()) return false; //do not changing existing device
     DeviceInfo *newDevice = new DeviceInfo();
     newDevice->devWorkSched = newDevSchedule;
@@ -76,7 +76,7 @@ bool CommandCenter::removeDevice(uint64_t deviceId) {
     return true;
 }
 
-bool CommandCenter::changeSchedule(DeviceWorkSchedule& newDevSchedule) { //in case it is somehow needed
+bool CommandCenter::changeSchedule(const DeviceWorkSchedule& newDevSchedule) { //in case it is somehow needed
     if (mapOfDevices.find(newDevSchedule.deviceId) == mapOfDevices.end()) return false; //no such device
     mapOfDevices.at(newDevSchedule.deviceId)->devWorkSched = newDevSchedule; //should we delete previous schedule explicitly
     return true;

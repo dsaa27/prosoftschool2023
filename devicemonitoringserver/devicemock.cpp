@@ -77,7 +77,7 @@ void DeviceMock::sendMessage(const std::string& message) const
 
 void DeviceMock::onMessageReceived(const std::string& message)
 {
-    // TODO: Разобрать std::string, прочитать команду,
+// TODO: Разобрать std::string, прочитать команду,
     // записать ее в список полученных комманд
     /*
 
@@ -129,12 +129,5 @@ void DeviceMock::sendNextMeterage()
     std::string messageStr = m_crypter.encode(m_DeSerial.ToBytesArray(messageOut));
     sendMessage(messageStr);
     // TODO: Сформировать std::string и передать в sendMessage
-    /*
-    Мюсли Жокера
-    так как это отправка метрики то создаём нужный инстанс сообщения
-    вписываем свежие значения
-    кидаем в сериализатор
-    кидаем в шифратор
-    отправляем
-    */
+
 }
