@@ -4,5 +4,5 @@ devicemonitoringserver/build_debug
 devicemonitoringserver/.vscode
 devicemonitoringserver/build/*
 devicemonitoringserver/.vscode/*
-devicemonitoringserver/build
+devicemonitoringserver/build/
 .vscode/

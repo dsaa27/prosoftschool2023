@@ -38,7 +38,7 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
         return messageOut;
     }
 
-    for (long i = device->lastValidIndex; i < device->devWorkSched.schedule.size(); ++i) { //for known schedule can check up from last index
+    for (u_int i = device->lastValidIndex; i < device->devWorkSched.schedule.size(); ++i) { //for known schedule can check up from last index
         if (device->devWorkSched.schedule[i].timeStamp == 
             messageStruct.data.timeStamp) {
                 //got matching line in schedule - responsing correction;
