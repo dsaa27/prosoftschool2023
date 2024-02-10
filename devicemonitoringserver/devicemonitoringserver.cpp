@@ -4,7 +4,7 @@
 #include <handlers/abstractnewconnectionhandler.h>
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
-#include "pseudoCrypt.h"
+#include "crypter/crypterBase.h"
 #include "messages.h"
 #include "serializer.h"
 

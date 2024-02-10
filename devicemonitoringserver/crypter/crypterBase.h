@@ -20,7 +20,7 @@ public:
     bool addCrypter(BaseEncoderExecutor *);
 private:
     std::vector<std::string> m_cryptersList;
-    std::map<std::string, BaseEncoderExecutor*> m_crypterMap = {{"NONE", new Stub()}, 
+    std::map<std::string, BaseEncoderExecutor*> m_crypterMap = {{"NONE", new StubCrypter()}, 
                                                                 {"Mirrow", new MirrorCrypter()}, 
                                                                 {"Multiply41", new Multiply41Crypter()}, 
                                                                 {"ROT3", new ROT3Crypter()}};

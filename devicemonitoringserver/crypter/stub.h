@@ -10,8 +10,8 @@
 class StubCrypter : public BaseEncoderExecutor
 {
 public:
-    Stub() = default;
-    ~Stub() = default;
+    StubCrypter() = default;
+    ~StubCrypter() = default;
     /*!
      * \brief Метод как бы шифровки.
      * \param input -  строка
