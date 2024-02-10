@@ -9,10 +9,15 @@ Encoder::Encoder() {
 }
 
 Encoder::~Encoder(){
-    std::map<std::string, BaseEncoderExecutor*>::iterator iter = m_crypterMap.begin();
-    while (iter != m_crypterMap.end())
-    {
-        delete iter->second;
+    if (!m_crypterMap.empty()) {
+        std::map<std::string, BaseEncoderExecutor*>::iterator iter = m_crypterMap.begin();
+
+        while (iter != m_crypterMap.end())
+        {
+            if (iter->second != nullptr)
+                delete iter->second;
+            iter++;
+        }
     }
 }
 

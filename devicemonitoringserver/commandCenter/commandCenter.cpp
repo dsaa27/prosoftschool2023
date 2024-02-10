@@ -47,7 +47,6 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
                 messageOut.correction = device->devWorkSched.schedule[i].value - messageStruct.data.value;
                 messageOut.MessageType = MsgType::Command;
                 messageOut.error = ErrType::NoErr;
-                device->RMSD_log.insert({messageStruct.data.timeStamp, getRMSD(deviceId, messageStruct.data.value)});
                 return messageOut;
             }
     }
