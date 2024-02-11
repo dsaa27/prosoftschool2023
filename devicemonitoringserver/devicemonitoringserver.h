@@ -2,6 +2,8 @@
 #define DEVICEMONITORINGSERVER_H
 
 #include "common.h"
+#include "messageserializator.h"
+#include "devicemock.h"
 
 #include <cstdint>
 #include <string>

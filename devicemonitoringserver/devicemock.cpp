@@ -3,6 +3,7 @@
 #include <handlers/abstractmessagehandler.h>
 #include <server/abstractclientconnection.h>
 
+
 DeviceMock::DeviceMock(AbstractClientConnection* clientConnection) :
     m_clientConnection(clientConnection)
 {
@@ -75,9 +76,10 @@ void DeviceMock::sendMessage(const std::string& message) const
 
 void DeviceMock::onMessageReceived(const std::string& message)
 {
-    // TODO: Разобрать std::string, прочитать команду,
-    // записать ее в список полученных комманд
-    sendNextMeterage(); // Отправляем следующее измерение
+	std::string decodeMessage = messageEncoder.Decode(message);
+	pAbstractMessage pMessage = MessageSerializator::Deserialize(decodeMessage);
+	m_messages.push_back(pMessage);
+	sendNextMeterage(); // Отправляем следующее измерение
 }
 
 void DeviceMock::onConnected()
@@ -102,12 +104,14 @@ void DeviceMock::startMeterageSending()
 
 void DeviceMock::sendNextMeterage()
 {
-    if (m_timeStamp >= m_meterages.size())
-        return;
-    const auto meterage = m_meterages.at(m_timeStamp);
+	if (m_timeStamp >= m_meterages.size())
+		return;
 
-    ++m_timeStamp;
+	const auto curMeterage = m_meterages.at(m_timeStamp);
+	std::string curMessage = MessageSerializator::Serialize(Meterage(curMeterage, m_timeStamp));
 
-    // TODO: Сформировать std::string и передать в sendMessage
+	++m_timeStamp;
+
+	sendMessage(messageEncoder.Encode(curMessage));
 }
 

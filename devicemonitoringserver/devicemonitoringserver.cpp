@@ -46,9 +46,11 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
+void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::string& message)
 {
-    // TODO
+	std::string decodeMessage = messageEncode.Decode(message); //Доделать
+	pAbstractMessage pMessage = MessageSerializator::Deserialize(decodeMessage);
+
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
