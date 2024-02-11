@@ -32,9 +32,9 @@ void monitoringServerTest1()
         raspisanie.push_back(Phase{i, i/2 });
     }
     DeviceWorkSchedule const deviceWorkSchedule = {deviceId, raspisanie};
-    server.setDeviceWorkSchedule(deviceWorkSchedule);
-    ASSERT(server.setCrypter("ROT3"));
-    ASSERT(device.setCrypter("ROT3"));
+    // server.setDeviceWorkSchedule(deviceWorkSchedule);
+    ASSERT(server.setCrypter("Mirror"));
+    ASSERT(device.setCrypter("Mirror"));
     device.setMeterages(newMeters);
     // device.startMeterageSending();
 

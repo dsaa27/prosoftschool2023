@@ -8,7 +8,7 @@
 std::string ROT3Crypter::encode(const std::string& input) const {
     std::string output;
     for (u_int i = 0; i < input.length(); ++i) {
-        output.push_back((static_cast<unsigned char>(input[0]) + 3));//ex[licitly using unsugned char just in case]
+        output.push_back((static_cast<unsigned int>(input[0]) + 3));//ex[licitly using unsugned char just in case]
     }
     return output;
 }
@@ -16,7 +16,7 @@ std::string ROT3Crypter::encode(const std::string& input) const {
 std::string ROT3Crypter::decode(const std::string& input) const {
     std::string output;
     for (u_int i = 0; i < input.length(); ++i) { 
-        output.push_back((static_cast<unsigned char>(input[0]) - 3));//ex[licitly using unsugned char just in case]
+        output.push_back((static_cast<unsigned int>(input[0]) - 3));//ex[licitly using unsugned char just in case]
     }
     return output;
 }

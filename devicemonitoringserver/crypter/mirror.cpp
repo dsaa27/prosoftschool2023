@@ -18,8 +18,8 @@ std::string MirrorCrypter::reflect(const std::string& input) const {
     if (input.empty()) return output;
     output.resize(input.length());
     for (u_int i = 0; i < input.length(); ++i) {
-        char lobmys = 0;
-        char symbol = input[i];
+        unsigned int lobmys = 0;
+        unsigned int symbol = input[i];
         
         lobmys += (symbol & 0x80) >> 7;
         lobmys += (symbol & 0x40) >> 5;
