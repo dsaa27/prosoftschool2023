@@ -4,6 +4,13 @@
 #include "handlers/abstractaction.h"
 #include "handlers/abstractmessagehandler.h"
 #include "server/abstractclientconnection.h"
+#include <vector>
+
+
+#include <iostream>
+#include <sstream>
+#include <string>
+
 
 DeviceMock::DeviceMock(AbstractClientConnection* clientConnection) :
     m_clientConnection(clientConnection)
@@ -78,21 +85,9 @@ void DeviceMock::sendMessage(const std::string& message) const
 void DeviceMock::onMessageReceived(const std::string& message)
 {
 // TODO: Разобрать std::string, прочитать команду,
-    // записать ее в список полученных комманд
-    /*
-
-    мюсли жокера
-    1. проверяем на эмпти
-    2. кастуем первый символ к енуму типов сообщений
-        2.1 по результатам создаём нужный инстанс сообщения и заполняем
-        2.2 видимо аппендим этот инстанс в контейнер полученных сообщение 
-            (тут хз это же долбануто огромный лог, хотя может по меркам десктопа норм)
-            этот пункт должен перехать в комманд центр сервера и там нам как бы пофиг на ресурсы
-            
-        
-    */
     MessageBase messageStruct = m_DeSerial.ToMessage(m_crypter.decode(message));
-    m_commandLog.push_back(messageStruct.MessageType);
+    m_commandLog.push_back(static_cast<unsigned int>(messageStruct.MessageType));
+    std::cerr << static_cast<unsigned int>(messageStruct.MessageType) << std::endl;
     sendNextMeterage(); // Отправляем следующее измерение
 }
 
@@ -127,7 +122,20 @@ void DeviceMock::sendNextMeterage()
     messageOut.data.timeStamp = m_timeStamp;
     messageOut.data.value = meterage;
     std::string messageStr = m_crypter.encode(m_DeSerial.ToBytesArray(messageOut));
-    sendMessage(messageStr);
+    if (messageStr.size()>0)
+        // sendMessage("quququ");
+        sendMessage(messageStr);
     // TODO: Сформировать std::string и передать в sendMessage
 
+}
+
+bool DeviceMock::setCrypter(const std::string& name)
+{
+    return (m_crypter.setCurrentCrypter(name));
+}
+
+std::vector<unsigned int> DeviceMock::responces() 
+{
+    std::vector<unsigned int> result = m_commandLog;
+    return result;
 }

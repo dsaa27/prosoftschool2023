@@ -10,15 +10,15 @@ MessageBase DeSerializer::ToMessage(const std::string& messageStr) {
     std::string stage; // presumably got msgType
     stringy >> stage;
     MessageBase messageStruct{MsgType::Meterage, {0,0}, ErrType::NoErr, 0}; 
-    MsgType type = static_cast<MsgType>(std::stoi(stage));
+    MsgType type = static_cast<MsgType>(std::stoul(stage));
     messageStruct.MessageType = type;
     switch (type)
     {
     case MsgType::Meterage:
         stringy >> stage;
-        messageStruct.data.timeStamp = (std::stol(stage));
+        messageStruct.data.timeStamp = (std::stoul(stage));
         stringy >> stage;
-        messageStruct.data.timeStamp = (std::stoi(stage));
+        messageStruct.data.value = (std::stoul(stage));
         break;
     case MsgType::Command:
         stringy >> stage;
@@ -42,21 +42,22 @@ std::string DeSerializer::ToBytesArray(const MessageBase& message){
     case MsgType::Meterage:
         /* code */
         // MessageMetric& meterage dynamic_cast<MessageMetric&>(message);
-        stringy << static_cast<int>(message.MessageType) << '\r' << message.data.timeStamp << '\r' << message.data.value << '\r';
+        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << message.data.timeStamp << ' ' << static_cast<unsigned int>(message.data.value) << ' ';
         break;
     case MsgType::Command:
         /* code */
         // MessageCommand& command dynamic_cast<MessageCommand&>(message);
-        stringy << static_cast<int8_t>(message.MessageType) << '\r' << message.correction << '\r';
+        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << static_cast<unsigned int>(message.correction) << ' ';
         break;
     case MsgType::Error:
         /* code */
         // MessageError& error dynamic_cast<MessageError&>(message);
-        stringy << static_cast<int8_t>(message.MessageType) << '\r' << static_cast<int8_t>(message.error);
+        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << static_cast<unsigned int>(message.error) << ' ';
         break;
     
     default:
         break;
     };
-    return stringy.str();
+    std::string res = stringy.str();
+    return res;
 }

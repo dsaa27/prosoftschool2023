@@ -1,11 +1,12 @@
 #ifndef DEVICEMONITORINGSERVER_H
 #define DEVICEMONITORINGSERVER_H
 
-#include "common.h"
-#include "messages.h"
+
 #include "crypter/crypterBase.h"
 #include "serialiZer/serializer.h"
 #include "commandCenter/commandCenter.h"
+#include "common.h"
+#include "messages.h"
 
 #include <cstdint>
 #include <string>
@@ -37,6 +38,8 @@ public:
      */
     bool listen(uint64_t serverId);
 
+    bool setCrypter(const std::string& name);
+
 private:
     /*!
      * \brief Отправить сообщение устройству.
@@ -60,6 +63,8 @@ private:
      * \param deviceId - идентификатор устройства
      */
     void onDisconnected(uint64_t clientId);
+
+    
 
 private:
     void addMessageHandler(AbstractConnection* conn);

@@ -4,8 +4,8 @@
 #include "deviceworkschedule.h"
 #include <cstdint>
 
-enum class MsgType : uint8_t {Meterage, Command, Error, None};
-enum class ErrType : uint8_t {NoSchedule, NoTimestamp, Obsolete, NoErr};
+enum class MsgType : unsigned int {Meterage, Command, Error, None};
+enum class ErrType : unsigned int {NoSchedule, NoTimestamp, Obsolete, NoErr};
 
 struct MessageBase
 {

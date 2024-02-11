@@ -4,6 +4,7 @@
 #include <handlers/abstractnewconnectionhandler.h>
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
+#include "messages.h"
 
 
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
@@ -108,4 +109,9 @@ void DeviceMonitoringServer::addDisconnectedHandler(AbstractConnection* conn)
     };
     const auto clientId = conn->peerId();
     conn->setDisconnectedHandler(new DisconnectedHandler(this, clientId));
+}
+
+bool DeviceMonitoringServer::setCrypter(const std::string& name)
+{
+    return (m_crypter.setCurrentCrypter(name));
 }

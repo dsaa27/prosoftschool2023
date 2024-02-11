@@ -12,5 +12,28 @@ int main()
 
     // TODO: собственные тесты
     RUN_TEST(tr, monitoringServerTest1);
+
+    // RUN_TEST(tr, serialiserTest);
+
+    // RUN_TEST(tr, EncoderTest);
+
+    // RUN_TEST(tr, addEncoderTest);
+
+    // RUN_TEST(tr, severalDeviceTest);
+
+    // RUN_TEST(tr, servAnswerTest);
+
+
+
+    /*
+    тесты проверки шифровщиков:
+        проверка равенста сообщения исходному после шифровки/дешифровки
+    тесты сериализатора
+
+    тесты добавления устройств (2+)
+    тесты проверки реакции сервера на разные сообщения устройств
+        нет расписания
+
+    */
     return 0;
 }

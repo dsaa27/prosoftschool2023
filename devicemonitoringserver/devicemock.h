@@ -47,6 +47,10 @@ public:
      */
     void startMeterageSending();
 
+    bool setCrypter(const std::string& name);
+
+    std::vector<unsigned int> responces();
+
 private:
     /*!
      * \brief Отправить следующее измерение.
@@ -70,11 +74,13 @@ private:
      */
     void onMessageReceived(const std::string& message);
 
+    
+
 private:
     AbstractClientConnection* m_clientConnection = nullptr;
     std::vector<uint8_t> m_meterages;
     uint64_t m_timeStamp = 0;
-    std::vector<MsgType> m_commandLog;
+    std::vector<unsigned int> m_commandLog;
     DeSerializer m_DeSerial;
     Encoder m_crypter;
 };
