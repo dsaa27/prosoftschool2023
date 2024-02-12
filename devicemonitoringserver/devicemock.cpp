@@ -117,14 +117,13 @@ void DeviceMock::sendNextMeterage()
     if (m_timeStamp >= m_meterages.size())
         return;
     const auto meterage = m_meterages.at(m_timeStamp);
-    // (void)meterage; //kinda need to know what it is. what c-style cast to void(and not void * ) does;
+    // (void)meterage; //kinda need to know what it is. what does c-style cast to void(and not void * ) ?;
     ++m_timeStamp;
     MessageBase messageOut = {MsgType::Meterage, {0,0}, ErrType::NoErr, 0};
     messageOut.data.timeStamp = m_timeStamp;
     messageOut.data.value = meterage;
     std::string messageStr = m_crypter.encode(m_DeSerial.ToBytesArray(messageOut));
     if (messageStr.size()>0)
-        // sendMessage("quququ");
         sendMessage(messageStr);
     // TODO: Сформировать std::string и передать в sendMessage
 

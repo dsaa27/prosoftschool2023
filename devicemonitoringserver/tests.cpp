@@ -35,8 +35,8 @@ void monitoringServerTest1()
     server.setDeviceWorkSchedule(deviceWorkSchedule);
     ASSERT(server.addCrypter(new BitMirrorCrypter()));
     ASSERT(device.addCrypter(new BitMirrorCrypter()));
-    ASSERT(server.setCrypter("BitMirror"));
-    ASSERT(device.setCrypter("BitMirror"));
+    ASSERT(server.setCrypter("Mirror"));
+    ASSERT(device.setCrypter("Mirror"));
     device.setMeterages(newMeters);
     // device.startMeterageSending();
 

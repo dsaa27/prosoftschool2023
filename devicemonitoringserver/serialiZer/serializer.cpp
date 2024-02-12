@@ -42,20 +42,21 @@ std::string DeSerializer::ToBytesArray(const MessageBase& message){
     case MsgType::Meterage:
         /* code */
         // MessageMetric& meterage dynamic_cast<MessageMetric&>(message);
-        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << message.data.timeStamp << ' ' << static_cast<unsigned int>(message.data.value) << ' ';
+        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << message.data.timeStamp << ' ' << static_cast<unsigned int>(message.data.value) << ' ' << std::endl;
         break;
     case MsgType::Command:
         /* code */
         // MessageCommand& command dynamic_cast<MessageCommand&>(message);
-        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << static_cast<unsigned int>(message.correction) << ' ';
+        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << static_cast<unsigned int>(message.correction) << ' ' << std::endl;
         break;
     case MsgType::Error:
         /* code */
         // MessageError& error dynamic_cast<MessageError&>(message);
-        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << static_cast<unsigned int>(message.error) << ' ';
+        stringy << static_cast<unsigned int>(message.MessageType) << ' ' << static_cast<unsigned int>(message.error) << ' ' << std::endl;
         break;
     
     default:
+        stringy << std::endl;
         break;
     };
     std::string res = stringy.str();
