@@ -47,5 +47,6 @@ std::string MirrorCrypter::processString(const std::string& input) const {
         tmp_int = std::stol(tmp);
         out << reflect(tmp_int) << ' ';
     }
+    out << std::endl;
     return out.str();
 }

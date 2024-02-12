@@ -1,27 +1,61 @@
 #include "ROT3.h"
 #include <cstdint>
+#include <iostream>
+#include <sstream>
+#include <vector>
 
-/* For first implementation skippping ignoring non-letter symbols
+/* actually
     Unsigned integer use "wrap around arifmetics"
 */
 
-std::string ROT3Crypter::encode(const std::string& input) const {
-    std::string output;
-    for (u_int i = 0; i < input.length(); ++i) {
-        output.push_back((static_cast<unsigned int>(input[0]) + 3));//ex[licitly using unsugned char just in case]
+std::string ROT3Crypter::encode(const std::string& input) const 
+
+    std::istringstream inpStream(input);
+    std::ostringstream out;
+    std::string tmp;
+    int tmp_int = 0;
+    while (inpStream){
+        inpStream >> tmp;
+        tmp_int = std::stol(tmp);
+        tmp_int += 3;
+        out << tmp_int << ' ';
     }
-    return output;
+    out << std::endl;
+    return out.str();
 }
 
 std::string ROT3Crypter::decode(const std::string& input) const {
-    std::string output;
-    for (u_int i = 0; i < input.length(); ++i) { 
-        output.push_back((static_cast<unsigned int>(input[0]) - 3));//ex[licitly using unsugned char just in case]
+
+    std::istringstream inpStream(input);
+    std::ostringstream out;
+    std::string tmp;
+    int tmp_int = 0;
+    while (inpStream){
+        inpStream >> tmp;
+        tmp_int = std::stol(tmp);
+        tmp_int -= 3;
+        out << tmp_int << ' ';
     }
-    return output;
+    out << std::endl;
+    return out.str();
+
 }
 
 std::string ROT3Crypter::name() const {
     
     return "ROT3"; //is it OK or is it implicit conversion
 }
+
+/*
+    std::istringstream inpStream(input);
+    std::ostringstream out;
+    std::string tmp;
+    int tmp_int = 0;
+    while (inpStream){
+        inpStream >> tmp;
+        tmp_int = std::stol(tmp);
+        tmp_int -= 3;
+        out << reflect(tmp_int) << ' ';
+    }
+    return out.str();
+*/
