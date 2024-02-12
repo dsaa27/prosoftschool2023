@@ -2,7 +2,7 @@
 #define DEVICE_H
 
 #include "common.h"
-
+#include <cstdint>
 #include <string>
 #include <vector>
 

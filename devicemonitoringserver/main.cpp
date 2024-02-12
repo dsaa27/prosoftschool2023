@@ -1,13 +1,24 @@
+
+
+
+
+
 #include "test_runner.h"
 #include "tests.h"
 #include <servermock/servertests.h>
 
+/*
 //my include
 #include "devicemock.h"
 #include "devicemonitoringserver.h"
 #include <servermock/clientconnectionmock.h>
 #include <servermock/connectionservermock.h>
 #include <servermock/taskqueue.h>
+*/
+
+
+
+
 
 int main()
 {
@@ -22,6 +33,8 @@ int main()
     RUN_TEST(tr, monitoringServerTest1);
     */
 
+
+   /*
     TaskQueue taskQueue;
     DeviceMock device(new ClientConnectionMock(taskQueue));
     DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
@@ -41,6 +54,11 @@ int main()
         ;
     
     std::cout << "Done" << std::endl;
+    */
+
+
+    TestRunner tr;
+    RUN_TEST(tr, messageSerializatorTest);
 
     return 0;
 }
