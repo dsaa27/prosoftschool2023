@@ -4,6 +4,7 @@
 #include "handlers/abstractaction.h"
 #include "handlers/abstractmessagehandler.h"
 #include "server/abstractclientconnection.h"
+
 #include <vector>
 
 
@@ -138,4 +139,9 @@ std::vector<unsigned int> DeviceMock::responces()
 {
     std::vector<unsigned int> result = m_commandLog;
     return result;
+}
+
+bool DeviceMock::addCrypter(BaseEncoderExecutor* crypter)
+{
+    return (m_crypter.addCrypter(crypter));
 }

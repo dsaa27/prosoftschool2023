@@ -40,6 +40,8 @@ public:
 
     bool setCrypter(const std::string& name);
 
+    bool addCrypter(BaseEncoderExecutor* crypter);
+
 private:
     /*!
      * \brief Отправить сообщение устройству.

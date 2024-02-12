@@ -1,5 +1,5 @@
 #include "tests.h"
-#include "tests.h"
+#include "crypter/BitMirror.h"
 #include "devicemock.h"
 #include "devicemonitoringserver.h"
 #include "test_runner.h"
@@ -25,16 +25,18 @@ void monitoringServerTest1()
     std::vector<uint8_t> newMeters;
     std::vector<unsigned int> expected;
     std::vector<Phase> raspisanie;
-    for (unsigned int i = 0; i < 100; ++i) {
+    for (uint8_t i = 0; i < 100; ++i) {
         
         newMeters.push_back(i);
         expected.push_back(2U);
-        raspisanie.push_back(Phase{i, i/2 });
+        if (i%3 == 0) raspisanie.push_back(Phase{i, i});
     }
     DeviceWorkSchedule const deviceWorkSchedule = {deviceId, raspisanie};
-    // server.setDeviceWorkSchedule(deviceWorkSchedule);
-    ASSERT(server.setCrypter("Mirror"));
-    ASSERT(device.setCrypter("Mirror"));
+    server.setDeviceWorkSchedule(deviceWorkSchedule);
+    ASSERT(server.addCrypter(new BitMirrorCrypter()));
+    ASSERT(device.addCrypter(new BitMirrorCrypter()));
+    ASSERT(server.setCrypter("BitMirror"));
+    ASSERT(device.setCrypter("BitMirror"));
     device.setMeterages(newMeters);
     // device.startMeterageSending();
 

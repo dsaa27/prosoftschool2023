@@ -4,6 +4,7 @@
 #include <handlers/abstractnewconnectionhandler.h>
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
+
 #include "messages.h"
 
 
@@ -114,4 +115,9 @@ void DeviceMonitoringServer::addDisconnectedHandler(AbstractConnection* conn)
 bool DeviceMonitoringServer::setCrypter(const std::string& name)
 {
     return (m_crypter.setCurrentCrypter(name));
+}
+
+bool DeviceMonitoringServer::addCrypter(BaseEncoderExecutor* crypter)
+{
+    return (m_crypter.addCrypter(crypter));
 }

@@ -49,6 +49,8 @@ public:
 
     bool setCrypter(const std::string& name);
 
+    bool addCrypter(BaseEncoderExecutor* crypter);
+
     std::vector<unsigned int> responces();
 
 private:

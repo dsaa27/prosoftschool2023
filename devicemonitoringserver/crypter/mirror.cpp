@@ -1,11 +1,13 @@
 #include "mirror.h"
+#include <iostream>
+#include <sstream>
 
 std::string MirrorCrypter::encode(const std::string& input) const {
-    return reflect(input);
+    return processString(input);
 }
 
 std::string MirrorCrypter::decode(const std::string& input) const {
-    return reflect(input);
+    return processString(input);
 }
 
 std::string MirrorCrypter::name() const {
@@ -16,21 +18,26 @@ std::string MirrorCrypter::name() const {
 std::string MirrorCrypter::reflect(const std::string& input) const {
     std::string output; 
     if (input.empty()) return output;
-    output.resize(input.length());
-    for (u_int i = 0; i < input.length(); ++i) {
-        unsigned int lobmys = 0;
-        unsigned int symbol = input[i];
-        
-        lobmys += (symbol & 0x80) >> 7;
-        lobmys += (symbol & 0x40) >> 5;
-        lobmys += (symbol & 0x20) >> 3;
-        lobmys += (symbol & 0x10) >> 1;
-        lobmys += (symbol & 0x08) << 1;
-        lobmys += (symbol & 0x04) << 3;
-        lobmys += (symbol & 0x02) << 5;
-        lobmys += (symbol & 0x01) << 7;
-        
-        output[i] = lobmys;
+    std::ostringstream out;
+    unsigned int int_input = std::stol(input); //получаем беззнаковый инт, который надо развернуть
+    
+    /*план следующий - брать остаток от деления на 10, потом делить, пока не ноль.
+    */
+    // std::vector<unsigned int> reorder;
+    while (int_input) {
+        out << (int_input%10);
+        int_input /= 10;
     }
-    return output;
+    return out.str();
+}
+
+std::string MirrorCrypter::processString(const std::string& input) const {
+    std::istringstream inpStream(input);
+    std::ostringstream out;
+    std::string tmp;
+    while (inpStream){
+        inpStream >> tmp;
+        out << reflect(tmp) << ' ';
+    }
+    return out.str();
 }

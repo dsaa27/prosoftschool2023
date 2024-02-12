@@ -26,7 +26,7 @@ MessageBase DeSerializer::ToMessage(const std::string& messageStr) {
         break;
     case MsgType::Error:
         stringy >> stage;
-        messageStruct.error = (static_cast<ErrType>(std::stoi(stage)));
+        messageStruct.error = (static_cast<ErrType>(std::stol(stage)));
         break;           
     default:
         break;
