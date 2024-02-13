@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <memory>
 
 /*!
  * \brief Параметры этапа.
@@ -21,5 +22,7 @@ struct DeviceWorkSchedule
     uint64_t deviceId = 0;       ///< Идентификатор устройства
     std::vector<Phase> schedule; ///< План работы устройства
 };
+
+typedef  std::shared_ptr<DeviceWorkSchedule> pDeviceWorkSchedule;
 
 #endif // DEVICEWORKSCHEDULE_H

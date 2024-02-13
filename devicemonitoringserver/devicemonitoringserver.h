@@ -2,6 +2,9 @@
 #define DEVICEMONITORINGSERVER_H
 
 #include "common.h"
+#include "messageserializator.h"
+#include "devicemock.h"
+#include "commandcenter.h"
 
 #include <cstdint>
 #include <string>
@@ -57,12 +60,17 @@ private:
      */
     void onDisconnected(uint64_t clientId);
 
+	std::map<uint64_t, DeviceInfo> getDevicesInfo();
+
+	std::set<pDeviceWorkSchedule> getDeviceWorkSchedules();
+
 private:
     void addMessageHandler(AbstractConnection* conn);
     void addDisconnectedHandler(AbstractConnection* conn);
 
 private:
     AbstractConnectionServer* m_connectionServer = nullptr;
+	CommandCenter commandCenter;
 };
 
 #endif // DEVICEMONITORINGSERVER_H

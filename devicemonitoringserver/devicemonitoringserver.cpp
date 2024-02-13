@@ -4,6 +4,8 @@
 #include <handlers/abstractnewconnectionhandler.h>
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
+#include <iostream>
+#include "preparingmessage.h"
 
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
     m_connectionServer(connectionServer)
@@ -29,9 +31,10 @@ DeviceMonitoringServer::~DeviceMonitoringServer()
     delete m_connectionServer;
 }
 
-void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
+void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule& deviceWorkSchedule)
 {
-    // TODO
+	pDeviceWorkSchedule pdeviceWorkSchedule(new DeviceWorkSchedule(deviceWorkSchedule));
+	commandCenter.addDeviceWorkSchedule(pdeviceWorkSchedule);
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -46,14 +49,26 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
+void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::string& message)
 {
-    // TODO
+	pMeterage meterage = std::static_pointer_cast<Meterage>(preparingmessages::depackMessage(message));
+	std::string answer = commandCenter.processMessage(message, deviceId);
+	sendMessage(deviceId, answer);
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
 {
-    // TODO, если нужен
+	// TODO, если нужен
+}
+
+std::map<uint64_t, DeviceInfo> DeviceMonitoringServer::getDevicesInfo()
+{
+	return commandCenter.getDevicesInfo();
+}
+
+std::set<pDeviceWorkSchedule> DeviceMonitoringServer::getDeviceWorkSchedules()
+{
+	return commandCenter.getDeviceWorkSchedules();
 }
 
 void DeviceMonitoringServer::onNewIncomingConnection(AbstractConnection* conn)

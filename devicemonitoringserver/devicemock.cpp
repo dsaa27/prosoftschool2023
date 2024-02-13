@@ -2,6 +2,8 @@
 #include <handlers/abstractaction.h>
 #include <handlers/abstractmessagehandler.h>
 #include <server/abstractclientconnection.h>
+#include "preparingmessage.h"
+#include <iostream>
 
 DeviceMock::DeviceMock(AbstractClientConnection* clientConnection) :
     m_clientConnection(clientConnection)
@@ -73,21 +75,19 @@ void DeviceMock::sendMessage(const std::string& message) const
     m_clientConnection->sendMessage(message);
 }
 
-void DeviceMock::onMessageReceived(const std::string& /*message*/)
+void DeviceMock::onMessageReceived(const std::string& message)
 {
-    // TODO: Разобрать std::string, прочитать команду,
-    // записать ее в список полученных комманд
-    sendNextMeterage(); // Отправляем следующее измерение
+	pAbstractMessage pMessage = preparingmessages::depackMessage(message);
+	m_messages.push_back(pMessage);
+	sendNextMeterage(); // Отправляем следующее измерение
 }
 
 void DeviceMock::onConnected()
 {
-    // TODO, если нужно
 }
 
 void DeviceMock::onDisconnected()
 {
-    // TODO, если нужно
 }
 
 void DeviceMock::setMeterages(std::vector<uint8_t> meterages)
@@ -97,15 +97,25 @@ void DeviceMock::setMeterages(std::vector<uint8_t> meterages)
 
 void DeviceMock::startMeterageSending()
 {
-    sendNextMeterage();
+	sendNextMeterage();
+}
+
+std::vector<pAbstractMessage> DeviceMock::getMessageHistory()
+{
+	return m_messages;
 }
 
 void DeviceMock::sendNextMeterage()
 {
-    if (m_timeStamp >= m_meterages.size())
-        return;
-    const auto meterage = m_meterages.at(m_timeStamp);
-    (void)meterage;
-    ++m_timeStamp;
-    // TODO: Сформировать std::string и передать в sendMessage
+	if (m_timeStamp >= m_meterages.size())
+		return;
+	const auto curMeterage = m_meterages.at(m_timeStamp);
+	Meterage message(curMeterage, m_timeStamp);
+
+	++m_timeStamp;
+	sendMessage(preparingmessages::packMessage(message));
+
+
+
 }
+

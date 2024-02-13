@@ -3,6 +3,7 @@
 #include <handlers/abstractaction.h>
 #include <handlers/abstractmessagehandler.h>
 
+#include <iostream>
 #include <cassert>
 
 namespace

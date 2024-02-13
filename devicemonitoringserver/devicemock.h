@@ -2,6 +2,8 @@
 #define DEVICE_H
 
 #include "common.h"
+#include "messageencoder.h"
+#include "messageserializator.h"
 
 #include <string>
 #include <vector>
@@ -44,6 +46,8 @@ public:
      */
     void startMeterageSending();
 
+	std::vector<pAbstractMessage> getMessageHistory();
+
 private:
     /*!
      * \brief Отправить следующее измерение.
@@ -65,12 +69,16 @@ private:
      * \brief Обработчик получения нового сообщения от сервера.
      * \param message - сообщение
      */
-    void onMessageReceived(const std::string& message);
+	void onMessageReceived(const std::string& message);
+
 
 private:
+	std::vector<pAbstractMessage> m_messages;
     AbstractClientConnection* m_clientConnection = nullptr;
     std::vector<uint8_t> m_meterages;
     uint64_t m_timeStamp = 0;
 };
+
+
 
 #endif // DEVICE_H
