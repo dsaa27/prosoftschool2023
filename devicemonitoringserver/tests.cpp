@@ -8,6 +8,8 @@
 
 //My include
 #include "messageSerializator.h"
+#include "encoderexecutor.h"
+#include "messageencoder.h"
 
 void monitoringServerTest1()
 {
@@ -64,6 +66,33 @@ void messageSerializatorTest() {
     ASSERT_EQUAL(static_cast<int>(msg_ptr_3->_error), static_cast<int>(ret_ptr_3->_error))
     delete ret_ptr_3; delete msg_ptr_3;
     
+}
+
+void messageEncoderTest() {
+    messageEncoder coder;
+    std::string rawStr = "Hello, World123.?!", decodedStr;
+
+    ASSERT(coder.chooseCoder("ROT3"))
+    decodedStr = coder.encrypt(rawStr);
+    decodedStr = coder.decrypt(decodedStr);
+    ASSERT_EQUAL(decodedStr, rawStr)
+
+
+    ASSERT(coder.chooseCoder("Mirror"))
+    decodedStr = coder.encrypt(rawStr);
+    decodedStr = coder.decrypt(decodedStr);
+    ASSERT_EQUAL(decodedStr, rawStr)
+
+    ASSERT(coder.chooseCoder("Multiply41"))
+    decodedStr = coder.encrypt(rawStr);
+    decodedStr = coder.decrypt(decodedStr);
+    ASSERT_EQUAL(decodedStr, rawStr)
+
+    ASSERT(coder.addCoder(new Multiply5))
+    ASSERT(coder.chooseCoder("Multiply5"))
+    decodedStr = coder.encrypt(rawStr);
+    decodedStr = coder.decrypt(decodedStr);
+    ASSERT_EQUAL(decodedStr, rawStr)
 }
 
 

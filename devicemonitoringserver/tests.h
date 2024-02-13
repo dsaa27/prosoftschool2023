@@ -13,6 +13,7 @@ void monitoringServerTest1();
 */
 
 void messageSerializatorTest();
+void messageEncoderTest();
 
 
 #endif // TESTS_H
