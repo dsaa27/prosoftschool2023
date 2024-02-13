@@ -1,6 +1,12 @@
 #include "messageencoder.h"
 
 
+MessageEncoder& MessageEncoder::Instance()
+{
+	static MessageEncoder messageEncoder;
+	return messageEncoder;
+}
+
 std::string MessageEncoder::Encode(const std::string& message) const
 {
 	return m_Algorithms->Encode(message);

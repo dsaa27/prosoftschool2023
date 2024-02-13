@@ -3,16 +3,12 @@
 #include <stdint.h>
 #include "abstractmessage.h"
 
-struct Command: AbstractMessage
+class Command: public AbstractMessage
 {
 public:
 	Command (const int8_t& adjustment = 0): m_adjustment(adjustment){}
-
 	std::string Serialize() const override final;
 	void Deserialize(std::istringstream&) override final;
-
-	void SetAdjustment(const int8_t&);
-
 	int8_t GetAdjustment() const;
 
 private:

@@ -4,6 +4,7 @@
 #include <handlers/abstractnewconnectionhandler.h>
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
+#include "preparingmessage.h"
 
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
     m_connectionServer(connectionServer)
@@ -48,9 +49,8 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
 
 void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::string& message)
 {
-	std::string decodeMessage = messageEncode.Decode(message); //Доделать
-	pAbstractMessage pMessage = MessageSerializator::Deserialize(decodeMessage);
-
+	//Доделать
+	pMeterage meterage = std::static_pointer_cast<Meterage>(preparingmessages::DepackMessage(message));
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)

@@ -26,15 +26,3 @@ uint64_t Meterage::getTimeStamp() const
 {
 	return m_timeStamp;
 }
-
-void Meterage::setMeterage(const uint8_t& meterage)
-{
-	m_meterage = meterage;
-}
-
-void Meterage::setTimeStamp(const uint64_t& timeStamp)
-{
-	m_timeStamp = timeStamp;
-}
-
-

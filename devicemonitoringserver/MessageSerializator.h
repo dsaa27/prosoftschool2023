@@ -1,8 +1,9 @@
 #ifndef MESSAGESERIALIZATOR_H
 #define MESSAGESERIALIZATOR_H
-#include "meterage.h"
-#include "error.h"
-#include "command.h"
+#include "message/meterage.h"
+#include "message/error.h"
+#include "message/command.h"
+#include "message/abstractmessage.h"
 #include <string>
 
 class MessageSerializator

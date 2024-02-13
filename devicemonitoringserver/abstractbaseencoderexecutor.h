@@ -2,7 +2,7 @@
 #define ABSTRACTBASEENCODEREXECUTOR_H
 #include <string>
 #include <memory>
-struct BaseEncoderExecutor
+class BaseEncoderExecutor
 {
 public:
 	virtual std::string Encode(const std::string&) const = 0;

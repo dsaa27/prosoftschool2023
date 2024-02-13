@@ -2,7 +2,7 @@
 #define ROT3_H
 #include "abstractbaseencoderexecutor.h"
 
-struct ROT3: BaseEncoderExecutor
+class ROT3: public BaseEncoderExecutor
 {
 public:
 	ROT3() : BaseEncoderExecutor("ROT3") {}

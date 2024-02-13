@@ -3,8 +3,9 @@
 #include <string>
 #include <sstream>
 #include <memory>
-struct AbstractMessage
+class AbstractMessage
 {
+public:
 	virtual std::string Serialize() const = 0;
 	virtual void Deserialize(std::istringstream&) = 0;
 };

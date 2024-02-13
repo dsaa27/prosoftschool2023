@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "abstractmessage.h"
 
-struct Meterage : public AbstractMessage
+class Meterage : public AbstractMessage
 {
 public:
 	Meterage(const uint8_t& meterage = 0, const uint64_t& timeStamp = 0):
@@ -15,9 +15,6 @@ public:
 
 	uint8_t getMeterage() const;
 	uint64_t getTimeStamp() const;
-
-	void setMeterage(const uint8_t&);
-	void setTimeStamp(const uint64_t&);
 
 private:
 	uint8_t m_meterage;

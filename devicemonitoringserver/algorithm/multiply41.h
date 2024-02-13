@@ -2,7 +2,7 @@
 #define MULTIPLY41_H
 #include "abstractbaseencoderexecutor.h"
 
-struct multiply41 : BaseEncoderExecutor
+class multiply41 : public BaseEncoderExecutor
 {
 public:
 	multiply41() : BaseEncoderExecutor("Multiply41") {}

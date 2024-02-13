@@ -9,7 +9,7 @@ enum ErrorType
 	Obsolete
 };
 
-struct Error: public AbstractMessage
+class Error: public AbstractMessage
 {
 public:
 	Error(const ErrorType& error = ErrorType::NoSchedule): m_errorType(error) {}
