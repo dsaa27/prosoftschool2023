@@ -2,7 +2,7 @@
 #include <limits>
 const int charLimit = std::numeric_limits<char>::max() + 1;
 
-std::string multiply41::Encode(const std::string& message) const
+std::string multiply41::encode(const std::string& message) const
 {
 	std::string result;
 
@@ -16,7 +16,7 @@ std::string multiply41::Encode(const std::string& message) const
 	return result;
 }
 
-std::string multiply41::Decode(const std::string& encodedMessage) const
+std::string multiply41::decode(const std::string& encodedMessage) const
 {
 	std::string result;
 
@@ -30,7 +30,7 @@ std::string multiply41::Decode(const std::string& encodedMessage) const
 	return result;
 }
 
-std::string multiply41::Name() const
+std::string multiply41::getName() const
 {
 	return name;
 }

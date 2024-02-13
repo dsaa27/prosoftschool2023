@@ -1,6 +1,6 @@
 #include "error.h"
 
-std::string Error::Serialize() const
+std::string Error::serialize() const
 {
 	std::string message = "error ";
 	switch (m_errorType) {
@@ -16,7 +16,7 @@ std::string Error::Serialize() const
 	return message;
 }
 
-void Error::Deserialize(std::istringstream& is)
+void Error::deserialize(std::istringstream& is)
 {
 	std::string strErrorType;
 	is >> strErrorType;
@@ -34,9 +34,25 @@ void Error::Deserialize(std::istringstream& is)
 	}
 }
 
-ErrorType Error::GetErrorType() const
+ErrorType Error::getErrorType() const
 {
 	return m_errorType;
+}
+
+bool Error::operator ==(const Error& error) const
+{
+	return this->getErrorType() == error.getErrorType();
+}
+
+bool Error::operator !=(const Error& error) const
+{
+	return !(this ->getErrorType() != error.getErrorType());
+}
+
+std::ostream &operator << (std::ostream& os, const Error& error)
+{
+	os << error.getErrorType();
+	return os;
 }
 
 

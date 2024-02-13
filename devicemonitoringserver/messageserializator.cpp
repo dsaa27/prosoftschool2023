@@ -1,11 +1,11 @@
 #include "messageserializator.h"
 
-std::string MessageSerializator::Serialize(const AbstractMessage& data)
+std::string MessageSerializator::serialize(const AbstractMessage& data)
 {
-	return data.Serialize();
+	return data.serialize();
 }
 
-pAbstractMessage MessageSerializator::Deserialize(const std::string& data)
+pAbstractMessage MessageSerializator::deserialize(const std::string& data)
 {
 	std::string messageType;
 	pAbstractMessage msg;
@@ -23,6 +23,6 @@ pAbstractMessage MessageSerializator::Deserialize(const std::string& data)
 	{
 		msg = pError(new Error());
 	}
-	msg->Deserialize(is);
+	msg->deserialize(is);
 	return msg;
 }

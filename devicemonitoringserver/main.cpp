@@ -9,8 +9,13 @@ int main()
     RUN_TEST(tr, safeObjectPointerTest);
     RUN_TEST(tr, connectionChannelTest);
     RUN_TEST(tr, clientServerTest);
-
-    // TODO: собственные тесты
-    RUN_TEST(tr, monitoringServerTest1);
+	RUN_TEST(tr, monitoringServerCommandTest);
+	RUN_TEST(tr, monitoringServerCommandTwoDevicesTest);
+	RUN_TEST(tr, monitoringServerNoTimeStampTest);
+	RUN_TEST(tr,monitoringServerNoScheduleTest);
+	RUN_TEST(tr, messageSerializatorSerializeTest);
+	RUN_TEST(tr, messageSerializatorDeserializeTest);
+	RUN_TEST(tr, messageEncoderEncodeROT3Test);
+	RUN_TEST(tr, messageEncoderDecodeROT3Test);
     return 0;
 }

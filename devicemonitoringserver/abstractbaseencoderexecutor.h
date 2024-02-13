@@ -5,9 +5,9 @@
 class BaseEncoderExecutor
 {
 public:
-	virtual std::string Encode(const std::string&) const = 0;
-	virtual std::string Decode(const std::string&) const = 0;
-	virtual std::string Name() const = 0;
+	virtual std::string encode(const std::string&) const = 0;
+	virtual std::string decode(const std::string&) const = 0;
+	virtual std::string getName() const = 0;
 	BaseEncoderExecutor(const std::string& name) : name(name) {};
 
 protected:

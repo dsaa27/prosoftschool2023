@@ -7,7 +7,7 @@
 
 namespace preparingmessages
 {
-	std::string PackMessage(const AbstractMessage&);
-	pAbstractMessage DepackMessage(const std::string&);
+	std::string packMessage(const AbstractMessage&);
+	pAbstractMessage depackMessage(const std::string&);
 };
 #endif // PREPARINGMESSAGES_H

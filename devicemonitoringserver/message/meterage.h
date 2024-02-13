@@ -10,14 +10,16 @@ public:
 		m_meterage(meterage),
 		m_timeStamp(timeStamp){}
 
-	std::string Serialize() const override final;
-	void Deserialize(std::istringstream&) override final;
+	std::string serialize() const override final;
+	void deserialize(std::istringstream&) override final;
 
 	uint8_t getMeterage() const;
 	uint64_t getTimeStamp() const;
 
+	bool operator ==(const Meterage&);
+
 private:
-	uint8_t m_meterage;
+	int m_meterage;
 	uint64_t m_timeStamp;
 };
 

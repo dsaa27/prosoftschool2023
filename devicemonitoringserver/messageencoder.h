@@ -10,17 +10,17 @@
 class MessageEncoder
 {
 public:
-	static MessageEncoder& Instance();
-	std::string Encode(const std::string&) const;
-	std::string Decode(const std::string&) const;
-	bool ChooseAlgorithm(const std::string&);
-	void RegisterAlgorithm(const pBaseEncoderExecutor&);
+	static MessageEncoder& instance();
+	std::string encode(const std::string&) const;
+	std::string decode(const std::string&) const;
+	bool chooseAlgorithm(const std::string&);
+	void registerAlgorithm(const pBaseEncoderExecutor&);
 
 private:
 	MessageEncoder()
 	{
-		RegisterAlgorithm(pBaseEncoderExecutor(new ROT3()));
-		RegisterAlgorithm(pBaseEncoderExecutor(new multiply41()));
+		registerAlgorithm(pBaseEncoderExecutor(new ROT3()));
+		registerAlgorithm(pBaseEncoderExecutor(new multiply41()));
 		m_Algorithms = m_EncryptionAlgorithms["ROT3"];
 	}
 	std::map<std::string, pBaseEncoderExecutor> m_EncryptionAlgorithms;

@@ -6,8 +6,8 @@
 class AbstractMessage
 {
 public:
-	virtual std::string Serialize() const = 0;
-	virtual void Deserialize(std::istringstream&) = 0;
+	virtual std::string serialize() const = 0;
+	virtual void deserialize(std::istringstream&) = 0;
 };
 
 typedef std::shared_ptr<AbstractMessage> pAbstractMessage;

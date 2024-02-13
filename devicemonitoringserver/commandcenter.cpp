@@ -4,14 +4,14 @@
 #include <numeric>
 #include <cmath>
 
-void CommandCenter::AddDeviceWorkSchedule(const pDeviceWorkSchedule& newDeviceWorkSchedule)
+void CommandCenter::addDeviceWorkSchedule(const pDeviceWorkSchedule& newDeviceWorkSchedule)
 {
 	m_DeviceWorkSchedules.insert(pDeviceWorkSchedule(newDeviceWorkSchedule));
 }
 
-int8_t CommandCenter::GetPlannedMeterage(const pMeterage& meterage, const pDeviceWorkSchedule& deviceWorkSchedule)
+int8_t CommandCenter::getPlannedMeterage(const pMeterage& meterage, const pDeviceWorkSchedule& deviceWorkSchedule) const
 {
-	uint8_t curTimeStamp = meterage->getTimeStamp();
+	uint64_t curTimeStamp = meterage->getTimeStamp();
 	for (auto phase : deviceWorkSchedule->schedule)
 	{
 		if (phase.timeStamp == curTimeStamp)
@@ -22,7 +22,7 @@ int8_t CommandCenter::GetPlannedMeterage(const pMeterage& meterage, const pDevic
 	return -1;
 }
 
-float CommandCenter::CalculateMeanSquaredDeviation(const uint64_t& deviceId)
+float CommandCenter::calculateMeanSquaredDeviation(const uint64_t& deviceId)
 {
 	uint8_t countMeterage = m_DevicesInfo[deviceId].m_meterages.size();
 	std::vector<uint8_t> meterages = m_DevicesInfo[deviceId].m_meterages;
@@ -40,26 +40,32 @@ float CommandCenter::CalculateMeanSquaredDeviation(const uint64_t& deviceId)
 
 }
 
-int8_t CommandCenter::CalculateAdjustment(const pMeterage& meterage, const uint8_t& plannedMeterage)
+int8_t CommandCenter::calculateAdjustment(const pMeterage& meterage, const uint8_t& plannedMeterage) const
 {
 	return plannedMeterage - meterage->getMeterage();
 }
 
-void CommandCenter::UpdateMeterageHistory(const pMeterage& meterage, const uint64_t& deviceId)
+std::map<uint64_t, DeviceInfo> CommandCenter::getDevicesInfo() const
+{
+	return m_DevicesInfo;
+}
+
+std::set<pDeviceWorkSchedule> CommandCenter::getDeviceWorkSchedules() const
+{
+	return m_DeviceWorkSchedules;
+}
+
+void CommandCenter::updateMeterageHistory(const pMeterage& meterage, const uint64_t& deviceId)
 {
 	m_DevicesInfo[deviceId].m_meterages.push_back(meterage->getMeterage());
 }
 
-bool CommandCenter::CheckValidityTimeStamp(const pMeterage& meterage, const uint64_t& deviceId)
+bool CommandCenter::checkValidityTimeStamp(const pMeterage& meterage, const uint64_t& deviceId)
 {
-	if (meterage->getTimeStamp() == m_DevicesInfo[deviceId].m_meterages.size())
-	{
-		return true;
-	}
-	return false;
+	return (meterage->getTimeStamp() == m_DevicesInfo[deviceId].m_meterages.size());
 }
 
-pDeviceWorkSchedule CommandCenter::GetDeviceWorkSchedule(const uint64_t& deviceId)
+pDeviceWorkSchedule CommandCenter::getDeviceWorkSchedule(const uint64_t& deviceId) const
 {
 	for (pDeviceWorkSchedule deviceWorkSchedule : m_DeviceWorkSchedules)
 	{
@@ -71,41 +77,37 @@ pDeviceWorkSchedule CommandCenter::GetDeviceWorkSchedule(const uint64_t& deviceI
 	return nullptr;
 }
 
-std::string CommandCenter::ProcessMessage(const std::string& message, const uint64_t& deviceId)
+std::string CommandCenter::processMessage(const std::string& message, const uint64_t& deviceId)
 {
-	pMeterage meterage = std::static_pointer_cast<Meterage>(preparingmessages::DepackMessage(message));
-	if (!CheckValidityTimeStamp(meterage, deviceId))
+	pMeterage meterage =
+		std::static_pointer_cast<Meterage>(preparingmessages::depackMessage(message));
+	if (!checkValidityTimeStamp(meterage, deviceId))
 	{
 		Error error(ErrorType::Obsolete);
-		return preparingmessages::PackMessage(error);
+		return preparingmessages::packMessage(error);
 	}
 
-	UpdateMeterageHistory(meterage, deviceId);
+	updateMeterageHistory(meterage, deviceId);
 
 
-	pDeviceWorkSchedule deviceWorkSchedule = GetDeviceWorkSchedule(deviceId);
+	pDeviceWorkSchedule deviceWorkSchedule = getDeviceWorkSchedule(deviceId);
 	if (!deviceWorkSchedule)
 	{
 		Error error(ErrorType::NoSchedule);
-		return preparingmessages::PackMessage(error);
+		return preparingmessages::packMessage(error);
 	}
 
-	int8_t planndeMeterage = GetPlannedMeterage(meterage, deviceWorkSchedule);
-	if (!planndeMeterage)
+	int8_t planndeMeterage = getPlannedMeterage(meterage, deviceWorkSchedule);
+	if (planndeMeterage == -1)
 	{
 		Error error(ErrorType::NoTimestamp);
-		return preparingmessages::PackMessage(error);
+		return preparingmessages::packMessage(error);
 	}
 
-	m_DevicesInfo[deviceId].m_MeanSquaredDeviation[meterage->getTimeStamp()] = CalculateMeanSquaredDeviation(deviceId);
+	uint64_t timeStamp = meterage->getTimeStamp();
+	std::map<uint64_t, float> &msd = m_DevicesInfo[deviceId].m_MeanSquaredDeviation;
+	msd[timeStamp] = calculateMeanSquaredDeviation(deviceId);
 
-	Command command(CalculateAdjustment(meterage, planndeMeterage));
-	return preparingmessages::PackMessage(command);
-
-
-
+	Command command(calculateAdjustment(meterage, planndeMeterage));
+	return preparingmessages::packMessage(command);
 }
-
-
-
-

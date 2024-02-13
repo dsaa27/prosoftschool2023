@@ -3,7 +3,7 @@
 
 const int charLimit = std::numeric_limits<char>::max() + 1;
 
-std::string ROT3::Encode(const std::string& message) const
+std::string ROT3::encode(const std::string& message) const
 {
 
 	std::string result;
@@ -18,7 +18,7 @@ std::string ROT3::Encode(const std::string& message) const
 	return result;
 }
 
-std::string ROT3::Decode(const std::string& encodedMessage) const
+std::string ROT3::decode(const std::string& encodedMessage) const
 {
 	std::string result;
 
@@ -32,7 +32,7 @@ std::string ROT3::Decode(const std::string& encodedMessage) const
 	return result;
 }
 
-std::string ROT3::Name() const
+std::string ROT3::getName() const
 {
 	return name;
 }

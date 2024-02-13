@@ -1,16 +1,15 @@
 #include "meterage.h"
 
-std::string Meterage::Serialize() const
+std::string Meterage::serialize() const
 {
 	std::ostringstream os;
-	os << "metrage"
+	os << "meterage"
 	   << " " << m_meterage
-	   << " " << m_timeStamp
-	   << std::endl;
+	   << " " << m_timeStamp;
 	return os.str();
 }
 
-void Meterage::Deserialize(std::istringstream& is)
+void Meterage::deserialize(std::istringstream& is)
 {
 	uint8_t meterage;
 	uint64_t timeStamp;
@@ -25,4 +24,10 @@ uint8_t Meterage::getMeterage() const
 uint64_t Meterage::getTimeStamp() const
 {
 	return m_timeStamp;
+}
+
+bool Meterage::operator ==(const Meterage& meterage)
+{
+	return (this->getMeterage() == meterage.getMeterage()) && (this->getTimeStamp() == meterage.getTimeStamp());
+
 }

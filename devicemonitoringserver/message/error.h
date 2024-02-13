@@ -14,10 +14,14 @@ class Error: public AbstractMessage
 public:
 	Error(const ErrorType& error = ErrorType::NoSchedule): m_errorType(error) {}
 
-	std::string Serialize()const override final;
-	void Deserialize(std::istringstream&) override final;
+	std::string serialize()const override final;
+	void deserialize(std::istringstream&) override final;
 
-	ErrorType GetErrorType() const;
+	ErrorType getErrorType() const;
+
+	bool operator ==(const Error&) const;
+	bool operator !=(const Error&) const;
+	friend std::ostream &operator << (std::ostream&, const Error&);
 
 private:
 	ErrorType m_errorType;

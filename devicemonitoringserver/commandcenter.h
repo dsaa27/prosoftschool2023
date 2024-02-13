@@ -19,16 +19,19 @@ struct DeviceInfo
 class CommandCenter
 {
 public:
-	void AddDeviceWorkSchedule(const pDeviceWorkSchedule&);
-	std::string ProcessMessage(const std::string&, const uint64_t&);
+	CommandCenter() = default;
+	void addDeviceWorkSchedule(const pDeviceWorkSchedule&);
+	std::string processMessage(const std::string&, const uint64_t&);
+	std::map<uint64_t, DeviceInfo> getDevicesInfo() const;
+	std::set<pDeviceWorkSchedule> getDeviceWorkSchedules() const;
 
 private:
-	void UpdateMeterageHistory(const pMeterage&, const uint64_t&);
-	bool CheckValidityTimeStamp(const pMeterage&, const uint64_t&);
-	pDeviceWorkSchedule GetDeviceWorkSchedule(const uint64_t&);
-	int8_t GetPlannedMeterage(const pMeterage&, const pDeviceWorkSchedule&);
-	float CalculateMeanSquaredDeviation(const uint64_t&);
-	int8_t CalculateAdjustment(const pMeterage&, const uint8_t&);
+	void updateMeterageHistory(const pMeterage&, const uint64_t&);
+	bool checkValidityTimeStamp(const pMeterage&, const uint64_t&);
+	pDeviceWorkSchedule getDeviceWorkSchedule(const uint64_t&) const;
+	int8_t getPlannedMeterage(const pMeterage&, const pDeviceWorkSchedule&) const;
+	float calculateMeanSquaredDeviation(const uint64_t&);
+	int8_t calculateAdjustment(const pMeterage&, const uint8_t&) const;
 
 private:
 	std::map<uint64_t, DeviceInfo> m_DevicesInfo;

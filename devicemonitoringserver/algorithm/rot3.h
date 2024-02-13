@@ -6,9 +6,9 @@ class ROT3: public BaseEncoderExecutor
 {
 public:
 	ROT3() : BaseEncoderExecutor("ROT3") {}
-	std::string Encode(const std::string &) const override final;
-	std::string Decode(const std::string &) const override final;
-	std::string Name() const override final;
+	std::string encode(const std::string &) const override final;
+	std::string decode(const std::string &) const override final;
+	std::string getName() const override final;
 };
 
 #endif // ROT3_H

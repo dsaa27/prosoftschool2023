@@ -5,6 +5,13 @@
 /*!
  * \brief Тест сервера.
  */
-void monitoringServerTest1();
-
+void messageSerializatorSerializeTest();
+void messageSerializatorDeserializeTest();
+void monitoringServerCommandTest();
+void monitoringServerNoScheduleTest();
+void monitoringServerNoTimeStampTest();
+void monitoringServerCommandTwoDevicesTest();
+void messageEncoderEncodeROT3Test();
+void messageEncoderDecodeROT3Test();
+void ROT3Test();
 #endif // TESTS_H

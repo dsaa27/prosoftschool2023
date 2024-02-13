@@ -46,6 +46,8 @@ public:
      */
     void startMeterageSending();
 
+	std::vector<pAbstractMessage> getMessageHistory();
+
 private:
     /*!
      * \brief Отправить следующее измерение.
@@ -68,6 +70,8 @@ private:
      * \param message - сообщение
      */
 	void onMessageReceived(const std::string& message);
+
+
 private:
 	std::vector<pAbstractMessage> m_messages;
     AbstractClientConnection* m_clientConnection = nullptr;

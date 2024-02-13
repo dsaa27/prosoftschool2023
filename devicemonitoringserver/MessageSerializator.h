@@ -9,8 +9,8 @@
 class MessageSerializator
 {
 public:
-	static std::string Serialize(const AbstractMessage& data);
-	static pAbstractMessage Deserialize(const std::string& data);
+	static std::string serialize(const AbstractMessage& data);
+	static pAbstractMessage deserialize(const std::string& data);
 };
 
 #endif // MESSAGESERIALIZATOR_H

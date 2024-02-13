@@ -2,12 +2,12 @@
 #include "messageencoder.h"
 #include "messageserializator.h"
 
-std::string preparingmessages::PackMessage(const AbstractMessage& message)
+std::string preparingmessages::packMessage(const AbstractMessage& message)
 {
-	return MessageEncoder::Instance().Encode(MessageSerializator::Serialize(message));
+	return MessageEncoder::instance().encode(MessageSerializator::serialize(message));
 }
 
-pAbstractMessage preparingmessages::DepackMessage(const std::string& message)
+pAbstractMessage preparingmessages::depackMessage(const std::string& message)
 {
-	return MessageSerializator::Deserialize(MessageEncoder::Instance().Decode(message));
+	return MessageSerializator::deserialize(MessageEncoder::instance().decode(message));
 }
