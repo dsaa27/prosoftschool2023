@@ -2,6 +2,7 @@
 #define ABSTRACTMESSAGE_H
 
 #include <string>
+#include <sstream>
 
 class AbstractMessage
 {
@@ -30,7 +31,6 @@ public:
 	MessageType getMessageType() const { return m_type; }
 	
 	virtual std::string messageToString() const = 0;
-	virtual ~AbstractMessage() = default;
 
 protected:
 
@@ -40,10 +40,6 @@ protected:
 	const MessageType m_type = MessageType::None;
 };
 
-std::ostream& operator<<(std::ostream& out, const AbstractMessage& msg)
-{
-	out << msg.messageToString();
-	return out;
-}
+std::ostream& operator<<(std::ostream& out, const AbstractMessage& msg);
 
 #endif /* ABSTRACTMESSAGE_H */

@@ -2,7 +2,6 @@
 #define ERRORMESSAGE_H
 
 #include "abstractmessage.h"
-#include "sstream"
 
 class ErrorMessage final : public AbstractMessage
 {
@@ -21,6 +20,7 @@ public:
 	{}
 
 	std::string messageToString() const override;
+    ErrorType getErrorType() const;
 
 private:
 	const ErrorType m_errorType;

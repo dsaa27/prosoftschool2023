@@ -9,17 +9,18 @@
 
 class Encoder
 {
+public:
 	const std::string decode(const std::string& message);
 	const std::string encode(const std::string& message);
 
 	bool algorithmSettedUp() const;
 	bool algorithmExist(std::string str_alg) const;
 	bool algorithmSet(std::string str_alg);
-	bool algorithmAdd(BaseEncoderExecutor* alg);
+	bool algorithmRegister(BaseEncoderExecutor* alg);
 
 	Encoder()
 	{
-		algorithmAdd(new Rot3Crypt());
+		algorithmRegister(new Rot3Crypt());
 	}
 
 private:

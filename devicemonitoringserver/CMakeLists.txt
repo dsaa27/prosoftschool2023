@@ -7,7 +7,8 @@ FILE(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.
 				  ${CMAKE_CURRENT_SOURCE_DIR}/servermock/*.h ${CMAKE_CURRENT_SOURCE_DIR}/servermock/*.cpp
                   ${CMAKE_CURRENT_SOURCE_DIR}/message/*.h ${CMAKE_CURRENT_SOURCE_DIR}/message/*.cpp
                   ${CMAKE_CURRENT_SOURCE_DIR}/cryptographer/algorithms/*.h ${CMAKE_CURRENT_SOURCE_DIR}/cryptographer/algorithms/*.cpp
-                  ${CMAKE_CURRENT_SOURCE_DIR}/cryptographer/encoder/*.h ${CMAKE_CURRENT_SOURCE_DIR}/cryptographer/encoder/*.cpp)
+                  ${CMAKE_CURRENT_SOURCE_DIR}/cryptographer/encoder/*.h ${CMAKE_CURRENT_SOURCE_DIR}/cryptographer/encoder/*.cpp
+                  ${CMAKE_CURRENT_SOURCE_DIR}/cryptographer/serializer/*.h ${CMAKE_CURRENT_SOURCE_DIR}/serializer/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

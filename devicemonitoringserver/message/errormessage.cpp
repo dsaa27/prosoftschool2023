@@ -16,5 +16,11 @@ std::string ErrorMessage::messageToString() const
 		stream << "NoTimestamp";
 		break;
 	}
-	return
+
+    return stream.str();
+}
+
+ErrorMessage::ErrorType ErrorMessage::getErrorType() const
+{
+    return m_errorType;
 }

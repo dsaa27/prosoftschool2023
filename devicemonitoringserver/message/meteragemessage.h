@@ -2,7 +2,6 @@
 #define METERAGEMESSAGE_H
 
 #include "abstractmessage.h"
-#include "sstream"
 
 class MeterageMessage final : public AbstractMessage
 {
@@ -15,6 +14,8 @@ public:
 	{}
 
 	std::string messageToString() const override;
+    uint64_t getTimeStamp() const;
+    uint8_t getMeterage() const;
 
 private:
 	const uint64_t m_timeStamp = 0;

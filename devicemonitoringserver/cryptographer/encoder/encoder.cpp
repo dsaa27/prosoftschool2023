@@ -2,12 +2,12 @@
 
 const std::string Encoder::decode(const std::string& message)
 {
-	m_currentAlgorithm->decode(message);
+	return m_currentAlgorithm->decode(message);
 }
 
 const std::string Encoder::encode(const std::string& message)
 {
-	m_currentAlgorithm->encode(message);
+	return m_currentAlgorithm->encode(message);
 }
 
 bool Encoder::algorithmExist(std::string str_alg) const
@@ -19,12 +19,12 @@ bool Encoder::algorithmExist(std::string str_alg) const
 
 bool Encoder::algorithmSet(std::string str_alg)
 {
-	if (algorithmExist(str_alg)) return false;
+	if (!algorithmExist(str_alg)) return false;
 	m_currentAlgorithm = m_algorithmMap[str_alg];
 	return true;
 }
 
-bool Encoder::algorithmAdd(BaseEncoderExecutor* alg)
+bool Encoder::algorithmRegister(BaseEncoderExecutor* alg)
 {
 	if (alg == nullptr) return false;
 	m_algorithmMap[alg->name()] = alg;
