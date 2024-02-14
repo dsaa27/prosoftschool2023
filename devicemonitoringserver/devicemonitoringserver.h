@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <string>
+#include <commandcenter/commandcenter.h>
 
 struct DeviceWorkSchedule;
 class AbstractConnectionServer;
@@ -63,6 +64,9 @@ private:
 
 private:
     AbstractConnectionServer* m_connectionServer = nullptr;
+    Encoder m_encoder;
+    Serializer m_serializer;
+    CommandCenter m_commandCenter;
 };
 
 #endif // DEVICEMONITORINGSERVER_H

@@ -16,5 +16,7 @@ int main()
     RUN_TEST(tr, serializeTestMeterage);
     RUN_TEST(tr, serializeTestCommand);
     RUN_TEST(tr, monitoringServerTest1);
+    RUN_TEST(tr, monitoringServerNoScheduleTest);
+    RUN_TEST(tr, monitoringServerNoTimestampTest);
     return 0;
 }

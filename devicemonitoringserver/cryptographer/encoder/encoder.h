@@ -21,6 +21,13 @@ public:
 	Encoder()
 	{
 		algorithmRegister(new Rot3Crypt());
+
+		algorithmSet(CryptAlgDefault());
+	}
+
+	std::string CryptAlgDefault()
+	{
+         return "ROT3";
 	}
 
 private:

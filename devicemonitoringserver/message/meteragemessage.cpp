@@ -7,7 +7,7 @@ std::string MeterageMessage::messageToString() const
     return stream.str();
 }
 
-uint64_t MeterageMessage::getTimeStamp() const
+uint64_t MeterageMessage::getTimestamp() const
 {
     return m_timeStamp;
 }

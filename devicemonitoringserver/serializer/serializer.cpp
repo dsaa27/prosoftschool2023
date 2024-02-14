@@ -67,7 +67,7 @@ std::string Serializer::serialize(const AbstractMessage* message)
     {
         const MeterageMessage* msgTemp = dynamic_cast<const MeterageMessage*>(message);
         stream << static_cast<unsigned int>(msgTemp->getMeterage()) << ' ';
-        stream << msgTemp->getTimeStamp();
+        stream << msgTemp->getTimestamp();
     }
     break;
 

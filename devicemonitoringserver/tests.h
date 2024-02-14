@@ -4,9 +4,11 @@
 // TODO: собственные тесты
 
 void encodeTest1();
+void monitoringServerNoScheduleTest();
 void serializeTestMeterage();
 void serializeTestError();
 void serializeTestCommand();
+void monitoringServerNoTimestampTest();
 /*!
  * \brief Тест сервера.
  */

@@ -13,7 +13,7 @@ std::string ErrorMessage::messageToString() const
 		stream << "NoTimestamp";
 		break;
 	case ErrorType::Obsolete:
-		stream << "NoTimestamp";
+		stream << "Obsolete";
 		break;
 	}
 

@@ -14,7 +14,7 @@ public:
 	{}
 
 	std::string messageToString() const override;
-    uint64_t getTimeStamp() const;
+    uint64_t getTimestamp() const;
     uint8_t getMeterage() const;
 
 private:
