@@ -18,10 +18,10 @@ std::string MirrorCrypter::name() const {
 }
 
 int MirrorCrypter::reflect(int int_input) const {
-    if (int_input / 10 == 0) return int_input; //число с одним разрядом есть зеркало самого себя
+    if (int_input / 10 == 0) return int_input; //С‡РёСЃР»Рѕ СЃ РѕРґРЅРёРј СЂР°Р·СЂСЏРґРѕРј РµСЃС‚СЊ Р·РµСЂРєР°Р»Рѕ СЃР°РјРѕРіРѕ СЃРµР±СЏ
     std::vector<int> temp;
-    int out;
-    /*план следующий - брать остаток от деления на 10, потом делить, пока не ноль.
+    int out = 0;
+    /*РїР»Р°РЅ СЃР»РµРґСѓСЋС‰РёР№ - Р±СЂР°С‚СЊ РѕСЃС‚Р°С‚РѕРє РѕС‚ РґРµР»РµРЅРёСЏ РЅР° 10, РїРѕС‚РѕРј РґРµР»РёС‚СЊ, РїРѕРєР° РЅРµ РЅРѕР»СЊ.
     */
     // std::vector<unsigned int> reorder;
     while (int_input) {
@@ -42,11 +42,23 @@ std::string MirrorCrypter::processString(const std::string& input) const {
     std::ostringstream out;
     std::string tmp;
     int tmp_int = 0;
-    while (inpStream){
+    int test_int = 0;
+    bool naiveCheck = false;
+    while (inpStream) {
         inpStream >> tmp;
+        if (tmp.empty()) break;
         tmp_int = std::stol(tmp);
-        out << reflect(tmp_int) << ' ';
+        test_int = reflect(tmp_int);
+        if (naiveCheck) {
+            out << ' ' << reflect(tmp_int);
+        } else {
+            out << reflect(tmp_int);
+        }            
+        naiveCheck = true;
+        tmp.clear();
     }
+    // std::string tmp2 = out.str();
     out << std::endl;
+    std::string tmp2 = out.str();
     return out.str();
 }

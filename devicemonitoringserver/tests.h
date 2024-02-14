@@ -12,15 +12,12 @@ void monitoringServerTest1();
  */
 void EncoderTest();
 
+void serialiserTest();
+
 /*!
  * \brief Тест добавления шифровщика и переключения на него.
  */
 void addEncoderTest();
-
-/*!
- * \brief Тест преобразования с строку и обратно.
- */
-void serialiserTest();
 
 /*!
  * \brief Тест подключения нескольких устройств.
@@ -30,6 +27,6 @@ void severalDeviceTest();
 /*!
  * \brief Тест всех .
  */
-void servAnswerTest();
+void commandCenterTest();
 
 #endif // TESTS_H

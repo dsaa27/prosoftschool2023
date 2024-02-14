@@ -15,6 +15,7 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
     if (mapOfDevices.find(deviceId) == mapOfDevices.end()) { //probbaly not neccesary check of device existance in com center
         DeviceWorkSchedule newDevSchedule;
         newDevSchedule.deviceId = deviceId;
+        newDevSchedule.schedule.clear();
         addDevice(newDevSchedule); // so - add new device with empty schedule
         
         mapOfDevices[deviceId]->lastValidTime = messageStruct.data.timeStamp;
@@ -25,7 +26,7 @@ MessageBase CommandCenter::acceptMessage(uint64_t deviceId,
     }
 
     DeviceInfo *device = mapOfDevices[deviceId];
-    if (device->devWorkSched.schedule.empty()) {
+    if (device->devWorkSched.schedule.size() == 0) {
         messageOut.MessageType = MsgType::Error;
         messageOut.error = ErrType::NoSchedule;
         device->lastValidTime = messageStruct.data.timeStamp;                            

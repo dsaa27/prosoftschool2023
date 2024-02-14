@@ -95,6 +95,8 @@ void DeviceMock::onMessageReceived(const std::string& message)
 void DeviceMock::onConnected()
 {
     // TODO, если нужно
+    m_timeStamp = 0;
+    m_commandLog = {};
 }
 
 void DeviceMock::onDisconnected()

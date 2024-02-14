@@ -9,16 +9,26 @@
 */
 
 std::string ROT3Crypter::encode(const std::string& input) const 
-
+{
     std::istringstream inpStream(input);
     std::ostringstream out;
     std::string tmp;
     int tmp_int = 0;
-    while (inpStream){
+    out.clear();
+    bool naiveCheck = false;
+    while (inpStream) {
         inpStream >> tmp;
-        tmp_int = std::stol(tmp);
-        tmp_int += 3;
-        out << tmp_int << ' ';
+        if (tmp.empty()) break;
+        for(int i = 0; i<tmp.length(); ++i) {
+            tmp[i] += 3;
+        }
+        if (naiveCheck) {
+            out << ' ' << tmp;
+        } else {
+            out << tmp;
+        }            
+        naiveCheck = true;
+        tmp.clear();
     }
     out << std::endl;
     return out.str();
@@ -30,32 +40,27 @@ std::string ROT3Crypter::decode(const std::string& input) const {
     std::ostringstream out;
     std::string tmp;
     int tmp_int = 0;
-    while (inpStream){
+    bool naiveCheck = false;
+    while (inpStream) {
         inpStream >> tmp;
-        tmp_int = std::stol(tmp);
-        tmp_int -= 3;
-        out << tmp_int << ' ';
+        if (tmp.empty()) break;
+
+        for(int i = 0; i<tmp.length(); ++i) {
+            tmp[i] -= 3;
+        }
+        if (naiveCheck) {
+            out << ' ' << tmp;
+        } else {
+            out << tmp;
+        }
+        naiveCheck = true;
+        tmp.clear();
     }
     out << std::endl;
     return out.str();
-
 }
 
 std::string ROT3Crypter::name() const {
     
-    return "ROT3"; //is it OK or is it implicit conversion
+    return std::string("ROT3"); 
 }
-
-/*
-    std::istringstream inpStream(input);
-    std::ostringstream out;
-    std::string tmp;
-    int tmp_int = 0;
-    while (inpStream){
-        inpStream >> tmp;
-        tmp_int = std::stol(tmp);
-        tmp_int -= 3;
-        out << reflect(tmp_int) << ' ';
-    }
-    return out.str();
-*/
