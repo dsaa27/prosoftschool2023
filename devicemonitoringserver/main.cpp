@@ -23,5 +23,6 @@ int main()
     RUN_TEST(tr, monitoringServerNoTimestampTest);
     RUN_TEST(tr, commandCenterDeviationControl1);
     RUN_TEST(tr, commandCenterDeviationControl2);
+    RUN_TEST(tr, serverFewDevice);
     return 0;
 }

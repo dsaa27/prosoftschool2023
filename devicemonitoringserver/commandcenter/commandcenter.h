@@ -36,15 +36,7 @@ public:
     bool addDevice(const DeviceWorkSchedule& schedule);
     bool removeDevice(uint64_t deviceId);
     DeviceInfo getDeviceInfo(uint64_t deviceId);
-    float getStdDevation(uint64_t deviceId)
-    {
-        if (m_devices.count(deviceId) == 0 || m_devices[deviceId].phaseInfo.stdDeviation.size() < 2)
-            return 0;
-        std::vector<uint16_t>* stdDev = &m_devices[deviceId].phaseInfo.stdDeviation;
-        uint64_t sum = std::accumulate((*stdDev).begin(), (*stdDev).end(), 0);
-        size_t size = m_devices[deviceId].phaseInfo.stdDeviation.size();
-        return sqrtf(static_cast<float>(sum) / (size - 1));
-    }
+    float getStdDevation(uint64_t deviceId);
 
 private:
     std::map<uint64_t, DeviceInfo> m_devices;

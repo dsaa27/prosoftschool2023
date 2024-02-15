@@ -82,3 +82,13 @@ CommandCenter::DeviceInfo CommandCenter::getDeviceInfo(uint64_t deviceId)
         return DeviceInfo();
     return m_devices[deviceId];
 }
+
+float CommandCenter::getStdDevation(uint64_t deviceId)
+{
+    if (m_devices.count(deviceId) == 0 || m_devices[deviceId].phaseInfo.stdDeviation.size() < 2)
+        return 0;
+    std::vector<uint16_t>* stdDev = &m_devices[deviceId].phaseInfo.stdDeviation;
+    uint64_t sum = std::accumulate((*stdDev).begin(), (*stdDev).end(), 0);
+    size_t size = m_devices[deviceId].phaseInfo.stdDeviation.size();
+    return sqrtf(static_cast<float>(sum) / (size - 1));
+}

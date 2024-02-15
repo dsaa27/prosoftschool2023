@@ -14,6 +14,7 @@ void monitoringServerNoTimestampTest();
 void monitoringServerNoScheduleTest();
 void commandCenterDeviationControl1();
 void commandCenterDeviationControl2();
+void serverFewDevice();
 /*!
  * \brief Тест сервера.
  */

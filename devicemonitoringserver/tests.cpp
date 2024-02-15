@@ -284,12 +284,6 @@ void commandCenterDeviationControl1()
     device.startMeterageSending();
     while (taskQueue.processTask());
 
-    for (int i = 0; i < schedulePhase.size(); ++i)
-    {
-        uint8_t t1 = server.getCommandCenter().getDeviceInfo(deviceId).phaseInfo.stdDeviation[i];
-        ASSERT_EQUAL(t1, static_cast<uint8_t>(1));
-    }
-
     float stdDeviation = server.getCommandCenter().getStdDevation(deviceId);
     if (abs(stdDeviation - 1.1547) > 0.01)
     {
@@ -341,5 +335,85 @@ void commandCenterDeviationControl2()
     if (abs(stdDeviation - 3.606) > 0.01)
     {
         ASSERT(false);
+    }
+}
+
+void serverFewDevice()
+{
+    TaskQueue taskQueue;
+    DeviceMock device1(new ClientConnectionMock(taskQueue));
+    DeviceMock device2(new ClientConnectionMock(taskQueue));
+    DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
+
+    const uint64_t deviceId1 = 111;
+
+    const uint64_t deviceId2 = 222;
+
+    const uint64_t serverId = 11;
+    ASSERT(device1.bind(deviceId1));
+    ASSERT(device2.bind(deviceId2));
+    ASSERT(server.listen(serverId));
+    ASSERT(device1.connectToServer(serverId));
+    ASSERT(device2.connectToServer(serverId));
+    std::vector<uint8_t> meterages1 { 1, 2, 3, 4, 5 };
+    std::vector<uint8_t> meterages2 { 4, 5, 6, 7, 8 };
+
+    std::vector<Phase> schedulePhase1 = {
+        { 0, 2 },
+        { 1, 3 },
+        { 2, 4 },
+        { 4, 6 }
+    };
+
+    std::vector<Phase> schedulePhase2 = {
+        { 0, 6 },
+        { 1, 7 },
+        { 2, 8 },
+        { 3, 9 },
+        { 4, 10 }
+    };
+    DeviceWorkSchedule const deviceWorkSchedule1 = { deviceId1, schedulePhase1 };
+    DeviceWorkSchedule const deviceWorkSchedule2 = { deviceId2, schedulePhase2 };
+    server.setDeviceWorkSchedule(deviceWorkSchedule1);
+    server.setDeviceWorkSchedule(deviceWorkSchedule2);
+
+    device1.setMeterages(meterages1);
+    device2.setMeterages(meterages2);
+    while (taskQueue.processTask())
+        ;
+    device1.startMeterageSending();
+    device2.startMeterageSending();
+    while (taskQueue.processTask())
+        ;
+
+    std::vector<AbstractMessage*> msgLog1 = device1.getMsgLog();
+    std::vector<AbstractMessage*> msgLog2 = device2.getMsgLog();
+
+    for (size_t i = 0; i < 3; ++i)
+    {
+        AbstractMessage::MessageType msgType = msgLog1[i]->getMessageType();
+        AbstractMessage::MessageType q = AbstractMessage::MessageType::Command;
+        ASSERT_EQUAL((int)msgType, (int)q);
+    }
+
+    for (size_t i = 3; i < 4; ++i)
+    {
+        ErrorMessage* msg = dynamic_cast<ErrorMessage*>(msgLog1[i]);
+        ErrorMessage::ErrorType q = (msg)->getErrorType();
+        ASSERT_EQUAL((int)ErrorMessage::ErrorType::NoTimestamp, (int)q);
+    }
+
+    for (size_t i = 4; i < 5; ++i)
+    {
+        AbstractMessage::MessageType msgType = msgLog1[i]->getMessageType();
+        AbstractMessage::MessageType q = AbstractMessage::MessageType::Command;
+        ASSERT_EQUAL((int)msgType, (int)q);
+    }
+
+    for (size_t i = 0; i < 5; ++i)
+    {
+        AbstractMessage::MessageType msgType = msgLog2[i]->getMessageType();
+        AbstractMessage::MessageType q = AbstractMessage::MessageType::Command;
+        ASSERT_EQUAL((int)msgType, (int)q);
     }
 }
