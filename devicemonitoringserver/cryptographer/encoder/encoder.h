@@ -4,6 +4,7 @@
 #include "../algorithms/baseencoderexecutor.h"
 #include "../algorithms/rot3.h"
 #include "../algorithms/multiply41.h"
+#include "../algorithms/mirror.h"
 
 #include <string>
 #include <map>
@@ -24,6 +25,7 @@ public:
 	{
 		algorithmRegister(new Rot3Crypt());
         algorithmRegister(new Multiply41Crypt());
+		algorithmRegister(new MirrorCrypt());
 
 		algorithmSet(CryptAlgDefault());
 	}

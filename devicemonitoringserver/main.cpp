@@ -13,6 +13,7 @@ int main()
     // TODO: собственные тесты
     RUN_TEST(tr, encodeTestDefault);
     RUN_TEST(tr, encodeTestSwitch);
+    RUN_TEST(tr, encodeTestMirror);
     RUN_TEST(tr, encodeTestMultiply41);
     RUN_TEST(tr, serializeTestError);
     RUN_TEST(tr, serializeTestMeterage);

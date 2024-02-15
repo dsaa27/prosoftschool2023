@@ -6,11 +6,12 @@
 void encodeTestDefault();
 void encodeTestMultiply41();
 void encodeTestSwitch();
-void monitoringServerNoScheduleTest();
+void encodeTestMirror();
 void serializeTestMeterage();
 void serializeTestError();
 void serializeTestCommand();
 void monitoringServerNoTimestampTest();
+void monitoringServerNoScheduleTest();
 /*!
  * \brief Тест сервера.
  */

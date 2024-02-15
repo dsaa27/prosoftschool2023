@@ -38,7 +38,6 @@ void encodeTestDefault()
 
 void encodeTestMultiply41()
 {
-    // DEFAULT - ROT3, SO TEST ROT3
     Encoder encoder;
     // '!' = 33, '\1' = 1, ')' = 41, '~' = 126, 'R' = 82, '{' = 123, 'y' = 121
     std::string CODE = "1234aAzZ!\1)~R{y";
@@ -70,7 +69,32 @@ void encodeTestMultiply41()
     ASSERT_EQUAL(CRYPT_CODE, c_str);
 
     std::string DECRYPT_CODE = encoder.decode(CRYPT_CODE);
-    ASSERT_EQUAL(DECRYPT_CODE, "1234aAzZ!\1)~R{y");
+    ASSERT_EQUAL(DECRYPT_CODE, "ay");
+}
+
+void encodeTestMirror()
+{
+    Encoder encoder;
+    // 'd' = 100, '\1' = 1, 'e' = 101, '7' = 55, 'y' = 121
+    std::string CODE = "d\1e7y";
+    ASSERT_EQUAL(CODE, "d\1e7y");
+
+    ASSERT(encoder.algorithmSet("MIRROR"));
+
+    std::string CRYPT_CODE = encoder.encode(CODE);
+
+    char c1 = static_cast<char>(-100);
+    char c2 = static_cast<char>(10);
+    char c3 = static_cast<char>(-10);
+    char c4 = static_cast<char>(55);
+    char c5 = static_cast<char>(-12);
+    char c[6] = { c1, c2, c3, c4, c5 };
+
+    std::string c_str = c;
+    ASSERT_EQUAL(CRYPT_CODE, c_str);
+
+    std::string DECRYPT_CODE = encoder.decode(CRYPT_CODE);
+    ASSERT_EQUAL(DECRYPT_CODE, "d\1e7y");
 }
 
 void serializeTestMeterage()
@@ -140,7 +164,7 @@ void monitoringServerTest1()
     std::vector<uint8_t> devicePlaningPhase;
     for (uint8_t i = 0; i < 5; ++i)
     {
-        Phase temp1 = { i, i + 2 };
+        Phase temp1 = { static_cast<uint64_t>(i), i + 2 };
         schedulePhase.push_back(temp1);
         devicePlaningPhase.push_back(i + 1);
     }
