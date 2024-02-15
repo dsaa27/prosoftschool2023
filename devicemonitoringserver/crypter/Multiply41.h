@@ -5,7 +5,7 @@
 #include "crypter/absractCrypter.h"
 
 /*!
- * \brief заглушка шифродешифровщика, не делает ничего, нужна для дебага и amacriminal нешифрованного общения.
+ * \brief РЈРјРЅРѕР¶РµРЅРёРµ РЅР° 41 - РєР°Р¶РґС‹Р№ С‡Р°СЂ РїСЂРµРІСЂР°С‰Р°РµС‚СЃСЏ РІ 2 Р±Р°Р№С‚Р°. .
  */
 class Multiply41Crypter : public BaseEncoderExecutor
 {
@@ -13,17 +13,17 @@ public:
     Multiply41Crypter() = default;
     ~Multiply41Crypter() = default;
     /*!
-     * \brief Метод как бы шифровки.
-     * \param input -  строка
+     * \brief РњРµС‚РѕРґ С€РёС„СЂРѕРІРєРё - СѓРјРЅРѕР¶РµРЅРёРµ.
+     * \param input -  СЃС‚СЂРѕРєР°
      */
     std::string encode(const std::string& input) const final;
     /*!
-     * \brief Метод как бы дешифровки.
-     * \param input -  строка
+     * \brief РњРµС‚РѕРґ РґРµС€РёС„СЂРѕРІРєРё - С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ uint16 Рё РґРµР»РµРЅРёРµ .
+     * \param input -  СЃС‚СЂРѕРєР°
      */
     std::string decode(const std::string& input) const final;
     /*!
-     * \brief Получение имени.
+     * \brief РџРѕР»СѓС‡РµРЅРёРµ РёРјРµРЅРё.
      */
     std::string name() const final;
 };

@@ -3,7 +3,7 @@
 
 // TODO: собственные тесты
 /*!
- * \brief Тест сервера.
+ * \brief Тест сервера - отправляем и получаем измерения
  */
 void monitoringServerTest1();
 
@@ -12,6 +12,9 @@ void monitoringServerTest1();
  */
 void EncoderTest();
 
+/*!
+ * \brief Тест переобразования в строку и обратно всех типов собщений
+ */
 void serialiserTest();
 
 /*!
@@ -25,7 +28,7 @@ void addEncoderTest();
 void severalDeviceTest();
 
 /*!
- * \brief Тест всех .
+ * \brief Тест обработки команд
  */
 void commandCenterTest();
 

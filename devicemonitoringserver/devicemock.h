@@ -31,24 +31,35 @@ public:
      * \return false в случае ошибки
      */
     bool bind(uint64_t deviceId);
+
     /*!
      * \brief Подключить устройство к серверу.
      * \param serverId - идентификатор сревера
      * \return false в случае ошибки
      */
     bool connectToServer(uint64_t serverId);
+
     /*!
      * \brief Установить тестовый список измерений устройства.
      * \param measurements - список измерений
      */
     void setMeterages(std::vector<uint8_t> meterages);
+
     /*!
      * \brief Начать отправку измерений.
      */
     void startMeterageSending();
 
+    /*!
+     * \brief Установить текущий шифровщик по его имени.
+     * \param name - имя шифровщик
+     */
     bool setCrypter(const std::string& name);
 
+    /*!
+     * \brief Регистрация нового шифровщика
+     * \param crypter - указатель на инстанс шифоровщика (унаследованного от BaseEncoderExecutor)
+     */
     bool addCrypter(BaseEncoderExecutor* crypter);
 
     std::vector<unsigned int> responces();

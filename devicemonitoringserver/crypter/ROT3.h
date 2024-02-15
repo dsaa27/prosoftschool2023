@@ -5,7 +5,7 @@
 #include "crypter/absractCrypter.h"
 
 /*!
- * \brief заглушка шифродешифровщика, не делает ничего, нужна для дебага и amacriminal нешифрованного общения.
+ * \brief С€РёС„СЂ С†РµР·Р°СЂСЏ - СЃРјРµС‰Р°РµРј РєР°Р¶РґС‹Р№ СЃРёРјРІРѕР» РЅР° 3 Рё РѕР±СЂР°С‚РЅРѕ. РќР°РёРІРЅР°СЏ СЂРµР°Р»РёС†РёСЏ - РЅРµС‚ С„РёР»СЊС‚СЂР°С†РёРё СЃР»СѓР¶РµР±РЅС‹С… СЃРёРјРІРѕР»РѕРІ С‚.Рє. Р·РЅР°РµРј С‡С‚Рѕ РІСЃРµ РґР°РЅРЅС‹Рµ С†РёС„СЂС‹.
  */
 class ROT3Crypter : public BaseEncoderExecutor
 {
@@ -13,17 +13,17 @@ public:
     ROT3Crypter() = default;
     ~ROT3Crypter() = default;
     /*!
-     * \brief Метод как бы шифровки.
-     * \param input -  строка
+     * \brief РњРµС‚РѕРґ С€РёС„СЂРѕРІРєРё - СЃРјРµС‰РµРЅРёРµ РЅР° +3 .
+     * \param input -  СЃС‚СЂРѕРєР°
      */
     std::string encode(const std::string& input) const final;
     /*!
-     * \brief Метод как бы дешифровки.
-     * \param input -  строка
+     * \brief РњРµС‚РѕРґ РґРµС€РёС„СЂРѕРІРєРё - СЃРјРµС‰РµРЅРёРµ РЅР° -3 .
+     * \param input -  СЃС‚СЂРѕРєР°
      */
     std::string decode(const std::string& input) const final;
     /*!
-     * \brief Получение имени.
+     * \brief РџРѕР»СѓС‡РµРЅРёРµ РёРјРµРЅРё.
      */
     std::string name() const final;
 };

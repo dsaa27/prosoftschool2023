@@ -9,7 +9,6 @@ enum class ErrType : unsigned int {NoSchedule, NoTimestamp, Obsolete, NoErr};
 
 struct MessageBase
 {
-    // MessageBase() = default;
     MsgType MessageType = MsgType::None;/* data */
     Phase data = {0,0};
     ErrType error = ErrType::NoErr;
