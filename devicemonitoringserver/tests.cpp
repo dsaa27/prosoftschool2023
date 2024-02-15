@@ -284,8 +284,9 @@ void commandCenterDeviationControl1()
     device.startMeterageSending();
     while (taskQueue.processTask());
 
+    const float STDDEVIATION = sqrtf((1. + 1. + 1. + 1.) / (4 - 1));
     float stdDeviation = server.getCommandCenter().getStdDevation(deviceId);
-    if (abs(stdDeviation - 1.1547) > 0.01)
+    if (abs(stdDeviation - STDDEVIATION) > 0.01)
     {
         ASSERT(false);
     }
@@ -331,8 +332,9 @@ void commandCenterDeviationControl2()
         ASSERT_EQUAL(t1, static_cast<uint8_t>(25));
     }
 
+    const float STDDEVIATION = sqrtf((1. + 4. + 9. + 25.) / (4 - 1));
     float stdDeviation = server.getCommandCenter().getStdDevation(deviceId);
-    if (abs(stdDeviation - 3.606) > 0.01)
+    if (abs(stdDeviation - STDDEVIATION) > 0.01)
     {
         ASSERT(false);
     }
