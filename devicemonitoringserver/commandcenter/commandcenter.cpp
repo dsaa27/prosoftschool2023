@@ -4,12 +4,6 @@ AbstractMessage* CommandCenter::catchMessageFromDevice(uint64_t deviceId, const 
 {
     AbstractMessage* msg = nullptr;
 
-    DeviceWorkSchedule schedule;
-    schedule.deviceId = deviceId;
-    addDevice(schedule);
-
-    m_devices[deviceId].phaseInfo.lastTimestamp = 0U;
-
     // If there is no device with deviceId, create it, but with empty schedule
     if (m_devices.count(deviceId) == 0)
     {

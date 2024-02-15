@@ -122,7 +122,6 @@ void monitoringServerNoScheduleTest()
     ASSERT(device.connectToServer(serverId));
     std::vector<uint8_t> meterages { 1, 2, 3 };
     device.setMeterages(meterages);
-    while (taskQueue.processTask());
     device.startMeterageSending();
     while (taskQueue.processTask());
     std::vector<AbstractMessage*> msgLog = device.getMsgLog();
@@ -159,11 +158,10 @@ void monitoringServerNoTimestampTest()
 
     device.setMeterages(meterages);
     while (taskQueue.processTask())
-        ;
     device.startMeterageSending();
-    while (taskQueue.processTask())
-        ;
+    while (taskQueue.processTask());
     std::vector<AbstractMessage*> msgLog = device.getMsgLog();
+        ;
 
     for (size_t i = 0; i < 3; ++i)
     {

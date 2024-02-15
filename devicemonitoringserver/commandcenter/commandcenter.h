@@ -15,10 +15,8 @@ private:
     struct PhaseInfo
     {
         std::vector<Phase> phases;
-        uint64_t firstTimestamp = 0;
         uint64_t currentTimestamp = 0;
         uint64_t currentIndex = 0;
-        uint64_t lastTimestamp = 0;
         std::vector<float> stdDeviation;
     };
     struct DeviceInfo
