@@ -11,7 +11,9 @@ int main()
     RUN_TEST(tr, clientServerTest);
 
     // TODO: собственные тесты
-    RUN_TEST(tr, encodeTest1);
+    RUN_TEST(tr, encodeTestDefault);
+    RUN_TEST(tr, encodeTestSwitch);
+    RUN_TEST(tr, encodeTestMultiply41);
     RUN_TEST(tr, serializeTestError);
     RUN_TEST(tr, serializeTestMeterage);
     RUN_TEST(tr, serializeTestCommand);

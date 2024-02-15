@@ -6,15 +6,25 @@
 #include <servermock/connectionservermock.h>
 #include <servermock/taskqueue.h>
 #include <cryptographer/encoder/encoder.h>
+#include <cryptographer/algorithms/multiply41.h>
 #include <serializer/serializer.h>
 #include <message/messages.h>
 #include <commandcenter/commandcenter.h>
 #include <iostream>
 
-void encodeTest1()
+void encodeTestSwitch()
 {
     Encoder encoder;
-    encoder.algorithmSet("ROT3");
+    ASSERT(encoder.algorithmExist("MULTIPLY41"));
+    ASSERT(encoder.algorithmSet("MULTIPLY41"));
+    ASSERT(encoder.algorithmSettedUp());
+    ASSERT(dynamic_cast<Multiply41Crypt*>(encoder.algorithmCurrent()));
+}
+
+void encodeTestDefault()
+{
+    // DEFAULT - ROT3, SO TEST ROT3
+    Encoder encoder;
     std::string CODE = "123";
     ASSERT_EQUAL(CODE, "123");
 
@@ -24,6 +34,28 @@ void encodeTest1()
     std::string DECRYPT_CODE = encoder.decode(CRYPT_CODE);
     ASSERT_EQUAL(DECRYPT_CODE, "123");
 
+}
+
+void encodeTestMultiply41()
+{
+    // DEFAULT - ROT3, SO TEST ROT3
+    Encoder encoder;
+    std::string CODE = "1234";
+    ASSERT_EQUAL(CODE, "1234");
+
+    ASSERT(encoder.algorithmSet("MULTIPLY41"));
+
+    std::string CRYPT_CODE = encoder.encode(CODE);
+    char c1 = static_cast<char>(static_cast<int>('1') * 41 + 128);
+    char c2 = static_cast<char>(static_cast<int>('2') * 41);
+    char c3 = static_cast<char>(static_cast<int>('3') * 41);
+    char c4 = static_cast<char>(static_cast<int>('4') * 41);
+    char c[5] = { c1, c2, c3, c4 };
+    std::string c_str = c;
+    ASSERT_EQUAL(CRYPT_CODE, c_str);
+
+    std::string DECRYPT_CODE = encoder.decode(CRYPT_CODE);
+    ASSERT_EQUAL(DECRYPT_CODE, "1234");
 }
 
 void serializeTestMeterage()

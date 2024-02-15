@@ -3,6 +3,7 @@
 
 #include "../algorithms/baseencoderexecutor.h"
 #include "../algorithms/rot3.h"
+#include "../algorithms/multiply41.h"
 
 #include <string>
 #include <map>
@@ -16,11 +17,13 @@ public:
 	bool algorithmSettedUp() const;
 	bool algorithmExist(std::string str_alg) const;
 	bool algorithmSet(std::string str_alg);
+    BaseEncoderExecutor* algorithmCurrent() const;
 	bool algorithmRegister(BaseEncoderExecutor* alg);
 
 	Encoder()
 	{
 		algorithmRegister(new Rot3Crypt());
+        algorithmRegister(new Multiply41Crypt());
 
 		algorithmSet(CryptAlgDefault());
 	}

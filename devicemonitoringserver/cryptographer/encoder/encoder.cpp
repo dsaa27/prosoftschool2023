@@ -24,6 +24,11 @@ bool Encoder::algorithmSet(std::string str_alg)
 	return true;
 }
 
+BaseEncoderExecutor* Encoder::algorithmCurrent() const
+{
+        return m_currentAlgorithm;
+}
+
 bool Encoder::algorithmRegister(BaseEncoderExecutor* alg)
 {
 	if (alg == nullptr) return false;

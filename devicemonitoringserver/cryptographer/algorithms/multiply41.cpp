@@ -2,7 +2,7 @@
 
 #include <limits>
 
-constexpr unsigned int MAX_CHAR = std::numeric_limits<char>() + 1;
+constexpr unsigned int MAX_CHAR = std::numeric_limits<char>::max() + 1;
 
 std::string Multiply41Crypt::encode(const std::string& message) const
 {
@@ -23,8 +23,11 @@ std::string Multiply41Crypt::decode(const std::string& message) const
     for (auto& c : decodeMessage)
     {
         uint16_t c_temp = static_cast<uint16_t>(c);
+        while (c_temp % 41 != 0)
+        {
+            c_temp += MAX_CHAR;
+        }
         c_temp /= 41;
-        c_temp = (MAX_CHAR + c_temp) % MAX_CHAR;
         c = static_cast<char>(c_temp);
     }
     return decodeMessage;

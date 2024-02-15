@@ -3,7 +3,9 @@
 
 // TODO: собственные тесты
 
-void encodeTest1();
+void encodeTestDefault();
+void encodeTestMultiply41();
+void encodeTestSwitch();
 void monitoringServerNoScheduleTest();
 void serializeTestMeterage();
 void serializeTestError();
