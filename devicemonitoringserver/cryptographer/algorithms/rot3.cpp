@@ -12,10 +12,10 @@ std::string Rot3Crypt::encode(const std::string& message) const
 
 std::string Rot3Crypt::decode(const std::string& message) const
 {
-    std::string encodeMessage(message);
-    for (auto& c : encodeMessage)
+    std::string decodeMessage(message);
+    for (auto& c : decodeMessage)
     {
         c -= 3;
     }
-    return encodeMessage;
+    return decodeMessage;
 }
