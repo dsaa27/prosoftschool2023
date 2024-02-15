@@ -51,7 +51,6 @@ void monitoringServerTest1()
 
 void addEncoderTest()
 {
-
     DeSerializer test_serial;
     Encoder test_encoder;
     MessageBase messageSrcStruct = {MsgType::Error, {0, 0}, ErrType::NoSchedule, 0};
@@ -134,34 +133,37 @@ void severalDeviceTest()
         newMeters.push_back(i);
         newMeters2.push_back(2*i);
         
-        if (i/3 == 0) {
-            raspisanie.push_back(Phase{i, i});
-            expected.push_back(2U);
+        if ((i+1)%3 == 0) {
+            raspisanie.push_back(Phase{i, i}); 
+            expected.push_back(1U);
         } else {
             expected.push_back(2U);
         }
 
         if (i%3 == 0) {
             raspisanie2.push_back(Phase{i, 2*i});
-            expected2.push_back(2U);
+            expected2.push_back(1U);
         } else {
             expected2.push_back(2U);
         }
     }
     DeviceWorkSchedule const deviceWorkSchedule = {deviceId, raspisanie};
     DeviceWorkSchedule const deviceWorkSchedule2 = {2*deviceId, raspisanie2};
-    ASSERT(server.setCrypter("NONE"));
-    ASSERT(device.setCrypter("NONE"));
+
+    ASSERT(server.setCrypter("Multiply41"));
+    ASSERT(device.setCrypter("Multiply41"));
+    ASSERT(device2.setCrypter("Multiply41"));
+
     device.setMeterages(newMeters);
-    device.setMeterages(newMeters2);
+    device2.setMeterages(newMeters2);
+
     server.setDeviceWorkSchedule(deviceWorkSchedule);
     server.setDeviceWorkSchedule(deviceWorkSchedule2);
 
     while (taskQueue.processTask())
         ;
     device.startMeterageSending();
-    while (taskQueue.processTask())
-        ;
+    taskQueue.processTask();
     device2.startMeterageSending();
     while (taskQueue.processTask())
         ;
@@ -169,12 +171,12 @@ void severalDeviceTest()
     std::vector<unsigned int> recieved = device.responces();
     std::vector<unsigned int> recieved2 = device2.responces();
     ASSERT_EQUAL(recieved.size(), expected.size());
-    ASSERT_EQUAL(recieved.size(), expected2.size());
+    ASSERT_EQUAL(recieved2.size(), expected2.size());
 
-    // for(int i=0; i < expected.size(); ++i) {
-    //     ASSERT_EQUAL(recieved[i], expected[i]);
-    //     // ASSERT_EQUAL(recieved2[i], expected2[i]);
-    // }
+    for(int i=0; i < expected.size(); ++i) {
+        ASSERT_EQUAL(recieved[i], expected[i]);
+        ASSERT_EQUAL(recieved2[i], expected2[i]);
+    }
 
 }
 

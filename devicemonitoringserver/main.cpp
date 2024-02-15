@@ -20,25 +20,10 @@ int main()
 
     RUN_TEST(tr, commandCenterTest);
 
-    RUN_TEST(tr, monitoringServerTest1);
+    RUN_TEST(tr, monitoringServerTest1);   
 
-  
-
-    
-
-      RUN_TEST(tr, severalDeviceTest);
+    RUN_TEST(tr, severalDeviceTest);
 
 
-
-    /*
-    тесты проверки шифровщиков:
-        проверка равенста сообщения исходному после шифровки/дешифровки
-    тесты сериализатора
-
-    тесты добавления устройств (2+)
-    тесты проверки реакции сервера на разные сообщения устройств
-        нет расписания
-
-    */
     return 0;
 }
