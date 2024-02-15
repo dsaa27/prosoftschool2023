@@ -7,7 +7,7 @@
 class Multiply41Crypt final : public BaseEncoderExecutor
 {
 public:
-    Multiply41CryptCrypt() :
+    Multiply41Crypt() :
         BaseEncoderExecutor("MULTIPLY41")
     {}
     std::string encode(const std::string& message) const override;
