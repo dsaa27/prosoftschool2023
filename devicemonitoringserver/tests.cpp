@@ -25,14 +25,24 @@ void encodeTestDefault()
 {
     // DEFAULT - ROT3, SO TEST ROT3
     Encoder encoder;
-    std::string CODE = "123";
-    ASSERT_EQUAL(CODE, "123");
+    // '|' = 124, '}' = 125, '~' = 126, '\1' = 1
+    std::string CODE = "|}~\1";
+    ASSERT_EQUAL(CODE, "|}~\1");
 
     std::string CRYPT_CODE = encoder.encode(CODE);
-    ASSERT_EQUAL(CRYPT_CODE, "456");
+
+    char c1 = static_cast<char>(127);
+    char c2 = static_cast<char>(-1);
+    char c3 = static_cast<char>('\1');
+    char c4 = static_cast<char>('\4');
+
+    char c[5] = { c1, c2, c3, c4 };
+
+    std::string c_str = c;
+    ASSERT_EQUAL(CRYPT_CODE, c_str);
 
     std::string DECRYPT_CODE = encoder.decode(CRYPT_CODE);
-    ASSERT_EQUAL(DECRYPT_CODE, "123");
+    ASSERT_EQUAL(DECRYPT_CODE, "|}~\1");
 
 }
 
