@@ -69,7 +69,7 @@ void encodeTestMultiply41()
     ASSERT_EQUAL(CRYPT_CODE, c_str);
 
     std::string DECRYPT_CODE = encoder.decode(CRYPT_CODE);
-    ASSERT_EQUAL(DECRYPT_CODE, "ay");
+    ASSERT_EQUAL(DECRYPT_CODE, "1234aAzZ!\1)~R{y");
 }
 
 void encodeTestMirror()
@@ -229,7 +229,7 @@ void monitoringServerNoTimestampTest()
     server.setDeviceWorkSchedule(deviceWorkSchedule);
 
     device.setMeterages(meterages);
-    while (taskQueue.processTask())
+    while (taskQueue.processTask());
     device.startMeterageSending();
     while (taskQueue.processTask());
     std::vector<AbstractMessage*> msgLog = device.getMsgLog();
@@ -254,5 +254,92 @@ void monitoringServerNoTimestampTest()
         AbstractMessage::MessageType msgType = msgLog[i]->getMessageType();
         AbstractMessage::MessageType q = AbstractMessage::MessageType::Command;
         ASSERT_EQUAL((int)msgType, (int)q);
+    }
+}
+
+void commandCenterDeviationControl1()
+{
+    TaskQueue taskQueue;
+    DeviceMock device(new ClientConnectionMock(taskQueue));
+    DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
+
+    const uint64_t deviceId = 111;
+    const uint64_t serverId = 11;
+    ASSERT(device.bind(deviceId));
+    ASSERT(server.listen(serverId));
+    ASSERT(device.connectToServer(serverId));
+    std::vector<uint8_t> meterages { 1, 2, 3, 4, 5 };
+
+    std::vector<Phase> schedulePhase = {
+        { 0, 2 },
+        { 1, 3 },
+        { 2, 4 },
+        { 4, 6 }
+    };
+    DeviceWorkSchedule const deviceWorkSchedule = { deviceId, schedulePhase };
+    server.setDeviceWorkSchedule(deviceWorkSchedule);
+
+    device.setMeterages(meterages);
+    while (taskQueue.processTask());
+    device.startMeterageSending();
+    while (taskQueue.processTask());
+
+    for (int i = 0; i < schedulePhase.size(); ++i)
+    {
+        uint8_t t1 = server.getCommandCenter().getDeviceInfo(deviceId).phaseInfo.stdDeviation[i];
+        ASSERT_EQUAL(t1, static_cast<uint8_t>(1));
+    }
+
+    float stdDeviation = server.getCommandCenter().getStdDevation(deviceId);
+    if (abs(stdDeviation - 1.1547) > 0.01)
+    {
+        ASSERT(false);
+    }
+}
+
+void commandCenterDeviationControl2()
+{
+    TaskQueue taskQueue;
+    DeviceMock device(new ClientConnectionMock(taskQueue));
+    DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
+
+    const uint64_t deviceId = 111;
+    const uint64_t serverId = 11;
+    ASSERT(device.bind(deviceId));
+    ASSERT(server.listen(serverId));
+    ASSERT(device.connectToServer(serverId));
+    std::vector<uint8_t> meterages { 1, 2, 3, 4, 5 };
+
+    std::vector<Phase> schedulePhase = {
+        { 0, 2 },
+        { 1, 4 },
+        { 2, 6 },
+        { 4, 10 }
+    };
+    DeviceWorkSchedule const deviceWorkSchedule = { deviceId, schedulePhase };
+    server.setDeviceWorkSchedule(deviceWorkSchedule);
+
+    device.setMeterages(meterages);
+    while (taskQueue.processTask())
+        ;
+    device.startMeterageSending();
+    while (taskQueue.processTask())
+        ;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        uint8_t t1 = server.getCommandCenter().getDeviceInfo(deviceId).phaseInfo.stdDeviation[i];
+        ASSERT_EQUAL(t1, static_cast<uint8_t>((i + 1) * (i + 1)));
+    }
+    for (int i = 3; i < 4; ++i)
+    {
+        uint8_t t1 = server.getCommandCenter().getDeviceInfo(deviceId).phaseInfo.stdDeviation[i];
+        ASSERT_EQUAL(t1, static_cast<uint8_t>(25));
+    }
+
+    float stdDeviation = server.getCommandCenter().getStdDevation(deviceId);
+    if (abs(stdDeviation - 3.606) > 0.01)
+    {
+        ASSERT(false);
     }
 }

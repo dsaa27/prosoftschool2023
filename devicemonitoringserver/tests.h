@@ -12,6 +12,8 @@ void serializeTestError();
 void serializeTestCommand();
 void monitoringServerNoTimestampTest();
 void monitoringServerNoScheduleTest();
+void commandCenterDeviationControl1();
+void commandCenterDeviationControl2();
 /*!
  * \brief Тест сервера.
  */

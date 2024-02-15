@@ -6,20 +6,20 @@
 class CommandMessage final : public AbstractMessage
 {
 public:
-	CommandMessage(const uint8_t adjustment) :
+	CommandMessage(const int8_t adjustment) :
 		AbstractMessage(AbstractMessage::MessageType::Command),
 		m_adjustment(adjustment)
 	{}
 
 	std::string messageToString() const override;
 
-	const uint8_t getAdjustment() const
+	const int8_t getAdjustment() const
 	{
         return m_adjustment;
 	}
 
 private:
-	const uint8_t m_adjustment;
+	const int8_t m_adjustment;
 };
 
 #endif /* COMMANDMESSAGE_H */

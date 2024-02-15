@@ -21,5 +21,7 @@ int main()
     RUN_TEST(tr, monitoringServerTest1);
     RUN_TEST(tr, monitoringServerNoScheduleTest);
     RUN_TEST(tr, monitoringServerNoTimestampTest);
+    RUN_TEST(tr, commandCenterDeviationControl1);
+    RUN_TEST(tr, commandCenterDeviationControl2);
     return 0;
 }

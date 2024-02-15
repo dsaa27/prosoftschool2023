@@ -34,6 +34,11 @@ public:
      */
     bool listen(uint64_t serverId);
 
+    CommandCenter getCommandCenter() const
+    {
+        return m_commandCenter;
+    }
+
 private:
     /*!
      * \brief Отправить сообщение устройству.

@@ -5,6 +5,7 @@
 #include "../message/messages.h"
 #include "../cryptographer/encoder/encoder.h"
 #include "../serializer/serializer.h"
+#include <numeric>
 
 #include <vector>
 #include <map>
@@ -17,7 +18,7 @@ private:
         std::vector<Phase> phases;
         uint64_t currentTimestamp = 0;
         uint64_t currentIndex = 0;
-        std::vector<float> stdDeviation;
+        std::vector<uint16_t> stdDeviation;
     };
     struct DeviceInfo
     {
@@ -34,11 +35,15 @@ public:
     bool setSchedule(const DeviceWorkSchedule& schedule);
     bool addDevice(const DeviceWorkSchedule& schedule);
     bool removeDevice(uint64_t deviceId);
-    DeviceInfo getDeviceInfo(uint64_t deviceId)
+    DeviceInfo getDeviceInfo(uint64_t deviceId);
+    float getStdDevation(uint64_t deviceId)
     {
-        if (m_devices.count(deviceId) == 0)
-            return DeviceInfo();
-        return m_devices[deviceId];
+        if (m_devices.count(deviceId) == 0 || m_devices[deviceId].phaseInfo.stdDeviation.size() < 2)
+            return 0;
+        std::vector<uint16_t>* stdDev = &m_devices[deviceId].phaseInfo.stdDeviation;
+        uint64_t sum = std::accumulate((*stdDev).begin(), (*stdDev).end(), 0);
+        size_t size = m_devices[deviceId].phaseInfo.stdDeviation.size();
+        return sqrtf(static_cast<float>(sum) / (size - 1));
     }
 
 private:

@@ -107,9 +107,11 @@ void DeviceMock::sendNextMeterage()
         return;
     const auto meterage = m_meterages.at(m_timeStamp);
 
-    MeterageMessage* msg = dynamic_cast<MeterageMessage*>(new MeterageMessage(m_timeStamp, meterage));
+    MeterageMessage* msg = new MeterageMessage(m_timeStamp, meterage);
     std::string msgStr = m_serializer.serialize(msg);
     msgStr = m_crypt.encode(msgStr);
     sendMessage(msgStr);
     ++m_timeStamp;
+
+    delete msg;
 }

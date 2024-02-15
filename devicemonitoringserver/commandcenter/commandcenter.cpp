@@ -33,11 +33,13 @@ AbstractMessage* CommandCenter::catchMessageFromDevice(uint64_t deviceId, const 
 
     for (int i = device.phaseInfo.currentIndex; i < device.workSchedule.schedule.size(); ++i)
     {
-        if (device.workSchedule.schedule[i].value == msgDevice->getMeterage())
+        if (device.workSchedule.schedule[i].timeStamp == msgDevice->getTimestamp())
         {
             device.phaseInfo.currentIndex = i;
             device.phaseInfo.currentTimestamp = msgDevice->getTimestamp();
-            msg = dynamic_cast<CommandMessage*>(new CommandMessage(msgDevice->getMeterage() - device.workSchedule.schedule[i].value));
+            int8_t stdDeviate = device.workSchedule.schedule[i].value - msgDevice->getMeterage();
+            msg = dynamic_cast<CommandMessage*>(new CommandMessage(stdDeviate));
+            device.phaseInfo.stdDeviation.push_back(stdDeviate * stdDeviate);
             return msg;
         }
     }
@@ -73,4 +75,10 @@ bool CommandCenter::removeDevice(uint64_t deviceId)
 
     m_devices.erase(deviceId);
     return true;
+}
+CommandCenter::DeviceInfo CommandCenter::getDeviceInfo(uint64_t deviceId)
+{
+    if (m_devices.count(deviceId) == 0)
+        return DeviceInfo();
+    return m_devices[deviceId];
 }
