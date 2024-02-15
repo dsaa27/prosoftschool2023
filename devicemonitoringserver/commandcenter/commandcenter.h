@@ -18,7 +18,8 @@ private:
         std::vector<Phase> phases;
         uint64_t currentTimestamp = 0;
         uint64_t currentIndex = 0;
-        std::vector<uint16_t> stdDeviation;
+        std::vector<uint16_t> sumOfSqDiff;
+        std::vector<float> stdDeviation;
     };
     struct DeviceInfo
     {

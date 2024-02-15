@@ -333,12 +333,12 @@ void commandCenterDeviationControl2()
 
     for (int i = 0; i < 3; ++i)
     {
-        uint8_t t1 = server.getCommandCenter().getDeviceInfo(deviceId).phaseInfo.stdDeviation[i];
+        uint8_t t1 = server.getCommandCenter().getDeviceInfo(deviceId).phaseInfo.sumOfSqDiff[i];
         ASSERT_EQUAL(t1, static_cast<uint8_t>((i + 1) * (i + 1)));
     }
     for (int i = 3; i < 4; ++i)
     {
-        uint8_t t1 = server.getCommandCenter().getDeviceInfo(deviceId).phaseInfo.stdDeviation[i];
+        uint8_t t1 = server.getCommandCenter().getDeviceInfo(deviceId).phaseInfo.sumOfSqDiff[i];
         ASSERT_EQUAL(t1, static_cast<uint8_t>(25));
     }
 

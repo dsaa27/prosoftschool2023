@@ -37,9 +37,18 @@ AbstractMessage* CommandCenter::catchMessageFromDevice(uint64_t deviceId, const 
         {
             device.phaseInfo.currentIndex = i;
             device.phaseInfo.currentTimestamp = msgDevice->getTimestamp();
-            int8_t stdDeviate = device.workSchedule.schedule[i].value - msgDevice->getMeterage();
-            msg = dynamic_cast<CommandMessage*>(new CommandMessage(stdDeviate));
-            device.phaseInfo.stdDeviation.push_back(stdDeviate * stdDeviate);
+            int8_t deviate = device.workSchedule.schedule[i].value - msgDevice->getMeterage();
+            msg = dynamic_cast<CommandMessage*>(new CommandMessage(deviate));
+            device.phaseInfo.sumOfSqDiff.push_back(deviate * deviate);
+            if (device.phaseInfo.sumOfSqDiff.size() == 0)
+            {
+                device.phaseInfo.stdDeviation.push_back(0);
+            }
+            else
+            {
+                float sum = std::accumulate(device.phaseInfo.sumOfSqDiff.begin(), device.phaseInfo.sumOfSqDiff.end(), 0);
+                device.phaseInfo.stdDeviation.push_back(sqrtf(sum / (device.phaseInfo.sumOfSqDiff.size() - 1)));
+            }
             return msg;
         }
     }
@@ -85,10 +94,11 @@ CommandCenter::DeviceInfo CommandCenter::getDeviceInfo(uint64_t deviceId)
 
 float CommandCenter::getStdDevation(uint64_t deviceId)
 {
-    if (m_devices.count(deviceId) == 0 || m_devices[deviceId].phaseInfo.stdDeviation.size() < 2)
-        return 0;
-    std::vector<uint16_t>* stdDev = &m_devices[deviceId].phaseInfo.stdDeviation;
-    uint64_t sum = std::accumulate((*stdDev).begin(), (*stdDev).end(), 0);
-    size_t size = m_devices[deviceId].phaseInfo.stdDeviation.size();
-    return sqrtf(static_cast<float>(sum) / (size - 1));
+    return m_devices[deviceId].phaseInfo.stdDeviation.back();
+    //if (m_devices.count(deviceId) == 0 || m_devices[deviceId].phaseInfo.stdDeviation.size() < 2)
+    //    return 0;
+    //std::vector<uint16_t>* stdDev = &m_devices[deviceId].phaseInfo.stdDeviation;
+    //uint64_t sum = std::accumulate((*stdDev).begin(), (*stdDev).end(), 0);
+    //size_t size = m_devices[deviceId].phaseInfo.stdDeviation.size();
+    //return sqrtf(static_cast<float>(sum) / (size - 1));
 }
