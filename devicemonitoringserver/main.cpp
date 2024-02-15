@@ -60,6 +60,7 @@ int main()
     TestRunner tr;
     RUN_TEST(tr, messageSerializatorTest);
     RUN_TEST(tr, messageEncoderTest);
+    RUN_TEST(tr, commandCenterTest);
 
     return 0;
 }
