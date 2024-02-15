@@ -2,6 +2,9 @@
 #define DEVICE_H
 
 #include "common.h"
+#include "cryptographer/encoder/encoder.h"
+#include "serializer/serializer.h"
+#include "message/messages.h"
 
 #include <string>
 #include <vector>
@@ -44,6 +47,18 @@ public:
      */
     void startMeterageSending();
 
+    bool setCryptAlgorithm(std::string algName)
+    {
+        if (!m_crypt.algorithmExist(algName))
+            return false;
+        m_crypt.algorithmSet(algName);
+    }
+
+    std::vector<AbstractMessage*> getMsgLog() const
+    {
+        return m_msgLog;
+    }
+
 private:
     /*!
      * \brief Отправить следующее измерение.
@@ -71,6 +86,9 @@ private:
     AbstractClientConnection* m_clientConnection = nullptr;
     std::vector<uint8_t> m_meterages;
     uint64_t m_timeStamp = 0;
+    Encoder m_crypt;
+    Serializer m_serializer;
+    std::vector<AbstractMessage*> m_msgLog;
 };
 
 #endif // DEVICE_H

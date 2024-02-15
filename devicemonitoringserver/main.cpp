@@ -11,6 +11,18 @@ int main()
     RUN_TEST(tr, clientServerTest);
 
     // TODO: собственные тесты
+    RUN_TEST(tr, encodeTestDefault);
+    RUN_TEST(tr, encodeTestSwitch);
+    RUN_TEST(tr, encodeTestMirror);
+    RUN_TEST(tr, encodeTestMultiply41);
+    RUN_TEST(tr, serializeTestError);
+    RUN_TEST(tr, serializeTestMeterage);
+    RUN_TEST(tr, serializeTestCommand);
     RUN_TEST(tr, monitoringServerTest1);
+    RUN_TEST(tr, monitoringServerNoScheduleTest);
+    RUN_TEST(tr, monitoringServerNoTimestampTest);
+    RUN_TEST(tr, commandCenterDeviationControl1);
+    RUN_TEST(tr, commandCenterDeviationControl2);
+    RUN_TEST(tr, serverFewDevice);
     return 0;
 }
