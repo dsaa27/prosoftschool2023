@@ -20,13 +20,13 @@ struct meterageMessage {
 
 struct commandMessage {
 
-    commandMessage(uint8_t correctCommand): 
+    commandMessage(int8_t correctCommand): 
     _type{messageType::Command}, _correctCommand{correctCommand}
     {}
     ~commandMessage() = default;
 
     messageType _type;
-    uint8_t _correctCommand;
+    int8_t _correctCommand;
 };
 
 

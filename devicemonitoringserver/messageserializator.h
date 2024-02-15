@@ -80,7 +80,7 @@ public:
                     int command;
                     stream >> command;
                     commandMessage* msg = new commandMessage(
-                                            static_cast<uint8_t>(command));
+                                            static_cast<int8_t>(command));
                     p.second = reinterpret_cast<void*>(msg);
                 }
                 break;
