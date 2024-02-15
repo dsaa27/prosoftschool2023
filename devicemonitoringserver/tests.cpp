@@ -40,22 +40,37 @@ void encodeTestMultiply41()
 {
     // DEFAULT - ROT3, SO TEST ROT3
     Encoder encoder;
-    std::string CODE = "1234";
-    ASSERT_EQUAL(CODE, "1234");
+    // '!' = 33, '\1' = 1, ')' = 41, '~' = 126, 'R' = 82, '{' = 123, 'y' = 121
+    std::string CODE = "1234aAzZ!\1)~R{y";
+    ASSERT_EQUAL(CODE, "1234aAzZ!\1)~R{y");
 
     ASSERT(encoder.algorithmSet("MULTIPLY41"));
 
     std::string CRYPT_CODE = encoder.encode(CODE);
+
+    // if char * 41 is negative, add 128 (MAX_CHAR + 1)
     char c1 = static_cast<char>(static_cast<int>('1') * 41 + 128);
     char c2 = static_cast<char>(static_cast<int>('2') * 41);
     char c3 = static_cast<char>(static_cast<int>('3') * 41);
     char c4 = static_cast<char>(static_cast<int>('4') * 41);
-    char c[5] = { c1, c2, c3, c4 };
+    char c5 = static_cast<char>(static_cast<int>('a') * 41 + 128);
+    char c6 = static_cast<char>(static_cast<int>('A') * 41);
+    char c7 = static_cast<char>(static_cast<int>('z') * 41 + 128);
+    char c8 = static_cast<char>(static_cast<int>('Z') * 41);
+    char c9 = static_cast<char>(static_cast<int>('!') * 41);
+    char c10 = static_cast<char>(static_cast<int>('\1') * 41);
+    char c11 = static_cast<char>(static_cast<int>(')') * 41 + 128);
+    char c12 = static_cast<char>(static_cast<int>('~') * 41);
+    char c13 = static_cast<char>(static_cast<int>('R') * 41);
+    char c14 = static_cast<char>(static_cast<int>('{') * 41 + 128);
+    char c15 = static_cast<char>(static_cast<int>('y') * 41);
+    char c[16] = { c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15 };
+
     std::string c_str = c;
     ASSERT_EQUAL(CRYPT_CODE, c_str);
 
     std::string DECRYPT_CODE = encoder.decode(CRYPT_CODE);
-    ASSERT_EQUAL(DECRYPT_CODE, "1234");
+    ASSERT_EQUAL(DECRYPT_CODE, "1234aAzZ!\1)~R{y");
 }
 
 void serializeTestMeterage()
@@ -183,7 +198,8 @@ void monitoringServerNoTimestampTest()
     std::vector<Phase> schedulePhase = {
         { 0, 1 },
         { 1, 2 },
-        { 2, 3 }
+        { 2, 3 },
+        { 4, 5 }
     };
     DeviceWorkSchedule const deviceWorkSchedule = { deviceId, schedulePhase };
     server.setDeviceWorkSchedule(deviceWorkSchedule);
@@ -202,10 +218,17 @@ void monitoringServerNoTimestampTest()
         ASSERT_EQUAL((int)msgType, (int)q);
     }
 
-    for (size_t i = 3; i < 5; ++i)
+    for (size_t i = 3; i < 4; ++i)
     {
         ErrorMessage* msg = dynamic_cast<ErrorMessage*>(msgLog[i]);
         ErrorMessage::ErrorType q = (msg)->getErrorType();
         ASSERT_EQUAL((int)ErrorMessage::ErrorType::NoTimestamp, (int)q);
+    }
+
+    for (size_t i = 4; i < 5; ++i)
+    {
+        AbstractMessage::MessageType msgType = msgLog[i]->getMessageType();
+        AbstractMessage::MessageType q = AbstractMessage::MessageType::Command;
+        ASSERT_EQUAL((int)msgType, (int)q);
     }
 }
