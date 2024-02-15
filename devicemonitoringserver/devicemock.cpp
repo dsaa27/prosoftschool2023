@@ -5,6 +5,11 @@
 
 //My idea to include the lib
 #include <iostream>
+#include <string>
+#include <utility>
+#include "messages.h"
+#include "messageserializator.h"
+
 
 DeviceMock::DeviceMock(AbstractClientConnection* clientConnection) :
     m_clientConnection(clientConnection)
@@ -59,6 +64,9 @@ DeviceMock::DeviceMock(AbstractClientConnection* clientConnection) :
 DeviceMock::~DeviceMock()
 {
     delete m_clientConnection;
+
+    // Удалим ошибку, которая хранится в куче
+    delete firstError;
 }
 
 bool DeviceMock::bind(uint64_t deviceId)
@@ -78,10 +86,29 @@ void DeviceMock::sendMessage(const std::string& message) const
 
 void DeviceMock::onMessageReceived(const std::string& msg /*message*/)
 {
-    std::cout << "onMessageReceived (in device): " << msg << std::endl;
+    //std::cout << "onMessageReceived (in device): " << msg << std::endl;
     // TODO: Разобрать std::string, прочитать команду,
     // записать ее в список полученных комманд
-    sendNextMeterage(); // Отправляем следующее измерение
+
+    std::string str = msgEncoder.decrypt(msg);
+    std::pair<messageType, void*> p = messageSerializator::deserialize(str);
+    
+    switch(p.first) {
+        case messageType::Command:
+            {
+                commandMessage* msg_ptr = reinterpret_cast<commandMessage*>(p.second);
+                gotCommands.push_back(msg_ptr->_correctCommand);
+                delete msg_ptr;
+                sendNextMeterage(); // Отправляем следующее измерение
+            }
+            break;
+        case messageType::Error:
+            {
+                firstError = reinterpret_cast<errorMessage*>(p.second);
+                //Заканчиваем передачу, так как поймали ошибку
+            }
+            break;
+    }  
 }
 
 void DeviceMock::onConnected()
@@ -110,8 +137,21 @@ void DeviceMock::sendNextMeterage()
         return;
     const auto meterage = m_meterages.at(m_timeStamp);
     (void)meterage;
-    ++m_timeStamp;
+    //++m_timeStamp;
     // TODO: Сформировать std::string и передать в sendMessage
-    sendMessage(std::to_string(meterage));
-    std::cout << "msg send from device: " << std::to_string(meterage) << std::endl;
+
+    meterageMessage* msg = new meterageMessage(m_timeStamp, meterage);
+    std::string str = messageSerializator::serialize(msg);
+    str = msgEncoder.encrypt(str);
+    delete msg;
+    ++m_timeStamp;
+    sendMessage(str);
+}
+
+bool DeviceMock::addEncodingAlgorithm(baseEncoderExecutor* newCoder) {
+    return msgEncoder.addCoder(newCoder);
+}
+
+bool DeviceMock::chooseEncodingAlgorithm(const std::string& str) {
+    return msgEncoder.chooseCoder(str);
 }

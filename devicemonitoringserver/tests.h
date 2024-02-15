@@ -15,6 +15,7 @@ void monitoringServerTest1();
 void messageSerializatorTest();
 void messageEncoderTest();
 void commandCenterTest();
+void wholeSystemTest();
 
 
 #endif // TESTS_H

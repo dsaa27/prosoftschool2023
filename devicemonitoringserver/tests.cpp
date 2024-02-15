@@ -159,3 +159,40 @@ void commandCenterTest() {
     delete ret_ptr_5; delete msg_ptr_5;
 }
 
+void wholeSystemTest() {
+    TaskQueue taskQueue;
+    DeviceMock device(new ClientConnectionMock(taskQueue));
+    DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
+
+    //Связывание сервера и датчика
+    const uint64_t deviceId = 111;
+    const uint64_t serverId = 11;
+    ASSERT(device.bind(deviceId));
+    ASSERT(server.listen(serverId));
+    ASSERT(device.connectToServer(serverId));
+
+    //Задание планов для сервера и дачтика
+    DeviceWorkSchedule sch = { deviceId,
+                                {
+                                    {0, 12},
+                                    {1, 25},
+                                    {2, 10},
+                                    {3, 15},
+                                    {4, 55}
+                                }};
+    device.setMeterages( {12, 20, 15, 15, 90} );
+    server.setDeviceWorkSchedule(sch);
+
+    //Задание алгоритмов шифрования
+    ASSERT(device.addEncodingAlgorithm(new Multiply5))
+    ASSERT(device.chooseEncodingAlgorithm("Multiply5"))
+    ASSERT(server.addEncodingAlgorithm(new Multiply5))
+    ASSERT(server.chooseEncodingAlgorithm("Multiply5"))
+
+    //Запуск процесса обмена сообщениями
+    device.startMeterageSending();
+    while (taskQueue.processTask())
+        ;
+
+}
+

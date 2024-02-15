@@ -6,6 +6,8 @@
 #include <utility>
 #include <limits>
 
+#ifndef COMMANDCENTER_H
+#define COMMANDCENTER_H
 
 // This struct allows to store start time stamp of the period and its sko
 struct SKO {
@@ -30,3 +32,5 @@ private:
     std::unordered_map<uint64_t, uint64_t> prevTimeStamps;
     std::unordered_map<uint64_t, std::vector<SKO>> dataSKO;
 };
+
+#endif

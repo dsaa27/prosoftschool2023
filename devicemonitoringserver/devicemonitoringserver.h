@@ -6,6 +6,14 @@
 #include <cstdint>
 #include <string>
 
+
+//My include
+#include "messages.h"
+#include "encoderexecutor.h"
+#include "messageencoder.h"
+#include "commandcenter.h"
+
+
 struct DeviceWorkSchedule;
 class AbstractConnectionServer;
 class AbstractConnection;
@@ -32,6 +40,17 @@ public:
      * \brief Начать прием подключений по идентификатору \a serverId
      */
     bool listen(uint64_t serverId);
+
+
+    /*!
+     * \brief Добавить алгоритм, которым будут кодироваться и декодироваться сообщения
+     */
+    bool addEncodingAlgorithm(baseEncoderExecutor*);
+
+    /*!
+     * \brief Задать алгоритм, которым будут кодироваться и декодироваться сообщения
+     */
+    bool chooseEncodingAlgorithm(const std::string&);
 
 private:
     /*!
@@ -63,6 +82,10 @@ private:
 
 private:
     AbstractConnectionServer* m_connectionServer = nullptr;
+
+    //My fields
+    messageEncoder msgEncoder;
+    commandCenter cm;
 };
 
 #endif // DEVICEMONITORINGSERVER_H
