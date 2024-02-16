@@ -1,0 +1,37 @@
+{
+    "configurations": [
+        {
+            "name": "WIN",
+            "includePath": [
+                "s:/Virtualki/prosoftschool2023/**"
+            ],
+            "defines": [],
+            "compilerPath": "S:/Virtualki/bin/g++.exe",
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerPathInCppPropertiesJson": "S:\\Virtualki\\bin\\g++.exe",
+            "mergeConfigurations": false,
+            "browse": {
+                "path": [
+                    "s:/Virtualki/prosoftschool2023/**",
+                    "s:/Virtualki/prosoftschool2023"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "configurationProvider": "qbs-community.qbs-tools"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/aarch64-linux-gnu-g++",
+            "intelliSenseMode": "linux-gcc-arm64",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

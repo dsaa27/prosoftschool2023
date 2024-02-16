@@ -2,3 +2,7 @@ build-devicemonitoringserver*
 devicemonitoringserver/*.user
 devicemonitoringserver/build_debug
 devicemonitoringserver/.vscode
+devicemonitoringserver/build/*
+devicemonitoringserver/.vscode/*
+devicemonitoringserver/build/
+.vscode/

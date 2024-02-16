@@ -5,6 +5,9 @@
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
 
+#include "messages.h"
+
+
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
     m_connectionServer(connectionServer)
 {
@@ -29,9 +32,9 @@ DeviceMonitoringServer::~DeviceMonitoringServer()
     delete m_connectionServer;
 }
 
-void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
+void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule& devShed)
 {
-    // TODO
+    m_commander.addDevice(devShed);
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -46,9 +49,14 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
+void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::string& message)
 {
     // TODO
+    MessageBase messageStruct = m_DeSerial.ToMessage(m_crypter.decode(message));
+    MessageBase messageStruct2 = m_commander.acceptMessage(deviceId, messageStruct);
+    
+    sendMessage(deviceId, m_crypter.encode(m_DeSerial.ToBytesArray(messageStruct2)));
+
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
@@ -102,4 +110,14 @@ void DeviceMonitoringServer::addDisconnectedHandler(AbstractConnection* conn)
     };
     const auto clientId = conn->peerId();
     conn->setDisconnectedHandler(new DisconnectedHandler(this, clientId));
+}
+
+bool DeviceMonitoringServer::setCrypter(const std::string& name)
+{
+    return (m_crypter.setCurrentCrypter(name));
+}
+
+bool DeviceMonitoringServer::addCrypter(BaseEncoderExecutor* crypter)
+{
+    return (m_crypter.addCrypter(crypter));
 }

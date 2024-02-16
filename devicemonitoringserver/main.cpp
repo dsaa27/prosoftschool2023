@@ -11,6 +11,19 @@ int main()
     RUN_TEST(tr, clientServerTest);
 
     // TODO: собственные тесты
-    RUN_TEST(tr, monitoringServerTest1);
+
+    RUN_TEST(tr, serialiserTest);
+
+    RUN_TEST(tr, EncoderTest);
+
+    RUN_TEST(tr, addEncoderTest);
+
+    RUN_TEST(tr, commandCenterTest);
+
+    RUN_TEST(tr, monitoringServerTest1);   
+
+    RUN_TEST(tr, severalDeviceTest);
+
+
     return 0;
 }

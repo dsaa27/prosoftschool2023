@@ -2,6 +2,9 @@
 #define DEVICE_H
 
 #include "common.h"
+#include "messages.h"
+#include "crypter/crypterBase.h"
+#include "serialiZer/serializer.h"
 
 #include <string>
 #include <vector>
@@ -9,7 +12,7 @@
 class AbstractClientConnection;
 
 /*!
- * \brief Класс, эмитирующий устройство.
+ * \brief Класс, имитирующий устройство.
  */
 class DeviceMock
 {
@@ -28,21 +31,38 @@ public:
      * \return false в случае ошибки
      */
     bool bind(uint64_t deviceId);
+
     /*!
      * \brief Подключить устройство к серверу.
      * \param serverId - идентификатор сревера
      * \return false в случае ошибки
      */
     bool connectToServer(uint64_t serverId);
+
     /*!
      * \brief Установить тестовый список измерений устройства.
      * \param measurements - список измерений
      */
     void setMeterages(std::vector<uint8_t> meterages);
+
     /*!
      * \brief Начать отправку измерений.
      */
     void startMeterageSending();
+
+    /*!
+     * \brief Установить текущий шифровщик по его имени.
+     * \param name - имя шифровщик
+     */
+    bool setCrypter(const std::string& name);
+
+    /*!
+     * \brief Регистрация нового шифровщика
+     * \param crypter - указатель на инстанс шифоровщика (унаследованного от BaseEncoderExecutor)
+     */
+    bool addCrypter(BaseEncoderExecutor* crypter);
+
+    std::vector<unsigned int> responces();
 
 private:
     /*!
@@ -67,10 +87,15 @@ private:
      */
     void onMessageReceived(const std::string& message);
 
+    
+
 private:
     AbstractClientConnection* m_clientConnection = nullptr;
     std::vector<uint8_t> m_meterages;
     uint64_t m_timeStamp = 0;
+    std::vector<unsigned int> m_commandLog;
+    DeSerializer m_DeSerial;
+    Encoder m_crypter;
 };
 
 #endif // DEVICE_H
