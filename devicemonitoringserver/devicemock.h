@@ -2,9 +2,14 @@
 #define DEVICE_H
 
 #include "common.h"
-
+#include <cstdint>
 #include <string>
 #include <vector>
+
+//My include
+#include "messages.h"
+#include "encoderexecutor.h"
+#include "messageencoder.h"
 
 class AbstractClientConnection;
 
@@ -44,6 +49,18 @@ public:
      */
     void startMeterageSending();
 
+
+
+    /*!
+     * \brief Добавить алгоритм, которым будут кодироваться и декодироваться сообщения
+     */
+    bool addEncodingAlgorithm(baseEncoderExecutor*);
+
+    /*!
+     * \brief Задать алгоритм, которым будут кодироваться и декодироваться сообщения
+     */
+    bool chooseEncodingAlgorithm(const std::string&);
+
 private:
     /*!
      * \brief Отправить следующее измерение.
@@ -71,6 +88,11 @@ private:
     AbstractClientConnection* m_clientConnection = nullptr;
     std::vector<uint8_t> m_meterages;
     uint64_t m_timeStamp = 0;
+
+    //my fields
+    messageEncoder msgEncoder;
+    errorMessage* firstError;
+    std::vector<int8_t> gotCommands;
 };
 
 #endif // DEVICE_H

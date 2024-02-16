@@ -7,4 +7,15 @@
  */
 void monitoringServerTest1();
 
+
+/*!
+* \brief Тест класса messageSerializer
+*/
+
+void messageSerializatorTest();
+void messageEncoderTest();
+void commandCenterTest();
+void wholeSystemTest();
+
+
 #endif // TESTS_H

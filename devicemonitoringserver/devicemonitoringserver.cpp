@@ -5,6 +5,13 @@
 #include <server/abstractconnection.h>
 #include <servermock/connectionservermock.h>
 
+//My include
+#include <iostream>
+#include <string>
+#include <utility>
+#include "messages.h"
+#include "messageserializator.h"
+
 DeviceMonitoringServer::DeviceMonitoringServer(AbstractConnectionServer* connectionServer) :
     m_connectionServer(connectionServer)
 {
@@ -29,9 +36,10 @@ DeviceMonitoringServer::~DeviceMonitoringServer()
     delete m_connectionServer;
 }
 
-void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule&)
+void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule& sch)
 {
     // TODO
+    cm.addDeviceWorkSchedule(sch);
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -46,9 +54,40 @@ void DeviceMonitoringServer::sendMessage(uint64_t deviceId, const std::string& m
         conn->sendMessage(message);
 }
 
-void DeviceMonitoringServer::onMessageReceived(uint64_t /*deviceId*/, const std::string& /*message*/)
+void DeviceMonitoringServer::onMessageReceived(uint64_t id/*deviceId*/, const std::string& msg/*message*/)
 {
     // TODO
+    //std::cout << "onMessageReceived (in server): " << msg << std::endl;
+
+    //Расшифровка полученного сообщения
+    std::string str = msgEncoder.decrypt(msg);
+    std::pair<messageType, void*> p = messageSerializator::deserialize(str);
+    meterageMessage* msg_ptr = reinterpret_cast<meterageMessage*>(p.second);
+    p = cm.getNewMessage(id, msg_ptr->_timeStamp, msg_ptr->_meterage);
+    delete msg_ptr;
+
+    //Шифровка нового сообщения, полученного от commandCenter
+    switch(p.first) {
+        case messageType::Command:
+            {
+                commandMessage* msg_to_send = reinterpret_cast<commandMessage*>(p.second);
+                str = messageSerializator::serialize(msg_to_send);
+                delete msg_to_send;
+                str = msgEncoder.encrypt(str);
+            }
+            break;
+        case messageType::Error:
+            {
+                errorMessage* msg_to_send = reinterpret_cast<errorMessage*>(p.second);
+                str = messageSerializator::serialize(msg_to_send);
+                delete msg_to_send;
+                str = msgEncoder.encrypt(str);
+            }
+            break;
+    }
+
+
+    sendMessage(id, str);
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
@@ -102,4 +141,12 @@ void DeviceMonitoringServer::addDisconnectedHandler(AbstractConnection* conn)
     };
     const auto clientId = conn->peerId();
     conn->setDisconnectedHandler(new DisconnectedHandler(this, clientId));
+}
+
+bool DeviceMonitoringServer::addEncodingAlgorithm(baseEncoderExecutor* newCoder) {
+    return msgEncoder.addCoder(newCoder);
+}
+
+bool DeviceMonitoringServer::chooseEncodingAlgorithm(const std::string& str) {
+    return msgEncoder.chooseCoder(str);
 }
