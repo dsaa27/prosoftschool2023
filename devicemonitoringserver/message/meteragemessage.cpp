@@ -1,9 +1,9 @@
 #include "meteragemessage.h"
 
-MeterageMessage::MeterageMessage(uint64_t timeStamp, char meterage)
+MeterageMessage::MeterageMessage(uint64_t timeStamp, char meterage) :
+    Message(MessageType::Meterage)
 {
     m_meterage = std::pair<uint64_t, char>(timeStamp, meterage);
-    m_type = MessageType::Meterage;
 }
 
 std::string MeterageMessage::messageToString() const

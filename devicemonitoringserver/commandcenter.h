@@ -1,4 +1,3 @@
-#pragma once
 #ifndef COMMANDCENTER_H
 #define COMMANDCENTER_H
 #include <map>

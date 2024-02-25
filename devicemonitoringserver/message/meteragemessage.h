@@ -1,4 +1,3 @@
-#pragma once
 #ifndef METERAGEMESSAGE_H
 #define METERAGEMESSAGE_H
 #include "message.h"
@@ -7,6 +6,7 @@ class MeterageMessage : public Message
 {
 public:
     MeterageMessage(uint64_t timeStamp, char meterage);
+    ~MeterageMessage() override = default;
     std::string messageToString() const override;
     friend std::ostream& operator<<(std::ostream& out, const MeterageMessage& other);
     friend bool operator==(const MeterageMessage& meterage1, const MeterageMessage& meterage2);

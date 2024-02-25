@@ -1,4 +1,3 @@
-#pragma once
 #ifndef BASEENCODEREXECUTOR_H
 #define BASEENCODEREXECUTOR_H
 #include <string>

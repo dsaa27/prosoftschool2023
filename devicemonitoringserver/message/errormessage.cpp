@@ -1,9 +1,9 @@
 #include "errormessage.h"
 
 ErrorMessage::ErrorMessage(ErrorType error) :
+    Message(MessageType::Error),
     m_error(error)
 {
-    m_type = MessageType::Error;
 }
 
 std::string ErrorMessage::messageToString() const

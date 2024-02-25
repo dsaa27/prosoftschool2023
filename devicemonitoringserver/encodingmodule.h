@@ -1,4 +1,3 @@
-#pragma once
 #ifndef DEVICEENCODINGCONTRACT_H
 #define DEVICEENCODINGCONTRACT_H
 #include <string>

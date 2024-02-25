@@ -1,9 +1,9 @@
 #include "commandmessage.h"
 
 CommandMessage::CommandMessage(char adjustment) :
+    Message(MessageType::Command),
     m_adjustment(adjustment)
 {
-    m_type = MessageType::Command;
 }
 
 std::string CommandMessage::messageToString() const

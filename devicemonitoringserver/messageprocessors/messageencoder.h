@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MESSAGEENCODER_H
 #define MESSAGEENCODER_H 
 #include <map>

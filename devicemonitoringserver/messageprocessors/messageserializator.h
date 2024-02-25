@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MESSAGESERIALIZATOR_H
 #define MESSAGESERIALIZATOR_H
 #include "message/errormessage.h"
