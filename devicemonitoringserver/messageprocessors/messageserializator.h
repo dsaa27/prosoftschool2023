@@ -6,17 +6,15 @@
 #include <string>
 #include <sstream>
 #include <vector>
-class MessageSerializator
+namespace MessageSerializator
 {
-public:
-    static std::string serializeMessage(const Message& message);
-    static ErrorMessage deserializeErrorMessage(const std::string& message);
-    static CommandMessage deserializeCommandMessage(const std::string& message);
-    static MeterageMessage deserializeMeterageMessage(const std::string& message);
-    static Message::MessageType identifySerializedMessageType(const std::string& message);
-
-private:
-    static std::vector<std::string> splitMessageString(const std::string& message);
+    std::string serializeMessage(const MeterageMessage& message);
+    std::string serializeMessage(const CommandMessage& message);
+    std::string serializeMessage(const ErrorMessage& message);
+    ErrorMessage deserializeErrorMessage(const std::string& message);
+    CommandMessage deserializeCommandMessage(const std::string& message);
+    MeterageMessage deserializeMeterageMessage(const std::string& message);
+    Message::MessageType identifySerializedMessageType(const std::string& message);
 };
 
 #endif
