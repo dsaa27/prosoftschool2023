@@ -2,7 +2,9 @@
 #define DEVICE_H
 
 #include "common.h"
-
+#include "messageprocessors/messageencoder.h"
+#include "messageprocessors/messageserializator.h"
+#include "encodingmodule.h"
 #include <string>
 #include <vector>
 
@@ -29,6 +31,11 @@ public:
      */
     bool bind(uint64_t deviceId);
     /*!
+     * \brief Установить шифрующий модуль на устройство
+     * \param encoder - шифрующий модуль
+     */
+    void setEncodingModule(EncodingModule* encoder);
+    /*!
      * \brief Подключить устройство к серверу.
      * \param serverId - идентификатор сревера
      * \return false в случае ошибки
@@ -39,6 +46,10 @@ public:
      * \param measurements - список измерений
      */
     void setMeterages(std::vector<uint8_t> meterages);
+    /*!
+     * \brief Посмотреть команды, полученные от устройства.
+     */
+    const std::vector<std::string>& getReceivedCommands();
     /*!
      * \brief Начать отправку измерений.
      */
@@ -71,6 +82,8 @@ private:
     AbstractClientConnection* m_clientConnection = nullptr;
     std::vector<uint8_t> m_meterages;
     uint64_t m_timeStamp = 0;
+    EncodingModule* m_encoder = nullptr;
+    std::vector<std::string> m_commands;
 };
 
 #endif // DEVICE_H

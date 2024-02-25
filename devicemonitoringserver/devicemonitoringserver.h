@@ -5,6 +5,10 @@
 
 #include <cstdint>
 #include <string>
+#include "deviceworkschedule.h"
+#include "commandcenter.h"
+#include "messageprocessors/messageencoder.h"
+#include "encodingmodule.h"
 
 struct DeviceWorkSchedule;
 class AbstractConnectionServer;
@@ -27,7 +31,17 @@ public:
     /*!
      * \brief Установить план работы устройств.
      */
-    void setDeviceWorkSchedule(const DeviceWorkSchedule&);
+    void setDeviceWorkSchedule(const DeviceWorkSchedule&, uint64_t deviceID);
+    /*!
+     * \brief Установить шифрующий модуль на сервер
+     * \param encoder - шифрующий модуль
+     */
+    void setEncodingModule(EncodingModule* encoder);
+    /*!
+     * \brief Привязать сервер к командному центру
+     * \param comandCenter - командный центр
+     */
+    void bindComandCenter(CommandCenter* comandCenter);
     /*!
      * \brief Начать прием подключений по идентификатору \a serverId
      */
@@ -63,6 +77,8 @@ private:
 
 private:
     AbstractConnectionServer* m_connectionServer = nullptr;
+    EncodingModule* m_encoder=nullptr;
+    CommandCenter* m_comandCenter=nullptr;
 };
 
 #endif // DEVICEMONITORINGSERVER_H
