@@ -5,18 +5,18 @@
 #include "messageprocessors/messageserializator.h"
 #include "encodingmodule.h"
 
-static class CommandCenter
+class CommandCenter
 {
 public:
-    static std::string processMessage(const std::string& message, const EncodingModule& encoder, uint64_t deviceID);
-    static double getSTD(uint64_t deviceID);
-    static void setDeviceWorkSchedule(uint64_t deviceID, DeviceWorkSchedule schedule);
-    static void reset();
+    std::string processMessage(const std::string& message, const EncodingModule& encoder, uint64_t deviceID);
+    double getSTD(uint64_t deviceID);
+    void setDeviceWorkSchedule(uint64_t deviceID, DeviceWorkSchedule schedule);
+    void reset();
 
 private:
-    static void updateDeviceSTD(char newError, uint64_t deviceID);
-    static std::map <uint64_t, std::pair<double, uint64_t>> m_STDArchive;
-    static std::map<uint64_t, DeviceWorkSchedule> m_devicesWorkScheduleArchive;
-    static uint64_t m_lastTimeStamp;
+    void updateDeviceSTD(char newError, uint64_t deviceID);
+    std::map <uint64_t, std::pair<double, uint64_t>> m_STDArchive;
+    std::map<uint64_t, DeviceWorkSchedule> m_devicesWorkScheduleArchive;
+    uint64_t m_lastTimeStamp = 0;
 };
 #endif

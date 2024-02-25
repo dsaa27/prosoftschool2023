@@ -1,9 +1,5 @@
 #include "commandcenter.h"
 
-uint64_t CommandCenter::m_lastTimeStamp = 0;
-std::map<uint64_t, std::pair<double, uint64_t>> CommandCenter::m_STDArchive;
-std::map<uint64_t, DeviceWorkSchedule> CommandCenter::m_devicesWorkScheduleArchive;
-
 std::string CommandCenter::processMessage(const std::string& message, const EncodingModule& encoder, uint64_t deviceID)
 {
     auto meterage = MessageSerializator::deserializeMeterageMessage(encoder.decode(message)).getMeterage();

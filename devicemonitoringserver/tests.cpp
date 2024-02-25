@@ -188,7 +188,7 @@ void messageEncoderCustomAlgorithmTest()
 
 void commandCenterErrorReturningTest()
 {
-    CommandCenter::reset();
+    CommandCenter comandCenter;
     using errorType = ErrorMessage::ErrorType;
     using messageType=Message::MessageType;
     EncodingModule encoder = EncodingModule(MessageEncoder(), "Mirror");
@@ -211,37 +211,37 @@ void commandCenterErrorReturningTest()
 
     std::string comandCenterResponse = 
         encoder.decode(
-            CommandCenter::processMessage(
+            comandCenter.processMessage(
                 encoder.encode(
                     MessageSerializator::serializeMessage(fakeDeviceMessages[0])), encoder, fakedeviceID));
 
     ASSERT_EQUAL((int)MessageSerializator::identifySerializedMessageType(comandCenterResponse), (int)messageType::Error);
     ASSERT_EQUAL(MessageSerializator::deserializeErrorMessage(comandCenterResponse).getErrorType(), errorType::NoSchedule);
 
-    CommandCenter::setDeviceWorkSchedule(fakedeviceID, tardlyTimeStampSchedule);
+    comandCenter.setDeviceWorkSchedule(fakedeviceID, tardlyTimeStampSchedule);
     comandCenterResponse = 
         encoder.decode(
-            CommandCenter::processMessage(
+            comandCenter.processMessage(
                 encoder.encode(
                     MessageSerializator::serializeMessage(fakeDeviceMessages[0])), encoder, fakedeviceID));
 
     ASSERT_EQUAL((int)MessageSerializator::identifySerializedMessageType(comandCenterResponse), (int)messageType::Error);
     ASSERT_EQUAL(MessageSerializator::deserializeErrorMessage(comandCenterResponse).getErrorType(), errorType::NoTimestamp);
 
-    CommandCenter::setDeviceWorkSchedule(fakedeviceID, emptySchedule);
+    comandCenter.setDeviceWorkSchedule(fakedeviceID, emptySchedule);
     comandCenterResponse = 
         encoder.decode(
-            CommandCenter::processMessage(
+            comandCenter.processMessage(
                 encoder.encode(
                     MessageSerializator::serializeMessage(fakeDeviceMessages[1])), encoder, fakedeviceID));
 
     ASSERT_EQUAL((int)MessageSerializator::identifySerializedMessageType(comandCenterResponse), (int)messageType::Error);
     ASSERT_EQUAL(MessageSerializator::deserializeErrorMessage(comandCenterResponse).getErrorType(), errorType::NoSchedule);
 
-    CommandCenter::setDeviceWorkSchedule(fakedeviceID, fakeSchedule);
+    comandCenter.setDeviceWorkSchedule(fakedeviceID, fakeSchedule);
     comandCenterResponse = 
         encoder.decode(
-            CommandCenter::processMessage(
+            comandCenter.processMessage(
                 encoder.encode(
                     MessageSerializator::serializeMessage(fakeDeviceMessages[0])), encoder, fakedeviceID));
 
@@ -252,7 +252,7 @@ void commandCenterErrorReturningTest()
 void commandCenterCommandReturningTest()
 {
     using messageType = Message::MessageType;
-    CommandCenter::reset();
+    CommandCenter comandCenter;
     int fakeDeviceID = 1;
     EncodingModule encoder = EncodingModule(MessageEncoder(), "Mirror");
     DeviceWorkSchedule fakeSchedule;
@@ -291,12 +291,12 @@ void commandCenterCommandReturningTest()
         CommandMessage(15),
         CommandMessage(20),
     };
-    CommandCenter::setDeviceWorkSchedule(fakeDeviceID, fakeSchedule);
+    comandCenter.setDeviceWorkSchedule(fakeDeviceID, fakeSchedule);
     for (size_t i = 0; i < fakeDeviceMessages.size(); ++i)
     {
         std::string commandCenterResponse=
             encoder.decode(
-                CommandCenter::processMessage(
+                comandCenter.processMessage(
                     encoder.encode(MessageSerializator::serializeMessage(fakeDeviceMessages[i])), encoder, fakeDeviceID));
 
         ASSERT_EQUAL((int)MessageSerializator::identifySerializedMessageType(commandCenterResponse), (int)messageType::Command);
@@ -306,12 +306,12 @@ void commandCenterCommandReturningTest()
         );
     }
 
-    ASSERT(std::abs(CommandCenter::getSTD(fakeDeviceID) - 25.34758) < 1e-3)
+    ASSERT(std::abs(comandCenter.getSTD(fakeDeviceID) - 25.34758) < 1e-3)
 }
 
 void commandCenterMultipleDeviceServeTest()
 {
-    CommandCenter::reset();
+    CommandCenter comandCenter;
     EncodingModule encoder(MessageEncoder(), "Multiply41");
 
     std::vector<MeterageMessage> fakeDeviceMessages1 = {
@@ -385,9 +385,9 @@ void commandCenterMultipleDeviceServeTest()
         { 5, 64 },
     };
 
-    CommandCenter::setDeviceWorkSchedule(fakeDeviceID1, fakeSchedule1);
-    CommandCenter::setDeviceWorkSchedule(fakeDeviceID2, fakeSchedule2);
-    CommandCenter::setDeviceWorkSchedule(fakeDeviceID3, fakeSchedule3);
+    comandCenter.setDeviceWorkSchedule(fakeDeviceID1, fakeSchedule1);
+    comandCenter.setDeviceWorkSchedule(fakeDeviceID2, fakeSchedule2);
+    comandCenter.setDeviceWorkSchedule(fakeDeviceID3, fakeSchedule3);
 
     std::vector<CommandMessage> CommandCenterOut1 {
         CommandMessage(0),
@@ -432,7 +432,7 @@ void commandCenterMultipleDeviceServeTest()
     {
         std::string commandCenterResponse=
             encoder.decode(
-                CommandCenter::processMessage(
+                comandCenter.processMessage(
                     encoder.encode(MessageSerializator::serializeMessage(fakeDeviceMessages1[i])),
                     encoder, 
                     fakeDeviceID1));
@@ -440,7 +440,7 @@ void commandCenterMultipleDeviceServeTest()
 
         commandCenterResponse=
             encoder.decode(
-                CommandCenter::processMessage(
+                comandCenter.processMessage(
                     encoder.encode(MessageSerializator::serializeMessage(fakeDeviceMessages2[i])),
                     encoder, 
                     fakeDeviceID2));
@@ -448,16 +448,16 @@ void commandCenterMultipleDeviceServeTest()
 
         commandCenterResponse=
             encoder.decode(
-                CommandCenter::processMessage(
+                comandCenter.processMessage(
                     encoder.encode(MessageSerializator::serializeMessage(fakeDeviceMessages3[i])),
                     encoder, 
                     fakeDeviceID3));
         ASSERT_EQUAL(MessageSerializator::deserializeCommandMessage(commandCenterResponse), CommandCenterOut3[i]);
     }
 
-    ASSERT(std::abs(CommandCenter::getSTD(fakeDeviceID1) - 25.34758) < 1e-3);
-    ASSERT(std::abs(CommandCenter::getSTD(fakeDeviceID2) - 35.98055) < 1e-3);
-    ASSERT(std::abs(CommandCenter::getSTD(fakeDeviceID3) - 35.63987) < 1e-3);
+    ASSERT(std::abs(comandCenter.getSTD(fakeDeviceID1) - 25.34758) < 1e-3);
+    ASSERT(std::abs(comandCenter.getSTD(fakeDeviceID2) - 35.98055) < 1e-3);
+    ASSERT(std::abs(comandCenter.getSTD(fakeDeviceID3) - 35.63987) < 1e-3);
 }
 
 std::vector<std::string> convertMessagesToCommands(std::vector<Message*> messages)
@@ -472,7 +472,7 @@ std::vector<std::string> convertMessagesToCommands(std::vector<Message*> message
 
 void monitoringServerSimpleTest()
 {
-    CommandCenter::reset();
+    CommandCenter comandCenter;
     TaskQueue taskQueue;
     DeviceMock device(new ClientConnectionMock(taskQueue));
     DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
@@ -487,6 +487,7 @@ void monitoringServerSimpleTest()
     device.setEncodingModule(&encoder);
     device.setMeterages({ 1, 3, 4, 5 });
     server.setEncodingModule(&encoder);
+    server.bindComandCenter(&comandCenter);
     const uint64_t deviceId = 111;
     const uint64_t serverId = 11;
     ASSERT(device.bind(deviceId));
@@ -506,13 +507,13 @@ void monitoringServerSimpleTest()
     };
 
     ASSERT_EQUAL(device.getReceivedCommands(), convertMessagesToCommands(expectedMessages));
-    ASSERT(std::abs(CommandCenter::getSTD(deviceId) - 4.60977) < 1e-3);
+    ASSERT(std::abs(comandCenter.getSTD(deviceId) - 4.60977) < 1e-3);
 }
 
 void monitoringServerNoScheduleTest()
 {
     using errorType=ErrorMessage::ErrorType;
-    CommandCenter::reset();
+    CommandCenter comandCenter;
     TaskQueue taskQueue;
     DeviceMock device(new ClientConnectionMock(taskQueue));
     DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
@@ -523,6 +524,7 @@ void monitoringServerNoScheduleTest()
     device.setEncodingModule(&encoder);
     device.setMeterages({ 1, 5, 23, 65, 90 });
     server.setEncodingModule(&encoder);
+    server.bindComandCenter(&comandCenter);
     ASSERT(server.listen(serverID));
     ASSERT(device.connectToServer(serverID));
     while (taskQueue.processTask())
@@ -545,7 +547,7 @@ void monitoringServerNoScheduleTest()
 void monitoringServerDifferentMessageTest()
 {
     using errorType = ErrorMessage::ErrorType;
-    CommandCenter::reset();
+    CommandCenter comandCenter;
     TaskQueue taskQueue;
     DeviceMock device(new ClientConnectionMock(taskQueue));
     DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
@@ -563,6 +565,7 @@ void monitoringServerDifferentMessageTest()
     device.setEncodingModule(&encoder);
     device.setMeterages({ 1, 5, 23, 65, 90 });
     server.setEncodingModule(&encoder);
+    server.bindComandCenter(&comandCenter);
     server.setDeviceWorkSchedule(schedule, deviceID);
     ASSERT(server.listen(serverID));
     ASSERT(device.connectToServer(serverID));
@@ -581,12 +584,12 @@ void monitoringServerDifferentMessageTest()
     };
 
     ASSERT_EQUAL(device.getReceivedCommands(), convertMessagesToCommands(expectedMessages));
-    ASSERT(std::abs(CommandCenter::getSTD(deviceID) - 17.4547) < 1e-3);
+    ASSERT(std::abs(comandCenter.getSTD(deviceID) - 17.4547) < 1e-3);
 }
 
 void monitoringServerManyDevicesTest()
 {
-    CommandCenter::reset();
+    CommandCenter comandCenter;
     EncodingModule encoder(MessageEncoder(), "Mirror");
     TaskQueue taskQueue;
     std::vector<DeviceMock*> devices {
@@ -613,6 +616,7 @@ void monitoringServerManyDevicesTest()
         { 7, 25 }
     };
     server.setEncodingModule(&encoder);
+    server.bindComandCenter(&comandCenter);
     ASSERT(server.listen(serverID));
 
     for (size_t i = 0; i < devices.size(); i++)
@@ -661,14 +665,14 @@ void monitoringServerManyDevicesTest()
     for (size_t i = 0; i < devices.size(); i++)
     {
         ASSERT_EQUAL(devices[i]->getReceivedCommands(), convertMessagesToCommands(expectedMessages[i]));
-        ASSERT(std::abs(CommandCenter::getSTD(i + 1) - expectedSTD[i]) < 1e-3);
+        ASSERT(std::abs(comandCenter.getSTD(i + 1) - expectedSTD[i]) < 1e-3);
         delete devices[i];
     }
 }
 
 void monitoringServerChaosTest()
 {
-    CommandCenter::reset();
+    CommandCenter comandCenter;
     EncodingModule encoder(MessageEncoder(), "Mirror");
     TaskQueue taskQueue;
     std::vector<DeviceMock*> devices {
@@ -716,6 +720,7 @@ void monitoringServerChaosTest()
     DeviceMonitoringServer server(new ConnectionServerMock(taskQueue));
     uint64_t serverID = 10;
     server.setEncodingModule(&encoder);
+    server.bindComandCenter(&comandCenter);
     ASSERT(server.listen(serverID));
 
     for (size_t i = 0; i < devices.size(); i++)
@@ -779,7 +784,7 @@ void monitoringServerChaosTest()
     for (size_t i = 0; i < devices.size(); i++)
     {
         ASSERT_EQUAL(devices[i]->getReceivedCommands(), convertMessagesToCommands(expectedMessages[i]));
-        ASSERT(std::abs(CommandCenter::getSTD(i + 1) - expectedSTD[i]) < 1e-3);
+        ASSERT(std::abs(comandCenter.getSTD(i + 1) - expectedSTD[i]) < 1e-3);
         delete devices[i];
     }
 }

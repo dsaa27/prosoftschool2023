@@ -31,12 +31,21 @@ DeviceMonitoringServer::~DeviceMonitoringServer()
 
 void DeviceMonitoringServer::setDeviceWorkSchedule(const DeviceWorkSchedule& schedule, uint64_t deviceID)
 {
-    CommandCenter::setDeviceWorkSchedule(deviceID, schedule);
+    if (!m_comandCenter)
+    {
+        throw std::exception("Comand center not binded!");
+    }
+    m_comandCenter->setDeviceWorkSchedule(deviceID, schedule);
 }
 
 void DeviceMonitoringServer::setEncodingModule(EncodingModule* encoder)
 {
     m_encoder = encoder;
+}
+
+void DeviceMonitoringServer::bindComandCenter(CommandCenter* comandCenter)
+{
+    m_comandCenter = comandCenter;
 }
 
 bool DeviceMonitoringServer::listen(uint64_t serverId)
@@ -57,7 +66,11 @@ void DeviceMonitoringServer::onMessageReceived(uint64_t deviceId, const std::str
     {
         throw std::exception("Encoder not setted!");
     }
-    sendMessage(deviceId, CommandCenter::processMessage(message, *m_encoder, deviceId));
+    if (!m_comandCenter)
+    {
+        throw std::exception("Comand center not binded!");
+    }
+    sendMessage(deviceId, m_comandCenter->processMessage(message, *m_encoder, deviceId));
 }
 
 void DeviceMonitoringServer::onDisconnected(uint64_t /*clientId*/)
