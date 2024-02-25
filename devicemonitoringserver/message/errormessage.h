@@ -2,7 +2,7 @@
 #define ERRORMESSAGE_H
 #include "message.h"
 
-class ErrorMessage : public Message
+class ErrorMessage final : public Message
 {
 public:
     enum class ErrorType

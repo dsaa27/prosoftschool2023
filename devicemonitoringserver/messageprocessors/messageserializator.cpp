@@ -65,50 +65,47 @@ namespace MessageSerializator
     {
         std::vector<std::string> data = splitMessageString(message);
         ErrorMessage::ErrorType errorType;
-        if (data[1] == "NoSchedule")
-        {
+        if (data.at(1) == "NoSchedule")
             errorType = ErrorMessage::ErrorType::NoSchedule;
-        }
-        else if (data[1] == "NoTimestamp")
-        {
+
+        else if (data.at(1) == "NoTimestamp")
             errorType = ErrorMessage::ErrorType::NoTimestamp;
-        }
-        else
-        {
+
+        else if (data.at(1) == "Obsolete")
             errorType = ErrorMessage::ErrorType::Obsolete;
-        }
+
+        else       
+            throw std::exception("Wrong message format!");
+        
         return ErrorMessage(errorType);
     }
 
 CommandMessage deserializeCommandMessage(const std::string& message)
 {
     std::vector<std::string> data = splitMessageString(message);
-    return CommandMessage((char)std::stoi(data[1]));
+        return CommandMessage((char)std::stoi(data.at(1)));
 }
 
 MeterageMessage deserializeMeterageMessage(const std::string& message)
 {
     std::vector<std::string> data = splitMessageString(message);
-    return MeterageMessage(std::stoull(data[1]), (char)std::stoi(data[2]));
+    return MeterageMessage(std::stoull(data.at(1)), (char)std::stoi(data.at(2)));
 }
 
 Message::MessageType identifySerializedMessageType(const std::string& message)
 {
     std::vector<std::string> data = splitMessageString(message);
-    if (data[0] == "Error")
-    {
+    if (data.at(0) == "Error")
         return Message::MessageType::Error;
-    }
 
-    else if (data[0] == "Command")
-    {
+    if (data.at(0) == "Command")
         return Message::MessageType::Command;
-    }
 
-    else
-    {
+    if (data.at(0) == "Meterage")
         return Message::MessageType::Meterage;
-    }
+
+    throw std::exception("Wrong message format!");
+
 }
 }
 

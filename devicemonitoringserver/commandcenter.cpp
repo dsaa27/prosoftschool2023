@@ -14,7 +14,7 @@ std::string CommandCenter::processMessage(const std::string& message, const Enco
     }
     m_lastTimeStamp = meterage.first;
     if (m_devicesWorkScheduleArchive.find(deviceID) == m_devicesWorkScheduleArchive.end() 
-        || !m_devicesWorkScheduleArchive[deviceID].schedule.size())
+        || m_devicesWorkScheduleArchive[deviceID].schedule.empty())
     {
         return encoder.encode(
         MessageSerializator::serializeMessage(ErrorMessage(ErrorMessage::ErrorType::NoSchedule)));
@@ -55,7 +55,7 @@ void CommandCenter::updateDeviceSTD(char newError, uint64_t deviceID)
 {
     if (m_STDArchive.find(deviceID) == m_STDArchive.end())
     {
-        m_STDArchive.emplace(std::pair<uint64_t, std::pair<double, uint64_t>>(deviceID, std::pair<double, uint64_t>(0, 0)));
+        m_STDArchive.emplace(deviceID, std::pair<double, uint64_t>(0, 0));
     }
     m_STDArchive[deviceID].first += newError * newError;
     ++m_STDArchive[deviceID].second;

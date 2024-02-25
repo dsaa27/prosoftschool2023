@@ -1,7 +1,7 @@
 #ifndef COMMANDMESSAGE_H
 #define COMMANDMESSAGE_H
 #include "message.h"
-class CommandMessage : public Message
+class CommandMessage final : public Message
 {
 public:
     CommandMessage(char adjustment);

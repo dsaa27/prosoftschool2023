@@ -2,7 +2,7 @@
 #define METERAGEMESSAGE_H
 #include "message.h"
 #include <utility>
-class MeterageMessage : public Message
+class MeterageMessage final : public Message
 {
 public:
     MeterageMessage(uint64_t timeStamp, char meterage);

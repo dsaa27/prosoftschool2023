@@ -170,6 +170,11 @@ void messageEncoderCustomAlgorithmTest()
             }
             return answer;
         }
+
+        Xor15_20_25* clone() const override
+        {
+            return new Xor15_20_25();
+        }
     };
 
     MessageEncoder encoder;

@@ -11,13 +11,7 @@ MessageEncoder::MessageEncoder(const MessageEncoder& other)
 {
     for (auto alg : other.m_algorithmLibrary)
     {
-        BaseEncoderExecutor* alg_copy = (BaseEncoderExecutor*)malloc(sizeof(BaseEncoderExecutor));
-        if (!alg_copy)
-        {
-            throw std::exception("can't copy encoder");
-        }
-        memcpy_s(alg_copy, sizeof(BaseEncoderExecutor), alg.second, sizeof(BaseEncoderExecutor));
-        registerAlgorithm(alg_copy);
+        registerAlgorithm(alg.second->clone());
     }
 }
 
@@ -25,38 +19,38 @@ MessageEncoder::~MessageEncoder()
 {
     for (auto& alg : m_algorithmLibrary)
     {
-        free(alg.second);        
+        delete alg.second;        
         alg.second = nullptr;
     }
 }
 
-std::stack<uint8_t> decimalDisassembleNumber(uint64_t sim)
+namespace
 {
-    std::stack<uint8_t> buff;
+    std::vector<uint8_t> decimalDisassembleNumber(uint64_t sim)
+{
+    std::vector<uint8_t> buff;
     while (sim != 0)
     {
-        buff.push(sim % 10);
+        buff.emplace_back(sim % 10);
         sim /= 10;
     }
     return buff;
 }
 
-uint64_t decimalAssembleNumber(std::stack<uint8_t> buff)
+uint64_t decimalAssembleNumber(std::vector<uint8_t>& buff)
 {
     uint64_t number = 0;
     for (char tenPow = buff.size() - 1; tenPow >= 0; tenPow--)
     {
-        number += (buff.top() * pow(10, tenPow));
-        buff.pop();
+        number += (buff[tenPow] * pow(10, tenPow));
     }
     return number;
 }
 
-uint64_t count_first_zero(std::stack<uint8_t> buff)
+uint64_t count_first_zero(const std::vector<uint8_t>& buff)
 {
-    auto container = buff._Get_container();
     uint64_t count = 0;
-    for (auto el : container)
+    for (auto el : buff)
     {
         if (el) break;
         ++count;
@@ -64,11 +58,10 @@ uint64_t count_first_zero(std::stack<uint8_t> buff)
     return count;
 }
 
-void mirrorByteBuffer(std::stack<uint8_t>& buff)
+void mirrorByteBuffer(std::vector<uint8_t>& buff)
 {
-    auto container = buff._Get_container();
-    std::reverse(container.begin(), container.end());
-    buff = std::stack<uint8_t>(container);
+    std::reverse(buff.begin(), buff.end());
+}
 }
 
 std::string MessageEncoder::encode(const std::string& str, BaseEncoderExecutor* alg) const
@@ -89,7 +82,7 @@ BaseEncoderExecutor* MessageEncoder::chooseAlgorithm(const std::string& name) co
 
 void MessageEncoder::registerAlgorithm(BaseEncoderExecutor* alg)
 {
-    m_algorithmLibrary.emplace(std::pair<std::string, BaseEncoderExecutor*>(alg->name(), alg));
+    m_algorithmLibrary.emplace(alg->name(), alg);
 }
 
 MessageEncoder::ROT3::ROT3() :
@@ -113,6 +106,11 @@ std::string MessageEncoder::ROT3::decode(const std::string& str) const
         sim -= 3;
     }
     return answer;
+}
+
+MessageEncoder::ROT3* MessageEncoder::ROT3::clone() const
+{
+    return new ROT3();
 }
 
 MessageEncoder::Mirror::Mirror() :
@@ -162,6 +160,11 @@ std::string MessageEncoder::Mirror::decode(const std::string& str) const
     return answer.str();
 }
 
+MessageEncoder::Mirror* MessageEncoder::Mirror::clone() const
+{
+    return new Mirror();
+}
+
 MessageEncoder::Multiply41::Multiply41() :
     BaseEncoderExecutor("Multiply41") {};
 
@@ -193,4 +196,9 @@ std::string MessageEncoder::Multiply41::decode(const std::string& str) const
         isEvenSim = !isEvenSim;
     }
     return answer.str();
+}
+
+MessageEncoder::Multiply41* MessageEncoder::Multiply41::clone() const
+{
+    return new Multiply41();
 }
